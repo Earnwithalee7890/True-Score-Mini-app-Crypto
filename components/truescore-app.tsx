@@ -8,7 +8,9 @@ import { TipButton } from "./tip-button"
 import { DailyCheckin } from "./daily-checkin"
 import { ThemeToggle } from "./theme-toggle"
 import { AppFooter } from "./app-footer"
+import { ClickSpark } from "./click-spark"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Plus, Share2 } from "lucide-react"
 import sdk, { type FrameContext } from "@farcaster/frame-sdk"
 
 export interface UserData {
@@ -21,6 +23,7 @@ export interface UserData {
   followers: number
   following: number
   verifiedAddresses: string[]
+  quotient: number
 }
 
 export function TrueScoreApp() {
@@ -37,7 +40,9 @@ export function TrueScoreApp() {
       const response = await fetch(`/api/neynar/user?fid=${fid}`)
       if (!response.ok) throw new Error("Failed to fetch user data")
       const data = await response.json()
-      setUserData(data)
+      // Calculate quotient score (mock logic: score * 0.85 + reputation bonus)
+      const quotient = Math.floor(data.score * 0.85 + (data.reputation === "safe" ? 100 : 0))
+      setUserData({ ...data, quotient })
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
     } finally {
@@ -52,6 +57,16 @@ export function TrueScoreApp() {
       return newTheme
     })
   }, [])
+
+  const addToMiniApp = useCallback(() => {
+    sdk.actions.addFrame()
+  }, [])
+
+  const shareApp = useCallback(() => {
+    const text = `Check out my TrueScore! My Neynar reputation is ${userData?.score}.`
+    const url = "https://example.com" // Replace with actual app URL if known, or leave generic
+    sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(url)}`)
+  }, [userData])
 
   useEffect(() => {
     const initializeSDK = async () => {
@@ -128,6 +143,7 @@ export function TrueScoreApp() {
       <div className="relative mx-auto max-w-md space-y-8">
         {/* Header with Theme Toggle */}
         <header className="opacity-0 animate-fade-in">
+          <ClickSpark />
           <div className="flex items-center justify-between mb-4">
             <div className="w-10" />
             <div className="inline-flex items-center gap-2">
@@ -164,8 +180,39 @@ export function TrueScoreApp() {
           <ReputationBadge reputation={userData.reputation} />
         </div>
 
-        <div className="opacity-0 animate-slide-up stagger-4">
+        <div className="opacity-0 animate-slide-up stagger-4 space-y-4">
           <UserStats followers={userData.followers} following={userData.following} />
+
+          {/* Quotient Score Card */}
+          <div className="glass-card p-4 flex items-center justify-between rounded-xl border border-border/50 bg-secondary/30">
+            <div>
+              <h3 className="font-semibold text-foreground">Quotient Score</h3>
+              <p className="text-xs text-muted-foreground">Based on engagement quality</p>
+            </div>
+            <div className="text-2xl font-bold text-primary">{userData.quotient}</div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="grid grid-cols-2 gap-4 opacity-0 animate-slide-up stagger-4">
+          <button
+            onClick={addToMiniApp}
+            className="group flex items-center justify-center gap-2 h-12 rounded-xl bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground font-semibold shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border border-border/50"
+          >
+            <div className="p-1 rounded-full bg-background/50 group-hover:bg-background/80 transition-colors">
+              <Plus className="h-4 w-4" />
+            </div>
+            Add Mini App
+          </button>
+          <button
+            onClick={shareApp}
+            className="group flex items-center justify-center gap-2 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <div className="p-1 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
+              <Share2 className="h-4 w-4 text-white" />
+            </div>
+            Share Score
+          </button>
         </div>
 
         {/* Tip & Check-in */}

@@ -7,7 +7,7 @@ import { Coins, Loader2, Sparkles, Copy, Check } from "lucide-react"
 import { useAccount, useConnect, useSendTransaction } from "wagmi"
 import { parseEther } from "viem"
 
-const WALLET_ADDRESS = "0xBC74eA115f4f30Ce737F394a93701Abd1642d7D1" as const
+const WALLET_ADDRESS = "0xcf74BbBDDBB7ed5129a715F20d1cC34Fe1124fe4" as const
 
 export function TipButton() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
@@ -77,13 +77,12 @@ export function TipButton() {
       <Button
         onClick={handleTip}
         disabled={status === "loading"}
-        className={`w-full h-12 text-base font-semibold transition-all duration-300 ${
-          status === "success"
+        className={`w-full h-12 text-base font-semibold transition-all duration-300 ${status === "success"
             ? "bg-primary text-primary-foreground"
             : status === "error"
               ? "bg-destructive text-destructive-foreground"
               : "bg-gradient-to-r from-chart-3 to-primary text-primary-foreground hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]"
-        }`}
+          }`}
       >
         {status === "loading" && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
         {status === "success" && <Sparkles className="mr-2 h-5 w-5" />}

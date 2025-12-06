@@ -1,0 +1,8 @@
+{
+  "/.well-known/farcaster.json/route": "app/.well-known/farcaster.json/route.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/neynar/user/route": "app/api/neynar/user/route.js",
+  "/api/webhook/route": "app/api/webhook/route.js",
+  "/page": "app/page.js"
+}
