@@ -146,13 +146,7 @@ export function TrueScoreApp() {
           <ClickSpark />
           <div className="flex items-center justify-between mb-4">
             <div className="w-10" />
-            <div className="inline-flex items-center gap-2">
-              <img src="/app-icon.jpg" alt="TrueScore" className="h-14 w-14 rounded-xl shadow-lg ring-2 ring-primary/20" />
-              <div className="flex flex-col">
-                <span className="font-bold text-xl tracking-tight">TrueScore</span>
-                <span className="text-xs text-muted-foreground font-medium">by aleekhoso <span className="text-primary">✓</span></span>
-              </div>
-            </div>
+
             <ThemeToggle theme={theme} onToggle={toggleTheme} />
           </div>
           <p className="text-sm text-muted-foreground text-center">Your real Neynar reputation</p>
