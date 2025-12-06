@@ -21,20 +21,20 @@ export function UserStats({ followers, following }: UserStatsProps) {
   ]
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-3">
       {stats.map((stat, index) => (
         <Card
           key={stat.label}
-          className="glass-card group p-6 flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 cursor-default"
+          className="glass-card group p-3 flex flex-col items-center justify-center gap-1.5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 cursor-default"
           style={{ animationDelay: `${index * 0.1}s` }}
         >
           <div
-            className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${stat.color} transition-transform group-hover:scale-110`}
+            className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${stat.color} transition-transform group-hover:scale-110`}
           >
-            <stat.icon className="h-8 w-8 text-foreground/80" />
+            <stat.icon className="h-5 w-5 text-foreground/80" />
           </div>
-          <p className="text-3xl font-bold text-foreground tabular-nums">{formatNumber(stat.value)}</p>
-          <p className="text-sm text-muted-foreground font-medium">{stat.label}</p>
+          <p className="text-xl font-bold text-foreground tabular-nums">{formatNumber(stat.value)}</p>
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">{stat.label}</p>
         </Card>
       ))}
     </div>

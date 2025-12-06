@@ -40,8 +40,10 @@ export function TrueScoreApp() {
       const response = await fetch(`/api/neynar/user?fid=${fid}`)
       if (!response.ok) throw new Error("Failed to fetch user data")
       const data = await response.json()
-      // Calculate quotient score (mock logic: score * 0.85 + reputation bonus)
-      const quotient = Math.floor(data.score * 0.85 + (data.reputation === "safe" ? 100 : 0))
+      // Calculate quotient score: (Score * 1.5) + (Followers / 100) + (Reputation Bonus)
+      // This is a "True" mock calculation based on the request
+      const reputationBonus = data.reputation === "safe" ? 500 : data.reputation === "neutral" ? 200 : 0
+      const quotient = Math.floor((data.score * 1.5) + (data.followers / 200) + reputationBonus)
       setUserData({ ...data, quotient })
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
@@ -147,7 +149,11 @@ export function TrueScoreApp() {
           <div className="flex items-center justify-between mb-4">
             <div className="w-10" />
             <div className="inline-flex items-center gap-2">
-              <img src="/premium-logo.png" alt="TrueScore" className="h-14 w-auto drop-shadow-lg" />
+              <img src="/app-icon.jpg" alt="TrueScore" className="h-14 w-14 rounded-xl shadow-lg ring-2 ring-primary/20" />
+              <div className="flex flex-col">
+                <span className="font-bold text-xl tracking-tight">TrueScore</span>
+                <span className="text-xs text-muted-foreground font-medium">by aleekhoso <span className="text-primary">✓</span></span>
+              </div>
             </div>
             <ThemeToggle theme={theme} onToggle={toggleTheme} />
           </div>
@@ -218,12 +224,21 @@ export function TrueScoreApp() {
 
           <button
             onClick={() => sdk.actions.openUrl("https://warpcast.com/earnwithalee7890")}
-            className="group flex items-center justify-center gap-2 h-12 rounded-xl bg-white/50 backdrop-blur-sm border border-primary/20 text-primary font-semibold shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-white/80"
+            className="group relative flex items-center justify-center gap-2 h-14 rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border border-primary/20 text-primary font-bold shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
           >
-            <div className="p-1 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-              <User className="h-4 w-4" />
+            <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
+            <div className="absolute -right-4 -top-4 h-12 w-12 bg-primary/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500" />
+
+            <div className="relative p-1.5 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors animate-pulse-ring">
+              <User className="h-5 w-5" />
             </div>
-            Follow Owner
+            <div className="relative flex flex-col items-start leading-none">
+              <span className="text-sm">Follow Owner</span>
+              <span className="text-[10px] text-muted-foreground opacity-80">@aleekhoso</span>
+            </div>
+            <div className="relative ml-2 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
+              PRO
+            </div>
           </button>
         </div>
 
