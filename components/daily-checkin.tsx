@@ -181,12 +181,6 @@ export function DailyCheckin() {
               </linearGradient>
             </defs>
           </svg>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <span className="text-xs font-bold text-foreground block">5</span>
-              <Zap className="h-2.5 w-2.5 text-primary mx-auto" />
-            </div>
-          </div>
         </div>
       </div>
 
@@ -208,8 +202,8 @@ export function DailyCheckin() {
           onClick={handleCheckin}
           disabled={status === "loading" || status === "switching" || status === "success"}
           className={`h-12 px-6 font-semibold transition-all duration-300 ${status === "success"
-              ? "bg-primary text-primary-foreground"
-              : "bg-gradient-to-r from-primary to-chart-2 text-primary-foreground hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]"
+            ? "bg-primary text-primary-foreground"
+            : "bg-gradient-to-r from-primary to-chart-2 text-primary-foreground hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]"
             }`}
         >
           {(status === "loading" || status === "switching") && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
