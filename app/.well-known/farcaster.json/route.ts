@@ -2,24 +2,32 @@ import { NextResponse } from "next/server"
 
 export async function GET() {
   const manifest = {
-    accountAssociation: {
-      header: "eyJmaWQiOjMzODA2MCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDI5NjYzN0YyMDMzRDQwQTVDNGE4ZjM1ODQ2YTkzNzEyYzViNzVFODkifQ",
-      payload: "eyJkb21haW4iOiJ2MC10YXNrLXRvLWNhc2gtc2V2ZW4udmVyY2VsLmFwcCJ9",
-      signature: "MHhlZGU2NjJjNTNmNGJmNGE2MTAzNGU3ZGE4NjI5NDQwZjJjMzc4ZmY3NTc1ZWI2MGQ4MzE3NGE1ZTMyMTBiNjY3NTk5ZjMyOWJhMjcyOTBkZTA5MTg3MzY0ZjgwYjlkODhlMmQ5YWM4NzI1M2QyODg4NDA2ZmRlNmU0MDY0MWJhMzFi"
-    },
     frame: {
-      version: "next",
+      name: "TrueScore",
+      version: "1",
+      iconUrl: "https://v0-task-to-cash-seven.vercel.app/icon.png",
+      homeUrl: "https://v0-task-to-cash-seven.vercel.app",
       imageUrl: "https://v0-task-to-cash-seven.vercel.app/og-image.png",
-      button: {
-        title: "View My Score",
-        action: {
-          type: "launch_frame",
-          name: "TrueScore",
-          url: "https://v0-task-to-cash-seven.vercel.app",
-          splashImageUrl: "https://v0-task-to-cash-seven.vercel.app/splash.png",
-          splashBackgroundColor: "#1a1a2e"
-        }
-      }
+      buttonTitle: "View My Score",
+      splashImageUrl: "https://v0-task-to-cash-seven.vercel.app/splash.png",
+      splashBackgroundColor: "#1a1a2e",
+      webhookUrl: "https://v0-task-to-cash-seven.vercel.app/api/webhook",
+      subtitle: "Your Real Neynar Reputation",
+      description: "View your real Neynar score, engagement analytics, and account reputation on Farcaster. Includes daily check-in and tip features.",
+      primaryCategory: "social",
+      tags: ["reputation", "analytics", "neynar", "score"],
+      screenshotUrls: ["https://v0-task-to-cash-seven.vercel.app/og-image.png"],
+      heroImageUrl: "https://v0-task-to-cash-seven.vercel.app/og-image.png",
+      tagline: "Track your Farcaster reputation",
+      ogTitle: "TrueScore - Your Real Neynar Reputation",
+      ogDescription: "View your real Neynar score, engagement analytics, and account reputation on Farcaster",
+      ogImageUrl: "https://v0-task-to-cash-seven.vercel.app/og-image.png",
+      castShareUrl: "https://warpcast.com/~/compose?text=Check+out+TrueScore"
+    },
+    accountAssociation: {
+      header: "eyJmaWQiOjMzODA2MCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweEJDNzRlQTExNWY0ZjMwQ2U3MzdGMzk0YTkzNzAxQWJkMTY0MmQ3RDEifQ",
+      payload: "eyJkb21haW4iOiJodHRwczovL3YwLXRhc2stdG8tY2FzaC1zZXZlbi52ZXJjZWwuYXBwLyJ9",
+      signature: "DrB/4xlrEgajnIUoPIHD9zZ9MPbymq2YLIAWE5cJI0pan3DVZq1siOc23YFd/Sgb3mLOMfPsxk7pY6Ry2DW0fBw="
     }
   }
 
