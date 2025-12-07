@@ -1,16 +1,13 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { ScoreDisplay } from "./score-display"
-import { UserStats } from "./user-stats"
-import { ReputationBadge } from "./reputation-badge"
-import { DailyCheckin } from "./daily-checkin"
+import { HomePage } from "./home-page"
+import { ProfilePage } from "./profile-page"
+import { Navigation } from "./navigation"
 import { ThemeToggle } from "./theme-toggle"
 import { AppFooter } from "./app-footer"
 import { ClickSpark } from "./click-spark"
-import { CreatorTip } from "./creator-tip"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Plus, Share2, User } from "lucide-react"
 import sdk, { type FrameContext } from "@farcaster/frame-sdk"
 
 export interface UserData {
@@ -35,6 +32,7 @@ export function TrueScoreApp() {
   const [theme, setTheme] = useState<"light" | "dark">("light")
   const [showAddPrompt, setShowAddPrompt] = useState(false)
   const [showScoreUpdate, setShowScoreUpdate] = useState(false)
+  const [activeTab, setActiveTab] = useState<"home" | "profile">("home")
 
   const updateUserData = async (data: any, fid: number) => {
     // Fetch real Quotient Score from API
@@ -181,7 +179,7 @@ export function TrueScoreApp() {
 
       {showScoreUpdate && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-primary/10 border border-primary/30 text-foreground px-4 py-2 rounded-md shadow-md animate-fade-in z-40">
-          <p>Your Neynar score has been updated this week! Check the new score.</p>
+          <p>Your Quotient score has been updated this week! Check the new score.</p>
         </div>
       )}
 
@@ -195,97 +193,22 @@ export function TrueScoreApp() {
           <p className="text-sm text-muted-foreground text-center">Your real Neynar reputation</p>
         </header>
 
-        <div className="flex items-center justify-center gap-4 opacity-0 animate-slide-up stagger-1">
-          <div className="relative">
-            <div className="absolute inset-0 bg-primary/30 rounded-full blur-md animate-pulse" />
-            <img
-              src={userData.pfpUrl || "/placeholder.svg"}
-              alt={userData.displayName}
-              className="relative h-14 w-14 rounded-full border-2 border-primary/50 ring-2 ring-primary/20 ring-offset-2 ring-offset-background transition-transform hover:scale-105"
-            />
-          </div>
-          <div>
-            <p className="font-semibold text-lg text-foreground">{userData.displayName}</p>
-            <p className="text-sm text-muted-foreground">@{userData.username}</p>
-          </div>
-        </div>
-
-        <div className="opacity-0 animate-slide-up stagger-2">
-          <ScoreDisplay score={userData.score} />
-        </div>
-
-        <div className="flex justify-center opacity-0 animate-slide-up stagger-3">
-          <ReputationBadge reputation={userData.reputation} />
-        </div>
-
-        <div className="opacity-0 animate-slide-up stagger-4 space-y-4">
-          <UserStats followers={userData.followers} following={userData.following} />
-          <div className="glass-card p-4 flex items-center justify-between rounded-xl border border-border/50 bg-secondary/30">
-            <div>
-              <h3 className="font-semibold text-foreground">Quotient Score</h3>
-              <p className="text-xs text-muted-foreground">
-                <a
-                  href="https://docs.quotient.social/reputation/quotient-score#quotient-score"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline"
-                >
-                  Based on engagement quality
-                </a>
-              </p>
-            </div>
-            <div className="text-2xl font-bold text-primary">{userData.quotient}</div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 opacity-0 animate-slide-up stagger-4">
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={addToMiniApp}
-              className="group flex items-center justify-center gap-2 h-12 rounded-xl bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground font-semibold shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border border-border/50"
-            >
-              <div className="p-1 rounded-full bg-background/50 group-hover:bg-background/80 transition-colors">
-                <Plus className="h-4 w-4" />
-              </div>
-              Add App
-            </button>
-            <button
-              onClick={shareApp}
-              className="group flex items-center justify-center gap-2 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <div className="p-1 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-                <Share2 className="h-4 w-4 text-white" />
-              </div>
-              Share
-            </button>
-          </div>
-
-          <button
-            onClick={() => sdk.actions.openUrl("https://warpcast.com/aleekhoso")}
-            className="group relative flex items-center justify-center gap-2 h-14 rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border border-primary/20 text-primary font-bold shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
-            <div className="absolute -right-4 -top-4 h-12 w-12 bg-primary/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500" />
-            <div className="relative p-1.5 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors animate-pulse-ring">
-              <User className="h-5 w-5" />
-            </div>
-            <div className="relative flex flex-col items-start leading-none">
-              <span className="text-sm">Follow Owner</span>
-              <span className="text-[10px] text-muted-foreground opacity-80">@aleekhoso</span>
-            </div>
-            <div className="relative ml-2 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold">PRO</div>
-          </button>
-        </div>
-
-        <div className="space-y-4 opacity-0 animate-slide-up stagger-5">
-          <CreatorTip />
-          <DailyCheckin />
-        </div>
+        {activeTab === "home" ? (
+          <HomePage
+            userData={userData}
+            onAddToMiniApp={addToMiniApp}
+            onShare={shareApp}
+          />
+        ) : (
+          <ProfilePage userData={userData} />
+        )}
 
         <div className="opacity-0 animate-slide-up stagger-5">
           <AppFooter />
         </div>
       </div>
+
+      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
     </main>
   )
 }
