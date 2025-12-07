@@ -12,6 +12,7 @@ const tipAmounts = [3, 5, 10, 20, 50]
 
 export function CreatorTip() {
     const [copied, setCopied] = useState(false)
+    const [customAmount, setCustomAmount] = useState("")
     const { isConnected } = useAccount()
     const { connect, connectors } = useConnect()
     const { sendTransactionAsync } = useSendTransaction()
@@ -33,10 +34,18 @@ export function CreatorTip() {
                 to: USDC_ADDRESS,
                 data: `0xa9059cbb${OWNER_WALLET.slice(2).padStart(64, '0')}${parseUnits(amount.toString(), 6).toString(16).padStart(64, '0')}` as `0x${string}`
             })
+            setCustomAmount("")
         } catch (error) {
             console.error(`Tip $${amount} USDC failed:`, error)
         }
     }, [isConnected, connect, connectors, sendTransactionAsync])
+
+    const handleCustomTip = useCallback(() => {
+        const amount = parseFloat(customAmount)
+        if (amount && amount > 0) {
+            handleTip(amount)
+        }
+    }, [customAmount, handleTip])
 
     const copyAddress = async () => {
         await navigator.clipboard.writeText(OWNER_WALLET)
@@ -81,6 +90,27 @@ export function CreatorTip() {
                     </button>
                 ))}
             </div>
+
+            {/* Manual Tip Input */}
+            <div className="flex gap-2">
+                <input
+                    type="number"
+                    placeholder="Custom amount"
+                    value={customAmount}
+                    onChange={(e) => setCustomAmount(e.target.value)}
+                    className="flex-1 h-12 px-4 rounded-xl bg-secondary/50 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    min="0"
+                    step="0.01"
+                />
+                <button
+                    onClick={handleCustomTip}
+                    disabled={!customAmount || parseFloat(customAmount) <= 0}
+                    className="h-12 px-6 rounded-xl bg-gradient-to-br from-primary to-primary/90 text-primary-foreground font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    Send
+                </button>
+            </div>
         </Card>
     )
 }
+

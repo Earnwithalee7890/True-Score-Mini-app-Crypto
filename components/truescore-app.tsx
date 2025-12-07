@@ -36,10 +36,25 @@ export function TrueScoreApp() {
   const [showAddPrompt, setShowAddPrompt] = useState(false)
   const [showScoreUpdate, setShowScoreUpdate] = useState(false)
 
-  const updateUserData = (data: any) => {
-    const newQuotient = data.score ? Number((data.score / 100).toFixed(2)) : 0.0
+  const updateUserData = async (data: any, fid: number) => {
+    // Fetch real Quotient Score from API
+    let quotientScore = 0
+    try {
+      const quotientRes = await fetch("/api/quotient", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fid }),
+      })
+      if (quotientRes.ok) {
+        const quotientData = await quotientRes.json()
+        quotientScore = quotientData.quotientScore || 0
+      }
+    } catch (err) {
+      console.error("Failed to fetch Quotient score:", err)
+    }
+
     const lastQuotient = Number(localStorage.getItem("lastQuotient") ?? "-1")
-    if (lastQuotient !== -1 && lastQuotient !== newQuotient) {
+    if (lastQuotient !== -1 && lastQuotient !== quotientScore) {
       const lastNotified = Number(localStorage.getItem("lastNotified") ?? "0")
       const now = Date.now()
       if (now - lastNotified > 7 * 24 * 60 * 60 * 1000) {
@@ -47,8 +62,8 @@ export function TrueScoreApp() {
         localStorage.setItem("lastNotified", now.toString())
       }
     }
-    localStorage.setItem("lastQuotient", newQuotient.toString())
-    setUserData({ ...data, quotient: newQuotient })
+    localStorage.setItem("lastQuotient", quotientScore.toString())
+    setUserData({ ...data, quotient: quotientScore })
   }
 
   const fetchUserData = useCallback(async (fid: number) => {
@@ -57,7 +72,7 @@ export function TrueScoreApp() {
       const response = await fetch(`/api/neynar/user?fid=${fid}`)
       if (!response.ok) throw new Error("Failed to fetch user data")
       const data = await response.json()
-      updateUserData(data)
+      await updateUserData(data, fid)
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
     } finally {
