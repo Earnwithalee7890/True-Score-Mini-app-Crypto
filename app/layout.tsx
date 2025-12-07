@@ -17,12 +17,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TrueScore",
     description: "Your Real Neynar Reputation Score",
-    images: [`${appUrl}/og-image.jpg`],
+    images: [`${appUrl}/og-image.png`],
   },
   other: {
     "fc:frame": "vNext",
-    "fc:frame:image": `${appUrl}/og-image.jpg`,
-    "fc:frame:image:aspect_ratio": "1:1",
+    "fc:frame:image": `${appUrl}/og-image.png`,
+    "fc:frame:image:aspect_ratio": "1.91:1",
     "fc:frame:button:1": "View My Score",
     "fc:frame:button:1:action": "post",
     "fc:frame:post_url": `${appUrl}/api/frame`,
