@@ -77,7 +77,7 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
                     <div className="relative">
                         <div className="absolute inset-0 bg-primary/20 rounded-full blur-sm animate-pulse" />
                         <img
-                            src="https://res.cloudinary.com/merkle-manufactory/image/fetch/c_fill,f_png,w_256/https%3A%2F%2Fi.imgur.com%2FHWnMEfl.jpg"
+                            src="https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/6a3c98c9-69be-431d-cd58-93e10b3b9600/rectcrop"
                             alt="@aleekhoso"
                             className="relative h-9 w-9 rounded-full border-2 border-primary/50 ring-2 ring-primary/20"
                         />
