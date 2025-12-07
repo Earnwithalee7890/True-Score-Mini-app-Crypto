@@ -23,6 +23,11 @@ export async function GET() {
       ogDescription: "View your real Neynar score, engagement analytics, and account reputation on Farcaster",
       ogImageUrl: "https://v0-task-to-cash-seven.vercel.app/og-image.png",
       castShareUrl: "https://v0-task-to-cash-seven.vercel.app"
+    },
+    accountAssociation: {
+      header: "eyJmaWQiOjMzODA2MCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweEJDNzRlQTExNWY0ZjMwQ2U3MzdGMzk0YTkzNzAxQWJkMTY0MmQ3RDEifQ",
+      payload: "eyJkb21haW4iOiJ2MC10YXNrLXRvLWNhc2gtc2V2ZW4udmVyY2VsLmFwcCJ9",
+      signature: "XtjTSm1mIbMtK34XLcJ/G4AnGzPrfgnH4aS/lVZHxAsxJwzF10BG8XnCTppCqz96NN289eEAwx+sXmiFxPgndhw="
     }
   }
 
