@@ -52,10 +52,40 @@
       "namedRegex": "^/api/neynar/user(?:/)?$"
     },
     {
+      "page": "/api/og",
+      "regex": "^/api/og(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/og(?:/)?$"
+    },
+    {
+      "page": "/api/send-notification",
+      "regex": "^/api/send\\-notification(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/send\\-notification(?:/)?$"
+    },
+    {
+      "page": "/api/send-notification-action",
+      "regex": "^/api/send\\-notification\\-action(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/send\\-notification\\-action(?:/)?$"
+    },
+    {
       "page": "/api/webhook",
       "regex": "^/api/webhook(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/webhook(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/share",
+      "regex": "^/share(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/share(?:/)?$"
     }
   ],
   "dataRoutes": [],

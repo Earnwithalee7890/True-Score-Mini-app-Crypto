@@ -3,6 +3,11 @@
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
   "/api/neynar/user/route": "/api/neynar/user",
+  "/api/og/route": "/api/og",
+  "/api/send-notification-action/route": "/api/send-notification-action",
+  "/api/send-notification/route": "/api/send-notification",
   "/api/webhook/route": "/api/webhook",
-  "/page": "/"
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
+  "/share/page": "/share"
 }

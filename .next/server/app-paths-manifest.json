@@ -3,6 +3,11 @@
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
   "/api/neynar/user/route": "app/api/neynar/user/route.js",
+  "/api/og/route": "app-edge-has-no-entrypoint",
+  "/api/send-notification-action/route": "app/api/send-notification-action/route.js",
+  "/api/send-notification/route": "app/api/send-notification/route.js",
   "/api/webhook/route": "app/api/webhook/route.js",
-  "/page": "app/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/share/page": "app/share/page.js"
 }
