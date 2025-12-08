@@ -174,7 +174,6 @@ export async function GET(request: NextRequest) {
                         height: "220px",
                         borderRadius: "50%",
                         background: "rgba(255, 255, 255, 0.05)",
-                        border: `8px solid ${scoreColor}`,
                         boxShadow: `0 0 60px ${glowColor}`,
                         marginBottom: "24px",
                     }}
