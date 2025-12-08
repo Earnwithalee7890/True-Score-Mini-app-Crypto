@@ -123,6 +123,8 @@ export async function GET(request: NextRequest) {
                     justifyContent: "center",
                     background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%)",
                     fontFamily: "Inter, sans-serif",
+                    overflow: "hidden",
+                    position: "relative",
                 }}
             >
                 {/* Glow effect */}
@@ -132,11 +134,11 @@ export async function GET(request: NextRequest) {
                         top: "50%",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
-                        width: "400px",
-                        height: "400px",
+                        width: "350px",
+                        height: "350px",
                         borderRadius: "50%",
                         background: glowColor,
-                        filter: "blur(100px)",
+                        filter: "blur(80px)",
                     }}
                 />
 
