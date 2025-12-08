@@ -20,34 +20,6 @@ export const metadata: Metadata = {
     images: [`${appUrl}/og-image.png`],
   },
   other: {
-    "fc:frame": JSON.stringify({
-      version: "1",
-      imageUrl: `${appUrl}/og-image.png`,
-      button: {
-        title: "View My Score",
-        action: {
-          type: "launch_frame",
-          name: "TrueScore",
-          url: appUrl,
-          splashImageUrl: `${appUrl}/splash.png`,
-          splashBackgroundColor: "#1a1a2e"
-        }
-      }
-    }),
-    "fc:miniapp": JSON.stringify({
-      version: "1",
-      imageUrl: `${appUrl}/og-image.png`,
-      button: {
-        title: "View My Score",
-        action: {
-          type: "launch_miniapp",
-          name: "TrueScore",
-          url: appUrl,
-          splashImageUrl: `${appUrl}/splash.png`,
-          splashBackgroundColor: "#1a1a2e"
-        }
-      }
-    }),
     "farcaster:manifest": `${appUrl}/.well-known/farcaster.json`,
   },
   icons: {
