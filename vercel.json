@@ -1,0 +1,44 @@
+{
+    "headers": [
+        {
+            "source": "/.well-known/farcaster.json",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "key": "Cache-Control",
+                    "value": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+                },
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                }
+            ]
+        },
+        {
+            "source": "/farcaster.json",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "key": "Cache-Control",
+                    "value": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+                },
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                }
+            ]
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/farcaster.json",
+            "destination": "/.well-known/farcaster.json"
+        }
+    ]
+}
