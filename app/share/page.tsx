@@ -64,29 +64,27 @@ export default async function SharePage({ searchParams }: SharePageProps) {
     const score = params.score || "0"
     const displayName = params.displayName || params.username || "User"
 
-    // Render a page with meta tags - crawlers will see this
-    // Users will be redirected via meta refresh
+    // Return a simple page that redirects - crawlers will read meta tags first
     return (
-        <html>
-            <head>
-                <meta httpEquiv="refresh" content="0;url=/" />
-            </head>
-            <body style={{
-                background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%)",
-                minHeight: "100vh",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "white",
-                fontFamily: "system-ui, sans-serif"
-            }}>
-                <div style={{ textAlign: "center" }}>
-                    <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
+        <>
+            <script
+                dangerouslySetInnerHTML={{
+                    __html: `window.location.href = '/';`
+                }}
+            />
+            <div
+                className="min-h-screen flex items-center justify-center"
+                style={{
+                    background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%)",
+                }}
+            >
+                <div className="text-center text-white">
+                    <h1 className="text-2xl font-bold mb-2">
                         {displayName}&apos;s TrueScore: {score}
                     </h1>
-                    <p style={{ opacity: 0.7 }}>Loading TrueScore app...</p>
+                    <p className="opacity-70">Loading TrueScore app...</p>
                 </div>
-            </body>
-        </html>
+            </div>
+        </>
     )
 }

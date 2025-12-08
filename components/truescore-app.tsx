@@ -148,7 +148,15 @@ export function TrueScoreApp() {
         <header className="opacity-0 animate-fade-in">
           <ClickSpark />
           <div className="flex items-center justify-between mb-4">
-            <div className="w-10" />
+            {/* User Profile Picture */}
+            <div className="relative group cursor-pointer" onClick={() => setActiveTab("profile")}>
+              <div className="absolute inset-0 bg-primary/30 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+              <img
+                src={userData.pfpUrl || "/placeholder-user.jpg"}
+                alt={userData.displayName}
+                className="relative h-10 w-10 rounded-full border-2 border-primary/50 ring-2 ring-primary/20 object-cover transition-transform group-hover:scale-105"
+              />
+            </div>
             <ThemeToggle theme={theme} onToggle={toggleTheme} />
           </div>
           <p className="text-sm text-muted-foreground text-center">Your real Neynar reputation</p>
