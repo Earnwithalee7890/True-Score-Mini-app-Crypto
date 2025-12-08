@@ -42,6 +42,7 @@
     "@radix-ui/react-tooltip": "1.1.6",
     "@tanstack/react-query": "latest",
     "@vercel/analytics": "latest",
+    "@vercel/og": "^0.8.5",
     "@wagmi/core": "latest",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
