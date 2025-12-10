@@ -16,8 +16,9 @@ export async function generateMetadata({ searchParams }: SharePageProps): Promis
     // Fetch live user data from Neynar
     const userData = await getUserScore(fid)
 
-    // Build dynamic OG image URL - only needs FID now
-    const ogImageUrl = `${appUrl}/api/og?fid=${fid}`
+    // Build dynamic OG image URL with cache-busting timestamp
+    const timestamp = Date.now()
+    const ogImageUrl = `${appUrl}/api/og?fid=${fid}&t=${timestamp}`
 
     return {
         title: `${userData.displayName}'s TrueScore - ${userData.score} Points`,
