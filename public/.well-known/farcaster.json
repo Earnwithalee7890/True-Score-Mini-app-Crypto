@@ -22,7 +22,10 @@
         "score"
     ],
     "imageUrl": "https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060",
-    "buttonTitle": "View My Score",
+    "buttonTitle": "Open Mini App",
+    "splashImageUrl": "https://v0-task-to-cash-seven.vercel.app/splash.png",
+    "splashBackgroundColor": "#1a1a2e",
+    "webhookUrl": "https://v0-task-to-cash-seven.vercel.app/api/webhook",
     "ogTitle": "TrueScore - Your Real Neynar Reputation",
     "ogDescription": "View your real Neynar score, engagement analytics, and account reputation on Farcaster",
     "ogImageUrl": "https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060",
