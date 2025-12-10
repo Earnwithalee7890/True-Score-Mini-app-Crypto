@@ -47,16 +47,16 @@ export default function RootLayout({
 
         {/* Farcaster Frame Meta Tags */}
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content={`${appUrl}/api/og?fid=338060`} />
-        <meta name="fc:frame:image" content={`${appUrl}/api/og?fid=338060`} />
+        <meta property="fc:frame:image" content="https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060" />
+        <meta name="fc:frame:image" content="https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060" />
         <meta name="fc:frame:button:1" content="Open Mini App" />
         <meta name="fc:frame:button:1:action" content="launch" />
-        <meta name="fc:frame:post_url" content={appUrl} />
+        <meta name="fc:frame:post_url" content="https://v0-task-to-cash-seven.vercel.app" />
 
         {/* Open Graph Meta Tags */}
         <meta property="og:title" content="TrueScore - Your Real Neynar Reputation" />
         <meta property="og:description" content="Check your real Neynar score instantly" />
-        <meta property="og:image" content={`${appUrl}/api/og?fid=338060`} />
+        <meta property="og:image" content="https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060" />
         <meta property="twitter:card" content="summary_large_image" />
       </head>
       <body className={`font-sans antialiased ${_inter.variable}`}>
