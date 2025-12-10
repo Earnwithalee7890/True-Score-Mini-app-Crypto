@@ -47,13 +47,17 @@ export default function RootLayout({
 
         {/* Farcaster Frame Meta Tags */}
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content={`${appUrl}/og-image.png`} />
-        <meta property="fc:frame:button:1" content="Open App" />
-        <meta property="fc:frame:button:1:action" content="link" />
-        <meta property="fc:frame:button:1:target" content={appUrl} />
-        <meta property="og:image" content={`${appUrl}/og-image.png`} />
+        <meta property="fc:frame:image" content={`${appUrl}/api/og?fid=338060`} />
+        <meta name="fc:frame:image" content={`${appUrl}/api/og?fid=338060`} />
+        <meta name="fc:frame:button:1" content="Open Mini App" />
+        <meta name="fc:frame:button:1:action" content="launch" />
+        <meta name="fc:frame:post_url" content={appUrl} />
+
+        {/* Open Graph Meta Tags */}
         <meta property="og:title" content="TrueScore - Your Real Neynar Reputation" />
-        <meta property="og:description" content="View your real Neynar score and Farcaster reputation" />
+        <meta property="og:description" content="Check your real Neynar score instantly" />
+        <meta property="og:image" content={`${appUrl}/api/og?fid=338060`} />
+        <meta property="twitter:card" content="summary_large_image" />
       </head>
       <body className={`font-sans antialiased ${_inter.variable}`}>
         <Providers>{children}</Providers>
