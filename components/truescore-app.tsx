@@ -20,6 +20,8 @@ export interface UserData {
   reputation: "safe" | "neutral" | "risky" | "spammy"
   followers: number
   following: number
+  casts?: number
+  replies?: number
   verifiedAddresses: string[]
 }
 

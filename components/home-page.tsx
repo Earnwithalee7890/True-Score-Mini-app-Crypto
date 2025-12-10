@@ -48,35 +48,21 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
                     <ReputationBadge reputation={userData.reputation} />
                 </div>
 
-                {/* Profile Stats Row */}
-                <div className="opacity-0 animate-slide-up stagger-2">
-                    <ProfileStatsRow
-                        followers={userData.followers}
-                        following={userData.following}
-                        casts={0}
-                        replies={0}
-                    />
-                </div>
+
 
                 {/* Quotient Score Card */}
                 <div className="opacity-0 animate-slide-up stagger-3">
                     <QuotientScoreCard fid={userData.fid} />
                 </div>
 
-                {/* Stats Grid */}
-                <div className="opacity-0 animate-slide-up stagger-3">
-                    <StatsGrid />
-                </div>
+
 
                 {/* AI Analysis Section */}
                 <div className="opacity-0 animate-slide-up stagger-4">
                     <AIAnalysisSection onGetInsights={handleAIInsights} />
                 </div>
 
-                {/* Badges List */}
-                <div className="opacity-0 animate-slide-up stagger-4">
-                    <BadgesList />
-                </div>
+
 
                 {/* Share Card */}
                 <div className="opacity-0 animate-slide-up stagger-5">

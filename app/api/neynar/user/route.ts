@@ -21,6 +21,8 @@ export async function GET(request: NextRequest) {
       reputation: "neutral" as const,
       followers: 1234,
       following: 567,
+      casts: 0,
+      replies: 0,
       verifiedAddresses: [],
     })
   }
@@ -53,6 +55,39 @@ export async function GET(request: NextRequest) {
     else if (scorePercent >= 25) reputation = "risky"
     else reputation = "spammy"
 
+    // Fetch user's casts to count total casts and replies
+    let totalCasts = 0
+    let totalReplies = 0
+
+    try {
+      const castsResponse = await fetch(
+        `https://api.neynar.com/v2/farcaster/feed/user/${fid}?limit=150`,
+        {
+          headers: {
+            accept: "application/json",
+            "x-api-key": apiKey,
+          },
+        }
+      )
+
+      if (castsResponse.ok) {
+        const castsData = await castsResponse.json()
+        const casts = castsData.casts || []
+
+        // Count casts and replies
+        casts.forEach((cast: any) => {
+          if (cast.parent_hash || cast.parent_url) {
+            totalReplies++
+          } else {
+            totalCasts++
+          }
+        })
+      }
+    } catch (err) {
+      console.error("Error fetching casts:", err)
+      // Continue with 0 counts if casts fetch fails
+    }
+
     return NextResponse.json({
       fid: user.fid,
       username: user.username,
@@ -62,6 +97,8 @@ export async function GET(request: NextRequest) {
       reputation,
       followers: user.follower_count ?? 0,
       following: user.following_count ?? 0,
+      casts: totalCasts,
+      replies: totalReplies,
       verifiedAddresses: user.verified_addresses?.eth_addresses ?? [],
     })
   } catch (error) {

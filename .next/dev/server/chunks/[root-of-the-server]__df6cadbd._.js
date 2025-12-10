@@ -72,6 +72,8 @@ async function GET(request) {
             reputation: "neutral",
             followers: 1234,
             following: 567,
+            casts: 0,
+            replies: 0,
             verifiedAddresses: []
         });
     }
@@ -101,6 +103,32 @@ async function GET(request) {
         else if (scorePercent >= 50) reputation = "neutral";
         else if (scorePercent >= 25) reputation = "risky";
         else reputation = "spammy";
+        // Fetch user's casts to count total casts and replies
+        let totalCasts = 0;
+        let totalReplies = 0;
+        try {
+            const castsResponse = await fetch(`https://api.neynar.com/v2/farcaster/feed/user/${fid}?limit=150`, {
+                headers: {
+                    accept: "application/json",
+                    "x-api-key": apiKey
+                }
+            });
+            if (castsResponse.ok) {
+                const castsData = await castsResponse.json();
+                const casts = castsData.casts || [];
+                // Count casts and replies
+                casts.forEach((cast)=>{
+                    if (cast.parent_hash || cast.parent_url) {
+                        totalReplies++;
+                    } else {
+                        totalCasts++;
+                    }
+                });
+            }
+        } catch (err) {
+            console.error("Error fetching casts:", err);
+        // Continue with 0 counts if casts fetch fails
+        }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             fid: user.fid,
             username: user.username,
@@ -110,6 +138,8 @@ async function GET(request) {
             reputation,
             followers: user.follower_count ?? 0,
             following: user.following_count ?? 0,
+            casts: totalCasts,
+            replies: totalReplies,
             verifiedAddresses: user.verified_addresses?.eth_addresses ?? []
         });
     } catch (error) {
