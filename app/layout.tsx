@@ -24,34 +24,6 @@ export const metadata: Metadata = {
   },
   other: {
     "farcaster:manifest": `${appUrl}/.well-known/farcaster.json`,
-    "fc:miniapp": JSON.stringify({
-      version: "next",
-      imageUrl: `${appUrl}/api/og?fid=338060`,
-      button: {
-        title: "Check Neynar Score",
-        action: {
-          type: "launch_miniapp",
-          name: "TrueScore",
-          url: appUrl,
-          splashImageUrl: `${appUrl}/splash.png`,
-          splashBackgroundColor: "#1a1a2e"
-        }
-      }
-    }),
-    "fc:frame": JSON.stringify({
-      version: "next",
-      imageUrl: `${appUrl}/api/og?fid=338060`,
-      button: {
-        title: "Check Neynar Score",
-        action: {
-          type: "launch_frame",
-          name: "TrueScore",
-          url: appUrl,
-          splashImageUrl: `${appUrl}/splash.png`,
-          splashBackgroundColor: "#1a1a2e"
-        }
-      }
-    })
   },
   icons: {
     icon: [
