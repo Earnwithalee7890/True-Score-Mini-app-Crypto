@@ -39,8 +39,15 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
             )}
 
             <div className="space-y-6 pb-2">
+                {/* DEBUG: Show FID being used */}
+                <div className="opacity-0 animate-slide-up stagger-0 text-center">
+                    <p className="text-xs text-muted-foreground">FID: {userData.fid}</p>
+                </div>
+
                 {/* Neynar Score Display */}
-                <div className="opacity-0 animate-slide-up stagger-1">
+                <div className="opacity-0 an
+
+imate-slide-up stagger-1">
                     <ScoreDisplay score={userData.score} />
                 </div>
 
