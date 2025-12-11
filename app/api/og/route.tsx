@@ -25,12 +25,12 @@ export async function GET(req: NextRequest) {
     if (response.ok) {
       const data = await response.json();
       const user = data.users?.[0];
-      
+
       if (user) {
         const rawScore = user.experimental?.neynar_user_score || 0;
         score = Math.round(rawScore * 100);
         username = user.username || 'user';
-        
+
         if (score >= 80) reputation = 'SAFE';
         else if (score >= 50) reputation = 'NEUTRAL';
         else if (score >= 25) reputation = 'RISKY';
@@ -41,11 +41,13 @@ export async function GET(req: NextRequest) {
     console.error('Error fetching user data:', error);
   }
 
-  // Redirect to Vercel's OG image service with our data
+  // Build formatted text for better visibility
+  const displayName = username.charAt(0).toUpperCase() + username.slice(1);
   const title = encodeURIComponent(`TrueScore: ${score}`);
-  const subtitle = encodeURIComponent(`@${username} • ${reputation}`);
-  
-  const ogImageUrl = `https://og-image.vercel.app/${title}.png?theme=dark&md=1&fontSize=150px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-white.svg&widths=auto&heights=250&subtitle=${subtitle}`;
+  const subtitle = encodeURIComponent(`**@${displayName}**\n\n**${reputation}**`);
+
+  // Use Vercel's OG image service with enhanced formatting
+  const ogImageUrl = `https://og-image.vercel.app/${title}.png?theme=dark&md=1&fontSize=100px&subtitle=${subtitle}`;
 
   return Response.redirect(ogImageUrl, 307);
 }
