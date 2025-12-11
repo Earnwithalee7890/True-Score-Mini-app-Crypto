@@ -45,9 +45,7 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
                 </div>
 
                 {/* Neynar Score Display */}
-                <div className="opacity-0 an
-
-imate-slide-up stagger-1">
+                <div className="opacity-0 animate-slide-up stagger-1">
                     <ScoreDisplay score={userData.score} />
                 </div>
 
