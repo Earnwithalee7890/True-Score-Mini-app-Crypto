@@ -36,15 +36,18 @@ export function TrueScoreApp() {
   const [activeTab, setActiveTab] = useState<"home" | "profile">("home")
 
   const updateUserData = async (data: any, fid: number) => {
-    setUserData({ ...data })
+    // Explicitly ensure FID is in userData, even if API doesn't return it
+    setUserData({ ...data, fid })
   }
 
   const fetchUserData = useCallback(async (fid: number) => {
     try {
       setLoading(true)
+      console.log('Fetching user data for FID:', fid)
       const response = await fetch(`/api/neynar/user?fid=${fid}`)
       if (!response.ok) throw new Error("Failed to fetch user data")
       const data = await response.json()
+      console.log('Received user data:', data)
       await updateUserData(data, fid)
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
@@ -76,12 +79,15 @@ export function TrueScoreApp() {
 
   const shareApp = useCallback(() => {
     if (!userData) return
+    console.log('Share button clicked. UserData:', userData)
+    console.log('Sharing with FID:', userData.fid)
     const text = `Check out my TrueScore! 🎯\n\nNeynar Score: ${userData.score}\nReputation: ${userData.reputation.toUpperCase()}\n\nGet your score 👇`
     const baseUrl = "https://v0-task-to-cash-seven.vercel.app"
     // Only pass FID - the share page and OG image will fetch live data
     // Add timestamp to force fresh fetch and bypass Farcaster cache
     const timestamp = Date.now()
     const shareUrl = `${baseUrl}/share?fid=${userData.fid}&t=${timestamp}`
+    console.log('Generated share URL:', shareUrl)
     sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`)
   }, [userData])
 
