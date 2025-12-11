@@ -61,9 +61,11 @@ async function fetchUserScore(fid: number) {
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
+    console.log('[OG IMAGE] Full URL:', request.url)
 
     // Primary: Use FID to fetch live data
     const fidParam = searchParams.get("fid")
+    console.log('[OG IMAGE] FID param:', fidParam)
 
     let score: string
     let username: string
@@ -72,13 +74,16 @@ export async function GET(request: NextRequest) {
 
     if (fidParam) {
         // Fetch live data from Neynar using FID
+        console.log('[OG IMAGE] Fetching data for FID:', fidParam)
         const userData = await fetchUserScore(Number(fidParam))
+        console.log('[OG IMAGE] Fetched userData:', userData)
         score = String(userData.score)
         username = userData.username
         displayName = userData.displayName
         reputation = userData.reputation
     } else {
         // Fallback: Use query params if provided (backwards compatibility)
+        console.log('[OG IMAGE] No FID provided, using fallback')
         score = searchParams.get("score") || "0"
         username = searchParams.get("username") || "User"
         displayName = searchParams.get("displayName") || username

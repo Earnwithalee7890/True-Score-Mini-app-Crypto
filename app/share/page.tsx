@@ -16,14 +16,18 @@ const appUrl = "https://v0-task-to-cash-seven.vercel.app"
 
 export async function generateMetadata({ searchParams }: SharePageProps): Promise<Metadata> {
     const params = await searchParams
+    console.log('[SHARE PAGE] searchParams:', params)
     const fid = params.fid ? Number(params.fid) : 338060
+    console.log('[SHARE PAGE] Using FID:', fid)
 
     // Fetch live user data from Neynar
     const userData = await getUserScore(fid)
+    console.log('[SHARE PAGE] Fetched userData:', userData)
 
     // Build dynamic OG image URL with cache-busting timestamp
     const timestamp = Date.now()
     const ogImageUrl = `${appUrl}/api/og?fid=${fid}&t=${timestamp}`
+    console.log('[SHARE PAGE] OG Image URL:', ogImageUrl)
 
     return {
         title: `${userData.displayName}'s TrueScore - ${userData.score} Points`,
