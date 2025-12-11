@@ -23,9 +23,7 @@
         "heroImageUrl": "https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060",
         "tagline": "Track Farcaster reputation",
         "ogTitle": "TrueScore - Neynar Scores",
-        "ogDescription": "View your real Neynar score, engagement analytics, and account reputation on Farcaster",
-        "ogImageUrl": "https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060",
-        "castShareUrl": "https://v0-task-to-cash-seven.vercel.app/share"
+        "ogDescription": "View your real Neynar score, engagement analytics, and account reputation on Farcaster"
     },
     "accountAssociation": {
         "header": "eyJmaWQiOjMzODA2MCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweEJDNzRlQTExNWY0ZjMwQ2U3MzdGMzk0YTkzNzAxQWJkMTY0MmQ3RDEifQ",

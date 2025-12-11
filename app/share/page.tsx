@@ -5,6 +5,7 @@ interface SharePageProps {
     searchParams: Promise<{
         fid?: string
         t?: string // timestamp parameter for cache busting
+        _?: string // alternative timestamp parameter
     }>
 }
 
