@@ -41,13 +41,12 @@ export async function GET(req: NextRequest) {
     console.error('Error fetching user data:', error);
   }
 
-  // Build formatted text for better visibility
+  // Format text with line breaks - %0A is newline for URL encoding
   const displayName = username.charAt(0).toUpperCase() + username.slice(1);
-  const title = encodeURIComponent(`TrueScore: ${score}`);
-  const subtitle = encodeURIComponent(`**@${displayName}**\n\n**${reputation}**`);
+  const text = `TrueScore **${score}**%0A%0A@${displayName}%0A${reputation}`;
 
-  // Use Vercel's OG image service with enhanced formatting
-  const ogImageUrl = `https://og-image.vercel.app/${title}.png?theme=dark&md=1&fontSize=100px&subtitle=${subtitle}`;
+  // Vercel's og-image service - all text goes in the path before .png
+  const ogImageUrl = `https://og-image.vercel.app/${encodeURIComponent(text)}.png?theme=dark&md=1&fontSize=75px`;
 
   return Response.redirect(ogImageUrl, 307);
 }

@@ -2,7 +2,6 @@
 
 import { ReactNode } from "react"
 import { NeonStarsBackground } from "./neon-stars-background"
-import { FloatingEmojis } from "./floating-emojis"
 
 interface AnimatedBackgroundProps {
     children: ReactNode
@@ -14,9 +13,6 @@ export function AnimatedBackground({ children, theme = "dark" }: AnimatedBackgro
         <div className="relative min-h-screen overflow-hidden neon-space-bg">
             {/* Neon Star Field Background */}
             <NeonStarsBackground density={120} />
-
-            {/* Flying Emojis Layer */}
-            <FloatingEmojis theme={theme} />
 
             {/* Content layer */}
             <div className="relative z-10">

@@ -8,8 +8,9 @@ import { ThemeToggle } from "./theme-toggle"
 import { AppFooter } from "./app-footer"
 import { ClickSpark } from "./click-spark"
 import { AnimatedBackground } from "./animated-background"
+import { OnboardingModal } from "./onboarding-modal"
 import { Skeleton } from "@/components/ui/skeleton"
-import sdk, { type FrameContext } from "@farcaster/frame-sdk"
+import sdk from "@farcaster/frame-sdk"
 
 export interface UserData {
   fid: number
@@ -23,6 +24,10 @@ export interface UserData {
   casts?: number
   replies?: number
   verifiedAddresses: string[]
+  talentScore?: number
+  isHuman?: boolean
+  isVerified?: boolean
+  talentHandle?: string
 }
 
 export function TrueScoreApp() {
@@ -30,10 +35,23 @@ export function TrueScoreApp() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isSDKLoaded, setIsSDKLoaded] = useState(false)
-  const [context, setContext] = useState<FrameContext | null>(null)
+  const [context, setContext] = useState<any | null>(null)
   const [theme, setTheme] = useState<"light" | "dark">("dark")
   const [showAddPrompt, setShowAddPrompt] = useState(false)
   const [activeTab, setActiveTab] = useState<"home" | "profile">("home")
+  const [showOnboarding, setShowOnboarding] = useState(false)
+
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem("truescore_onboarding_seen")
+    if (!hasSeenOnboarding) {
+      setShowOnboarding(true)
+    }
+  }, [])
+
+  const handleCloseOnboarding = () => {
+    localStorage.setItem("truescore_onboarding_seen", "true")
+    setShowOnboarding(false)
+  }
 
   const updateUserData = async (data: any, fid: number) => {
     // Explicitly ensure FID is in userData, even if API doesn't return it
@@ -247,6 +265,11 @@ export function TrueScoreApp() {
         </div>
 
         <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
+
+        <OnboardingModal
+          isOpen={showOnboarding}
+          onClose={handleCloseOnboarding}
+        />
       </main>
     </AnimatedBackground>
   )

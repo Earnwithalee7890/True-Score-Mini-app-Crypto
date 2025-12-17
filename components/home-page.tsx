@@ -11,6 +11,7 @@ import { BadgesList } from "./badges-list"
 import { ShareCard } from "./share-card"
 import { AIInsightsModal } from "./ai-insights-modal"
 import { AIPostMaker } from "./ai-post-maker"
+import { TalentScoreCard } from "./talent-score-card"
 import { Plus, Share2, User } from "lucide-react"
 import sdk from "@farcaster/frame-sdk"
 import type { UserData } from "./truescore-app"
@@ -48,6 +49,19 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
                 <div className="opacity-0 animate-slide-up stagger-1">
                     <ScoreDisplay score={userData.score} />
                 </div>
+
+                {/* Talent Protocol Score Card */}
+                {userData.talentScore !== undefined && (
+                    <div className="opacity-0 animate-slide-up stagger-2">
+                        <TalentScoreCard
+                            score={userData.talentScore}
+                            isHuman={userData.isHuman}
+                            isVerified={userData.isVerified}
+                            handle={userData.talentHandle}
+                        />
+                    </div>
+                )}
+
 
                 {/* Reputation Badge */}
                 <div className="flex justify-center opacity-0 animate-slide-up stagger-2">
@@ -100,7 +114,7 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
                             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-cyan-500/10" />
                             <User className="h-6 w-6 text-cyan-300 relative" />
                             <div className="relative flex flex-col items-start leading-tight">
-                                <span className="text-sm text-cyan-200">Follow Owner</span>
+                                <span className="text-sm text-cyan-200">Follow Developer</span>
                                 <span className="text-[10px] text-cyan-300/60">@aleekhoso</span>
                             </div>
                             <div className="relative px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400 text-[10px] font-bold text-black letter-space-wide">PRO</div>

@@ -88,6 +88,15 @@ export async function GET(request: NextRequest) {
       // Continue with 0 counts if casts fetch fails
     }
 
+    // Fetch Talent Protocol data
+    let talentData = null
+    try {
+      const { getTalentProtocolData } = await import("@/lib/talent")
+      talentData = await getTalentProtocolData(Number.parseInt(fid))
+    } catch (err) {
+      console.error("Error fetching Talent Protocol data:", err)
+    }
+
     return NextResponse.json({
       fid: user.fid,
       username: user.username,
@@ -100,6 +109,10 @@ export async function GET(request: NextRequest) {
       casts: totalCasts,
       replies: totalReplies,
       verifiedAddresses: user.verified_addresses?.eth_addresses ?? [],
+      talentScore: talentData?.builder_score,
+      isHuman: talentData?.human_checkmark,
+      isVerified: talentData?.verified,
+      talentHandle: talentData?.handle
     })
   } catch (error) {
     console.error("Neynar API error:", error)
