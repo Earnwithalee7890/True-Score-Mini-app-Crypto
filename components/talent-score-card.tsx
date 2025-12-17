@@ -17,72 +17,83 @@ export function TalentScoreCard({ builderScore, creatorScore, farcasterRevenue, 
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-card-strong p-6 rounded-2xl neon-border-purple overflow-hidden relative"
+            transition={{ delay: 0.1 }}
+            className="w-full relative group"
         >
-            {/* Background Glow */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-3xl -mr-16 -mt-16" />
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-2xl -z-10 opacity-50 group-hover:opacity-100 transition-opacity" />
 
-            <div className="flex flex-col gap-6 relative z-10">
-                <div className="flex items-start justify-between">
-                    <div className="grid grid-cols-2 gap-4 w-full">
-                        {/* Builder Score */}
-                        <div className="space-y-1">
-                            <div className="flex items-center gap-1.5 text-purple-300">
-                                <Zap className="h-3 w-3" />
-                                <span className="text-[10px] font-bold uppercase tracking-wider">Builder Score</span>
-                            </div>
-                            <div className="flex items-baseline gap-1">
-                                <span className="text-3xl font-black text-white">{builderScore || 0}</span>
-                                <span className="text-[10px] text-purple-300/60">/100</span>
-                            </div>
+            <div className="glass-card-strong p-5 rounded-3xl neon-border-purple border-purple-500/30 overflow-hidden relative">
+                <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center gap-2">
+                        <div className="p-2 rounded-xl bg-purple-500/20 border border-purple-500/30">
+                            <ShieldCheck className="h-4 w-4 text-purple-400" />
                         </div>
+                        <div>
+                            <h3 className="text-[11px] font-black uppercase tracking-tighter text-purple-300">Verified Reputation</h3>
+                            <p className="text-[9px] text-white/40 font-bold uppercase tracking-widest">Talent Protocol v3</p>
+                        </div>
+                    </div>
+                    {handle && (
+                        <div className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-mono text-white/50">
+                            @{handle}
+                        </div>
+                    )}
+                </div>
 
-                        {/* Creator Score */}
-                        <div className="space-y-1">
-                            <div className="flex items-center gap-1.5 text-pink-300">
-                                <Users className="h-3 w-3" />
-                                <span className="text-[10px] font-bold uppercase tracking-wider">Creator Score</span>
-                            </div>
-                            <div className="flex items-baseline gap-1">
-                                <span className="text-3xl font-black text-white">{creatorScore || 0}</span>
-                                <span className="text-[10px] text-pink-300/60">/100</span>
-                            </div>
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                    {/* Builder Score */}
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20">
+                        <div className="flex items-center gap-1.5 mb-2">
+                            <Zap className="h-3 w-3 text-purple-300" />
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-purple-200">Builder</span>
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-3xl font-black text-white">{builderScore || 0}</span>
+                            <span className="text-[10px] font-bold text-purple-300/40">/100</span>
+                        </div>
+                    </div>
+
+                    {/* Creator Score */}
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-pink-500/10 to-transparent border border-pink-500/20">
+                        <div className="flex items-center gap-1.5 mb-2">
+                            <Users className="h-3 w-3 text-pink-300" />
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-pink-200">Creator</span>
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-3xl font-black text-white">{creatorScore || 0}</span>
+                            <span className="text-[10px] font-bold text-pink-300/40">/100</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Farcaster Earnings Summary */}
+                {/* Earnings Section */}
                 {farcasterRevenue !== undefined && (
-                    <div className="flex flex-col gap-2 p-4 rounded-xl bg-white/5 border border-white/10">
-                        <span className="text-[10px] text-white/40 uppercase font-bold tracking-widest text-center">Farcaster Total Earnings</span>
-                        <div className="flex items-center justify-center gap-2">
-                            <span className="text-3xl font-black text-green-400 font-mono tracking-tighter">${farcasterRevenue.toLocaleString()}</span>
-                            <span className="text-xs text-green-400/60 font-bold uppercase">usdc</span>
+                    <div className="mb-5 p-4 rounded-2xl bg-green-500/5 border border-green-500/20 flex flex-col items-center">
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-green-400/60 mb-1">Lifetime Rewards</span>
+                        <div className="flex items-baseline gap-1.5">
+                            <span className="text-2xl font-black text-green-400 font-mono">${farcasterRevenue.toLocaleString()}</span>
+                            <span className="text-[10px] font-black text-green-400/40 uppercase">usdc</span>
                         </div>
                     </div>
                 )}
 
+                {/* Verification Badges */}
                 <div className="flex flex-wrap gap-2 justify-center">
                     {isHuman && (
-                        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-[9px] font-bold text-green-400 uppercase tracking-tighter">
-                            <UserCheck className="h-2.5 w-2.5" />
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-[9px] font-black text-green-400 uppercase tracking-tighter">
+                            <UserCheck className="h-3 w-3" />
                             Human Verified
                         </div>
                     )}
                     {isVerified && (
-                        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/30 text-[9px] font-bold text-blue-400 uppercase tracking-tighter">
-                            <ShieldCheck className="h-2.5 w-2.5" />
-                            Verified
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[9px] font-black text-blue-400 uppercase tracking-tighter">
+                            <ShieldCheck className="h-3 w-3" />
+                            Account Verified
                         </div>
                     )}
                 </div>
-            </div>
-
-            <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] text-white/40 uppercase tracking-widest font-bold">
-                <span>Data Source</span>
-                <span className="text-purple-400/80">Talent Protocol v3</span>
             </div>
         </motion.div>
     )
