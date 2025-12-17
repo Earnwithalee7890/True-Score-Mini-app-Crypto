@@ -91,15 +91,21 @@ export async function getTalentProtocolData(fid: number, wallets: string[] = [])
 
         rawScores.forEach((s: any) => {
             const type = String(s.score_type || "").toLowerCase()
-            if (type === "builder") builderScore = Math.max(builderScore, s.score || 0)
-            if (type === "creator") creatorScore = Math.max(creatorScore, s.score || 0)
+            const scoreVal = Number(s.score ?? s.value ?? s.points ?? 0)
+
+            if (type === "builder" || s.builder_score !== undefined) {
+                builderScore = Math.max(builderScore, scoreVal || s.builder_score || 0)
+            }
+            if (type === "creator" || s.creator_score !== undefined) {
+                creatorScore = Math.max(creatorScore, scoreVal || s.creator_score || 0)
+            }
 
             if (s.handle) profileHandle = s.handle
             if (s.human_checkmark !== undefined) profileHuman = !!s.human_checkmark
             if (s.verified !== undefined) profileVerified = !!s.verified
 
-            if (s.farcaster_revenue) revenue = Math.max(revenue, s.farcaster_revenue)
-            if (s.revenue) revenue = Math.max(revenue, s.revenue)
+            const revVal = Number(s.farcaster_revenue ?? s.revenue ?? s.total_rewards ?? 0)
+            revenue = Math.max(revenue, revVal)
         })
 
         return {

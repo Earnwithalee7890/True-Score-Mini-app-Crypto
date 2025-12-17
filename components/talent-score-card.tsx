@@ -35,6 +35,8 @@ export function TalentScoreCard({ builderScore, creatorScore, farcasterRevenue, 
                             <p className="text-[9px] text-white/40 font-bold uppercase tracking-widest">Talent Protocol v3</p>
                         </div>
                     </div>
+                    {/* Debug info - hidden but searchable in DOM */}
+                    <div className="hidden debug-scores" data-builder={builderScore} data-creator={creatorScore} />
                     {handle && (
                         <div className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-mono text-white/50">
                             @{handle}
@@ -50,7 +52,7 @@ export function TalentScoreCard({ builderScore, creatorScore, farcasterRevenue, 
                             <span className="text-[9px] font-bold uppercase tracking-wider text-purple-200">Builder</span>
                         </div>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-3xl font-black text-white">{builderScore || 0}</span>
+                            <span className="text-3xl font-black text-foreground dark:text-white">{builderScore ?? 0}</span>
                             <span className="text-[10px] font-bold text-purple-300/40">/100</span>
                         </div>
                     </div>
@@ -62,7 +64,7 @@ export function TalentScoreCard({ builderScore, creatorScore, farcasterRevenue, 
                             <span className="text-[9px] font-bold uppercase tracking-wider text-pink-200">Creator</span>
                         </div>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-3xl font-black text-white">{creatorScore || 0}</span>
+                            <span className="text-3xl font-black text-foreground dark:text-white">{creatorScore ?? 0}</span>
                             <span className="text-[10px] font-bold text-pink-300/40">/100</span>
                         </div>
                     </div>
@@ -73,7 +75,7 @@ export function TalentScoreCard({ builderScore, creatorScore, farcasterRevenue, 
                     <div className="mb-5 p-4 rounded-2xl bg-green-500/5 border border-green-500/20 flex flex-col items-center">
                         <span className="text-[9px] font-black uppercase tracking-[0.2em] text-green-400/60 mb-1">Lifetime Rewards</span>
                         <div className="flex items-baseline gap-1.5">
-                            <span className="text-2xl font-black text-green-400 font-mono">${farcasterRevenue.toLocaleString()}</span>
+                            <span className="text-2xl font-black text-green-500 font-mono italic">${farcasterRevenue.toLocaleString()}</span>
                             <span className="text-[10px] font-black text-green-400/40 uppercase">usdc</span>
                         </div>
                     </div>
