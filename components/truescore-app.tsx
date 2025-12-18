@@ -118,7 +118,7 @@ export function TrueScoreApp() {
     console.log('Share button clicked. UserData:', userData)
     console.log('Sharing with FID:', userData.fid)
     const text = `Check out my TrueScore! 🎯\n\nNeynar Score: ${userData.score}\nReputation: ${userData.reputation.toUpperCase()}\n\nGet your score 👇`
-    const baseUrl = "https://v0-task-to-cash-seven.vercel.app"
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : "https://v0-task-to-cash-seven.vercel.app"
     // Add timestamp to force Farcaster to bypass cache and fetch fresh image
     const timestamp = Date.now()
     const shareUrl = `${baseUrl}/share?fid=${userData.fid}&s=${userData.score}&u=${encodeURIComponent(userData.username)}&r=${encodeURIComponent(userData.reputation)}&_=${timestamp}`

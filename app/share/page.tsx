@@ -8,6 +8,8 @@ type Props = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
+import { headers } from "next/headers"
+
 export async function generateMetadata(
     props: Props
 ): Promise<Metadata> {
@@ -18,8 +20,10 @@ export async function generateMetadata(
     const username = searchParams.u ? String(searchParams.u) : "user"
     const ts = searchParams._ ? String(searchParams._) : Date.now().toString()
 
-    // Pass shortened params to OG image for max proxy compatibility
-    const appUrl = "https://v0-task-to-cash-seven.vercel.app"
+    const headersList = await headers()
+    const host = headersList.get('host') || 'v0-task-to-cash-seven.vercel.app'
+    const protocol = host.includes('localhost') ? 'http' : 'https'
+    const appUrl = `${protocol}://${host}`
     const imageUrl = `${appUrl}/api/og?fid=${fid}&s=${score}&u=${encodeURIComponent(username)}&r=${encodeURIComponent(rep)}&_=${ts}`
 
     return {

@@ -1,122 +1,99 @@
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
-// Remove Edge runtime to use stable Node.js runtime instead
-// export const runtime = 'edge'; 
+export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url);
+  const { searchParams } = new URL(req.url);
 
-    // Using shortened params for max reliability
-    const s = searchParams.get('s') || '0';
-    const u = searchParams.get('u') || 'user';
-    const r = searchParams.get('r') || 'Unknown';
-    const f = searchParams.get('fid') || '0';
+  const s = searchParams.get('s') || '0';
+  const u = searchParams.get('u') || 'user';
+  const r = (searchParams.get('r') || 'Unknown').toUpperCase();
+  const f = searchParams.get('fid') || '0';
 
-    // Color logic
-    let color = '#94a3b8'; // Default Gray
-    const status = r.toLowerCase();
-    if (status.includes('safe')) color = '#22c55e';    // Green
-    if (status.includes('neutral')) color = '#0ea5e9'; // Blue
-    if (status.includes('risky')) color = '#f97316';   // Orange
-    if (status.includes('spammy')) color = '#ef4444'; // Red
+  let color = '#94a3b8';
+  if (r.includes('SAFE')) color = '#22c55e';
+  if (r.includes('NEUTRAL')) color = '#0ea5e9';
+  if (r.includes('RISKY')) color = '#f97316';
+  if (r.includes('SPAMMY')) color = '#ef4444';
 
-    return new ImageResponse(
-      (
-        <div
-          style={{
-            height: '100%',
-            width: '100%',
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#0a0e27',
+          color: 'white',
+          padding: '40px',
+        }}
+      >
+        <div style={{ fontSize: '32px', fontWeight: 900, color: '#00d9ff', marginBottom: '40px', letterSpacing: '8px' }}>
+          TRUESCORE
+        </div>
+
+        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#0a0e27',
-            color: 'white',
-            padding: '40px',
-            fontFamily: 'sans-serif',
-          }}
-        >
-          {/* Main Title */}
-          <div style={{
-            fontSize: '40px',
-            fontWeight: 'bold',
-            color: '#00d9ff',
-            marginBottom: '40px',
-            letterSpacing: '10px'
+            width: '320px',
+            height: '340px',
+            backgroundColor: '#111827',
+            borderRadius: '24px',
+            border: '2px solid rgba(0, 217, 255, 0.4)',
+            margin: '0 10px',
           }}>
-            TRUESCORE
+            <div style={{ fontSize: '110px', fontWeight: 900 }}>{s}</div>
+            <div style={{ fontSize: '18px', fontWeight: 700, opacity: 0.5, marginTop: '10px' }}>NEYNER SCORE</div>
           </div>
 
-          {/* Row of 3 boxes */}
-          <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-
-            {/* Box 1: Score */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '320px',
-              height: '350px',
-              backgroundColor: '#111827',
-              borderRadius: '20px',
-              border: '2px solid rgba(0, 217, 255, 0.4)',
-              margin: '0 10px',
-            }}>
-              <div style={{ fontSize: '100px', fontWeight: 'bold' }}>{s}</div>
-              <div style={{ fontSize: '18px', opacity: 0.5, marginTop: '10px' }}>NEYNER SCORE</div>
-            </div>
-
-            {/* Box 2: User */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '320px',
-              height: '350px',
-              backgroundColor: '#111827',
-              borderRadius: '20px',
-              border: '2px solid rgba(255, 255, 255, 0.1)',
-              margin: '0 10px',
-            }}>
-              <div style={{ fontSize: '36px', fontWeight: 'bold', textAlign: 'center', padding: '0 10px' }}>@{u}</div>
-              <div style={{ fontSize: '18px', opacity: 0.5, marginTop: '10px' }}>USERNAME</div>
-            </div>
-
-            {/* Box 3: Reputation */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '320px',
-              height: '350px',
-              backgroundColor: '#111827',
-              borderRadius: '20px',
-              border: `2px solid ${color}`,
-              margin: '0 10px',
-            }}>
-              <div style={{ fontSize: '48px', fontWeight: 'bold', color: color }}>{r.toUpperCase()}</div>
-              <div style={{ fontSize: '18px', opacity: 0.5, marginTop: '10px' }}>REPUTATION</div>
-            </div>
-
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '320px',
+            height: '340px',
+            backgroundColor: '#111827',
+            borderRadius: '24px',
+            border: '2px solid rgba(255, 255, 255, 0.1)',
+            margin: '0 10px',
+          }}>
+            <div style={{ fontSize: '40px', fontWeight: 800, textAlign: 'center', padding: '0 20px', overflow: 'hidden' }}>@{u}</div>
+            <div style={{ fontSize: '18px', fontWeight: 700, opacity: 0.5, marginTop: '10px' }}>USERNAME</div>
           </div>
 
-          {/* Footer */}
-          <div style={{ position: 'absolute', bottom: '20px', opacity: 0.3, fontSize: '16px' }}>
-            FID: {f} • Powered by Neynar
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '320px',
+            height: '340px',
+            backgroundColor: '#111827',
+            borderRadius: '24px',
+            border: `2px solid ${color}`,
+            margin: '0 10px',
+          }}>
+            <div style={{ fontSize: '48px', fontWeight: 900, color: color, textAlign: 'center' }}>{r}</div>
+            <div style={{ fontSize: '18px', fontWeight: 700, opacity: 0.5, marginTop: '10px' }}>REPUTATION</div>
           </div>
         </div>
-      ),
-      {
-        width: 1200,
-        height: 630,
-      }
-    );
-  } catch (e) {
-    return new Response('Error rendering', { status: 200 });
-  }
+
+        <div style={{ position: 'absolute', bottom: '30px', opacity: 0.3, fontSize: '14px', display: 'flex' }}>
+          FID: {f} • Powered by Neynar
+        </div>
+      </div>
+    ),
+    {
+      width: 1200,
+      height: 630,
+    }
+  );
 }
