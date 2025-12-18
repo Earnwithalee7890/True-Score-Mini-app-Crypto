@@ -41,9 +41,12 @@ export async function GET(req: NextRequest) {
     console.error('Error fetching user data:', error);
   }
 
-  // Format text with line breaks - %0A is newline for URL encoding
+  // Format text with line breaks - using literal newlines prevents double-encoding
   const displayName = username.charAt(0).toUpperCase() + username.slice(1);
-  const text = `TrueScore **${score}**%0A%0A@${displayName}%0A${reputation}`;
+  const text = `TrueScore ${score}
+
+@${displayName}
+${reputation}`;
 
   // Vercel's og-image service - all text goes in the path before .png
   const ogImageUrl = `https://og-image.vercel.app/${encodeURIComponent(text)}.png?theme=dark&md=1&fontSize=75px`;
