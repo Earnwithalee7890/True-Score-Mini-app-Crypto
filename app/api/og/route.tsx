@@ -1,3 +1,4 @@
+import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
 export const runtime = 'edge';
@@ -41,15 +42,94 @@ export async function GET(req: NextRequest) {
     console.error('Error fetching user data:', error);
   }
 
-  // Format text with line breaks - using literal newlines prevents double-encoding
-  const displayName = username.charAt(0).toUpperCase() + username.slice(1);
-  const text = `TrueScore ${score}
+  // Reputation Colors
+  let repColor = '#94a3b8'; // Default gray
+  if (reputation === 'SAFE') repColor = '#4ade80'; // Green
+  if (reputation === 'NEUTRAL') repColor = '#38bdf8'; // Blue
+  if (reputation === 'RISKY') repColor = '#fb923c'; // Orange
+  if (reputation === 'SPAMMY') repColor = '#f87171'; // Red
 
-@${displayName}
-${reputation}`;
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#0f172a', // Dark theme background
+          backgroundImage: 'linear-gradient(to bottom right, #0f172a, #1e1b4b)', // Subtle purple depth
+          color: 'white',
+          padding: '40px',
+        }}
+      >
+        {/* Header: TrueScore */}
+        <div style={{
+          display: 'flex',
+          fontSize: '40px',
+          fontWeight: 900,
+          letterSpacing: '10px',
+          color: '#22d3ee', // Cyan accent
+          marginBottom: '30px'
+        }}>
+          TRUESCORE
+        </div>
 
-  // Vercel's og-image service - all text goes in the path before .png
-  const ogImageUrl = `https://og-image.vercel.app/${encodeURIComponent(text)}.png?theme=dark&md=1&fontSize=75px`;
+        {/* Big Score Number */}
+        <div style={{
+          display: 'flex',
+          fontSize: '200px',
+          fontWeight: 900,
+          lineHeight: 1,
+          color: 'white',
+          marginBottom: '20px'
+        }}>
+          {score}
+        </div>
 
-  return Response.redirect(ogImageUrl, 307);
+        {/* Username */}
+        <div style={{
+          display: 'flex',
+          fontSize: '60px',
+          fontWeight: 800,
+          marginBottom: '20px'
+        }}>
+          @{username}
+        </div>
+
+        {/* Reputation Badge */}
+        <div style={{
+          display: 'flex',
+          fontSize: '30px',
+          fontWeight: 900,
+          padding: '12px 40px',
+          borderRadius: '100px',
+          backgroundColor: `${repColor}20`, // Transparent version of rep color
+          border: `3px solid ${repColor}`,
+          color: repColor,
+          letterSpacing: '5px'
+        }}>
+          {reputation}
+        </div>
+
+        {/* Footer info */}
+        <div style={{
+          position: 'absolute',
+          bottom: '40px',
+          right: '50px',
+          fontSize: '20px',
+          color: 'rgba(255,255,255,0.3)',
+          fontWeight: 700
+        }}>
+          FID: {fid}
+        </div>
+      </div>
+    ),
+    {
+      width: 1200,
+      height: 630,
+    }
+  );
 }
