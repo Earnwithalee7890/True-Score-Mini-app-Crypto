@@ -12,13 +12,12 @@ export async function generateMetadata(
     props: Props
 ): Promise<Metadata> {
     const searchParams = await props.searchParams
-    const fid = searchParams.fid ? String(searchParams.fid) : undefined
+    const fid = searchParams.fid ? String(searchParams.fid) : "338060"
+    const ts = searchParams._ ? String(searchParams._) : Date.now().toString()
 
-    // If no FID, show generic OG image instead of your own FID
+    // Pass FID and timestamp to OG image to ensure fresh rendering and bypass cache
     const appUrl = "https://v0-task-to-cash-seven.vercel.app"
-    const imageUrl = fid
-        ? `${appUrl}/api/og?fid=${fid}`
-        : `${appUrl}/api/og?fid=338060`
+    const imageUrl = `${appUrl}/api/og?fid=${fid}&_=${ts}`
 
     return {
         title: "TrueScore",
