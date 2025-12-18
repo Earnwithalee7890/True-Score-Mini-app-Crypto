@@ -36,8 +36,6 @@ export async function generateMetadata(
                         type: "launch_frame",
                         name: "TrueScore",
                         url: appUrl,
-                        splashImageUrl: `${appUrl}/splash.png`,
-                        splashBackgroundColor: "#1a1a2e"
                     }
                 }
             }),
@@ -50,8 +48,6 @@ export async function generateMetadata(
                         type: "launch_miniapp",
                         name: "TrueScore",
                         url: appUrl,
-                        splashImageUrl: `${appUrl}/splash.png`,
-                        splashBackgroundColor: "#1a1a2e"
                     }
                 }
             })

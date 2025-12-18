@@ -42,6 +42,14 @@ export function TrueScoreApp() {
   const [showAddPrompt, setShowAddPrompt] = useState(false)
   const [activeTab, setActiveTab] = useState<"home" | "profile">("home")
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const [minLoadingFinished, setMinLoadingFinished] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMinLoadingFinished(true)
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem("truescore_onboarding_seen")
@@ -169,7 +177,7 @@ export function TrueScoreApp() {
     init()
   }, [fetchUserData])
 
-  if (loading) {
+  if (loading || !minLoadingFinished || !isSDKLoaded) {
     return (
       <AnimatedBackground theme={theme}>
         <main className="min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden">
