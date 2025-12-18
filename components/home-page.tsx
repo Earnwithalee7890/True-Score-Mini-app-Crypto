@@ -57,7 +57,7 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
 
                 {/* Verified Reputation (Talent Protocol) */}
                 {(userData.builderScore !== undefined || userData.creatorScore !== undefined) && (
-                    <div className="w-full">
+                    <div className="w-full opacity-0 animate-slide-up stagger-2">
                         <TalentScoreCard
                             builderScore={userData.builderScore}
                             creatorScore={userData.creatorScore}
