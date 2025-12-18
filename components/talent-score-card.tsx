@@ -49,29 +49,35 @@ export function TalentScoreCard({ builderScore = 0, creatorScore = 0, farcasterR
                     )}
                 </div>
 
-                {/* Show Scores Grid if ANY data is found (even if score is 0) */}
-                {(builderScore >= 0 && (handle || isHuman || isVerified || builderScore > 0 || creatorScore > 0)) ? (
+                {/* Show Scores Grid if ANY identity or score data is found */}
+                {(handle || builderScore > 0 || creatorScore > 0 || isHuman || isVerified) ? (
                     <div className="grid grid-cols-2 gap-3 mb-5">
                         {/* Builder Score */}
-                        <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20 flex flex-col items-center text-center">
-                            <div className="flex items-center gap-1.5 mb-1">
-                                <Zap className="h-3 w-3 text-purple-300" />
-                                <span className="text-[10px] font-black uppercase tracking-wider text-purple-200">Builder</span>
+                        <div className="group/score relative p-4 rounded-3xl bg-gradient-to-br from-purple-500/20 via-purple-500/5 to-transparent border border-purple-500/30 flex flex-col items-center text-center overflow-hidden transition-all hover:scale-[1.02] hover:border-purple-500/50">
+                            <div className="absolute inset-0 bg-purple-500/5 blur-xl -z-10 group-hover/score:opacity-100 opacity-0 transition-opacity" />
+                            <div className="flex items-center gap-1.5 mb-2">
+                                <Zap className="h-3.5 w-3.5 text-purple-400" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-purple-200">Builder</span>
                             </div>
-                            <span className="text-4xl font-black text-foreground dark:text-white mb-1">{builderScore}</span>
-                            <div className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-white/5 ${builderLevel.color}`}>
+                            <span className="text-4xl font-black text-white mb-2 font-mono tracking-tighter drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+                                {builderScore}
+                            </span>
+                            <div className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 ${builderLevel.color} shadow-lg shadow-purple-500/10`}>
                                 Lvl {builderLevel.level}: {builderLevel.name}
                             </div>
                         </div>
 
                         {/* Creator Score */}
-                        <div className="p-4 rounded-2xl bg-gradient-to-br from-pink-500/10 to-transparent border border-pink-500/20 flex flex-col items-center text-center">
-                            <div className="flex items-center gap-1.5 mb-1">
-                                <Users className="h-3 w-3 text-pink-300" />
-                                <span className="text-[10px] font-black uppercase tracking-wider text-pink-200">Creator</span>
+                        <div className="group/score relative p-4 rounded-3xl bg-gradient-to-br from-pink-500/20 via-pink-500/5 to-transparent border border-pink-500/30 flex flex-col items-center text-center overflow-hidden transition-all hover:scale-[1.02] hover:border-pink-500/50">
+                            <div className="absolute inset-0 bg-pink-500/5 blur-xl -z-10 group-hover/score:opacity-100 opacity-0 transition-opacity" />
+                            <div className="flex items-center gap-1.5 mb-2">
+                                <Users className="h-3.5 w-3.5 text-pink-400" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-pink-200">Creator</span>
                             </div>
-                            <span className="text-4xl font-black text-foreground dark:text-white mb-1">{creatorScore}</span>
-                            <div className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-white/5 ${creatorLevel.color}`}>
+                            <span className="text-4xl font-black text-white mb-2 font-mono tracking-tighter drop-shadow-[0_0_10px_rgba(236,72,153,0.5)]">
+                                {creatorScore}
+                            </span>
+                            <div className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-pink-500/20 border border-pink-500/30 ${creatorLevel.color} shadow-lg shadow-pink-500/10`}>
                                 Lvl {creatorLevel.level}: {creatorLevel.name}
                             </div>
                         </div>
@@ -79,24 +85,8 @@ export function TalentScoreCard({ builderScore = 0, creatorScore = 0, farcasterR
                 ) : (
                     <div className="mb-5 p-5 rounded-2xl bg-white/5 border border-white/10 text-center flex flex-col items-center gap-2">
                         <User className="h-8 w-8 text-white/20 mb-1" />
-                        <p className="text-[11px] font-bold text-white/60">No Talent Protocol Profile Found</p>
-                        <p className="text-[9px] text-white/30 max-w-[180px]">Connect your Farcaster to Talent Protocol to see your verified builder rank.</p>
-                        <a
-                            href="https://app.talentprotocol.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => {
-                                e.preventDefault()
-                                try {
-                                    sdk.actions.openUrl("https://app.talentprotocol.com")
-                                } catch (err) {
-                                    window.open("https://app.talentprotocol.com", "_blank")
-                                }
-                            }}
-                            className="mt-2 text-[10px] font-black uppercase tracking-widest text-purple-400 hover:text-purple-300 transition-colors border-b border-purple-500/30 pb-0.5 cursor-pointer"
-                        >
-                            Claim Passport ↗
-                        </a>
+                        <p className="text-[11px] font-bold text-white/60">Talent Protocol Profile</p>
+                        <p className="text-[9px] text-white/30 max-w-[180px]">Score data will appear here once connected to Talent Protocol.</p>
                     </div>
                 )}
 
