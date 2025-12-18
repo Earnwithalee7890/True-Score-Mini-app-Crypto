@@ -12,15 +12,13 @@ export async function generateMetadata(
     props: Props
 ): Promise<Metadata> {
     const searchParams = await props.searchParams
-    const fid = searchParams.fid ? String(searchParams.fid) : "338060"
-    const score = searchParams.score ? String(searchParams.score) : "0"
-    const rep = searchParams.rep ? String(searchParams.rep) : "unknown"
-    const username = searchParams.username ? String(searchParams.username) : "user"
-    const ts = searchParams._ ? String(searchParams._) : Date.now().toString()
+    const fid = searchParams.fid ? String(searchParams.fid) : undefined
 
-    // Pass all params to OG image to ensure instant rendering with correct data
+    // If no FID, show generic OG image instead of your own FID
     const appUrl = "https://v0-task-to-cash-seven.vercel.app"
-    const imageUrl = `${appUrl}/api/og?fid=${fid}&score=${score}&rep=${rep}&username=${username}&_=${ts}`
+    const imageUrl = fid
+        ? `${appUrl}/api/og?fid=${fid}`
+        : `${appUrl}/api/og?fid=338060`
 
     return {
         title: "TrueScore",
