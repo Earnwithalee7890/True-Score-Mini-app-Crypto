@@ -62,9 +62,10 @@ export async function getTalentProtocolData(fid: number, wallets: string[] = [],
         apiKey = apiKey.trim()
         console.log(`[TALENT] API Key detected via ${keySource}. Leading chars: ${apiKey.substring(0, 4)}...`)
 
-        // Use standard X-API-KEY header as per v3 docs. Avoid Authorization header to prevent potential JWT conflicts.
-        const headers = {
+        // Use both X-API-KEY and Authorization (Bearer) for maximum compatibility across v3 and legacy endpoints.
+        const headers: Record<string, string> = {
             "X-API-KEY": apiKey,
+            "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json"
         }
 
@@ -93,10 +94,17 @@ export async function getTalentProtocolData(fid: number, wallets: string[] = [],
         const promises: Promise<void>[] = []
 
         // STRATEGY 0: Passports Endpoint (v3 Most Reliable)
-        const idents = [`farcaster:${fid}`, String(fid)]
+        // We try every possible identity format to ensure no user is missed.
+        const idents = [
+            `farcaster:${fid}`,
+            `${fid}`,
+            `farcaster_id:${fid}`
+        ]
         if (fc_handle) {
-            idents.push(`farcaster:${fc_handle}`)
-            idents.push(fc_handle)
+            const h = fc_handle.replace("@", "")
+            idents.push(`farcaster:${h}`)
+            idents.push(h)
+            idents.push(`@${h}`)
         }
 
         idents.forEach(ident => {
@@ -105,21 +113,22 @@ export async function getTalentProtocolData(fid: number, wallets: string[] = [],
                     const res = await fetch(`${TALENT_API_BASE}/passports/${ident}`, { headers, signal: controller.signal })
                     if (res.ok) {
                         const data = await res.json()
-                        const p = data.passport
+                        const p = data.passport || data.profile
                         if (p) {
+                            console.log(`[TALENT] Strategy 0 found data for ${ident}`)
                             if (!firstPassportData) firstPassportData = p
                             if (!profileId) profileId = p.id || p.main_wallet
-                            if (!profileHandle) profileHandle = p.handle || p.username
-                            profileHuman = profileHuman || !!p.human_checkmark
-                            profileVerified = profileVerified || !!p.verified
+                            if (!profileHandle) profileHandle = p.handle || p.username || p.username
+                            profileHuman = profileHuman || !!p.human_checkmark || !!p.is_human
+                            profileVerified = profileVerified || !!p.verified || !!p.is_verified
                             if (Array.isArray(p.scores)) rawScores.push(...p.scores)
                         }
-                    } else {
+                    } else if (res.status !== 404) {
                         const errText = await res.text().catch(() => "unknown error")
-                        console.log(`[TALENT] Passport Strategy (${ident}) failed with status: ${res.status}. Error: ${errText.substring(0, 100)}`)
+                        console.log(`[TALENT] Passport Strategy (${ident}) status: ${res.status}. Error: ${errText.substring(0, 100)}`)
                     }
                 } catch (e) {
-                    console.log(`[TALENT] Passport Strategy (${ident}) failed`)
+                    console.log(`[TALENT] Passport Strategy (${ident}) catch block`)
                 }
             })())
         })
@@ -199,25 +208,36 @@ export async function getTalentProtocolData(fid: number, wallets: string[] = [],
         if (fc_handle) {
             promises.push((async () => {
                 try {
-                    console.log(`[TALENT] Attempting Search Strategy for ${fc_handle} with API Key starting: ${apiKey.substring(0, 4)}...`)
                     const res = await fetch(`${TALENT_API_BASE}/search?q=${fc_handle}`, { headers, signal: controller.signal })
                     if (res.ok) {
                         const data = await res.json()
-                        const p = data.passports?.[0] || data.users?.[0]
+                        const p = data.passports?.[0] || data.users?.[0] || data.profiles?.[0]
                         if (p) {
                             console.log(`[TALENT] Search Strategy found candidate for ${fc_handle}`)
                             if (!firstPassportData) firstPassportData = p
                             if (Array.isArray(p.scores)) rawScores.push(...p.scores)
                         }
-                    } else {
-                        const errText = await res.text().catch(() => "unknown error")
-                        console.log(`[TALENT] Search Strategy (${fc_handle}) failed with status: ${res.status}. Error: ${errText.substring(0, 100)}`)
                     }
                 } catch (e) {
-                    console.log(`[TALENT] Search Strategy (${fc_handle}) failed`)
+                    // Fail silently
                 }
             })())
         }
+
+        // STRATEGY 5: Direct Identity Lookup (v3 common)
+        promises.push((async () => {
+            try {
+                const res = await fetch(`${TALENT_API_BASE}/passports?identity=${fid}`, { headers, signal: controller.signal })
+                if (res.ok) {
+                    const data = await res.json()
+                    const p = data.passports?.[0]
+                    if (p) {
+                        console.log(`[TALENT] Strategy 5 (fid query) found data`)
+                        if (Array.isArray(p.scores)) rawScores.push(...p.scores)
+                    }
+                }
+            } catch (e) { }
+        })())
 
         await Promise.all(promises)
 
@@ -227,16 +247,17 @@ export async function getTalentProtocolData(fid: number, wallets: string[] = [],
 
         rawScores.forEach((s: any) => {
             const slug = String(s.scorer_slug || s.score_type || s.name || s.slug || "").toLowerCase()
-            const scoreVal = Number(s.points ?? s.score ?? s.value ?? s.score_value ?? 0)
+            const scoreVal = Number(s.points ?? s.score ?? s.value ?? s.score_value ?? s.points_value ?? s.score_points ?? 0)
 
             if (slug.includes("builder")) builderScore = Math.max(builderScore, scoreVal)
             if (slug.includes("creator")) creatorScore = Math.max(creatorScore, scoreVal)
 
             if (s.handle && !profileHandle) profileHandle = s.handle
+            if (s.user?.handle && !profileHandle) profileHandle = s.user.handle
             if (s.human_checkmark !== undefined) profileHuman = profileHuman || !!s.human_checkmark
             if (s.verified !== undefined) profileVerified = profileVerified || !!s.verified
 
-            const revVal = Number(s.farcaster_revenue ?? s.revenue ?? s.total_rewards ?? 0)
+            const revVal = Number(s.farcaster_revenue ?? s.revenue ?? s.total_rewards ?? s.rewards ?? 0)
             revenue = Math.max(revenue, revVal)
         })
 
@@ -244,15 +265,17 @@ export async function getTalentProtocolData(fid: number, wallets: string[] = [],
         if (builderScore === 0 || creatorScore === 0) {
             if (firstPassportData) {
                 console.log(`[TALENT] Falling back to top-level fields for FID ${fid}. Keys:`, Object.keys(firstPassportData))
-                builderScore = Math.max(builderScore, Number(firstPassportData.builder_score ?? firstPassportData.builderScore ?? 0))
+                builderScore = Math.max(builderScore, Number(firstPassportData.builder_score ?? firstPassportData.builderScore ?? firstPassportData.score ?? 0))
                 creatorScore = Math.max(creatorScore, Number(firstPassportData.creator_score ?? firstPassportData.creatorScore ?? 0))
                 revenue = Math.max(revenue, Number(firstPassportData.farcaster_revenue ?? firstPassportData.farcasterRevenue ?? firstPassportData.revenue ?? 0))
-                profileHuman = profileHuman || !!(firstPassportData.human_checkmark ?? firstPassportData.isHuman)
+                profileHuman = profileHuman || !!(firstPassportData.human_checkmark ?? firstPassportData.isHuman ?? firstPassportData.verified)
                 profileVerified = profileVerified || !!(firstPassportData.verified ?? firstPassportData.isVerified)
-                if (!profileHandle) profileHandle = firstPassportData.handle || firstPassportData.username
-                if (!profileId) profileId = firstPassportData.id || firstPassportData.main_wallet
+                if (!profileHandle) profileHandle = firstPassportData.handle || firstPassportData.username || firstPassportData.display_name
+                if (!profileId) profileId = firstPassportData.id || firstPassportData.main_wallet || firstPassportData.sub
             }
         }
+
+        console.log(`[TALENT] Final Aggregated Data for ${fid}:`, { builderScore, creatorScore, profileHandle, profileHuman })
 
         if (builderScore === 0 && creatorScore === 0 && !profileHandle && !profileHuman && !profileVerified) {
             console.warn(`[TALENT] No data found for FID ${fid} after all v3 strategies AND fallback`)
