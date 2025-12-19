@@ -24,6 +24,7 @@ export const metadata: Metadata = {
   },
   other: {
     "farcaster:manifest": `${appUrl}/.well-known/farcaster.json`,
+    "base:app_id": "69459eacd19763ca26ddc592",
   },
   icons: {
     icon: [
