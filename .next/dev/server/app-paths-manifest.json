@@ -1,5 +1,5 @@
 {
+  "/api/neynar/search/route": "app/api/neynar/search/route.js",
   "/api/neynar/user/route": "app/api/neynar/user/route.js",
-  "/api/quotient/route": "app/api/quotient/route.js",
   "/page": "app/page.js"
 }

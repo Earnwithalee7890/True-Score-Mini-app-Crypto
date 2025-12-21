@@ -1,19 +1,19 @@
 "use client"
 
-import { Home, User } from "lucide-react"
+import { Home, User, Search } from "lucide-react"
 
 interface NavigationProps {
-    activeTab: "home" | "profile"
-    onTabChange: (tab: "home" | "profile") => void
+    activeTab: "home" | "profile" | "search"
+    onTabChange: (tab: "home" | "profile" | "search") => void
 }
 
 export function Navigation({ activeTab, onTabChange }: NavigationProps) {
     return (
         <div className="fixed bottom-0 left-0 right-0 nav-floating z-50">
-            <div className="max-w-md mx-auto flex items-center justify-around h-16 px-8">
+            <div className="max-w-md mx-auto flex items-center justify-around h-16 px-4">
                 <button
                     onClick={() => onTabChange("home")}
-                    className="flex flex-col items-center gap-1 px-6 py-2 transition-all duration-300"
+                    className="flex flex-col items-center gap-1 px-4 py-2 transition-all duration-300"
                 >
                     <Home className={`h-6 w-6 ${activeTab === "home" ? "icon-glow-active" : "icon-glow-inactive"}`} />
                     <span className={`text-xs font-medium ${activeTab === "home" ? "text-cyan-300" : "text-cyan-200/50"}`}>
@@ -22,8 +22,18 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
                 </button>
 
                 <button
+                    onClick={() => onTabChange("search")}
+                    className="flex flex-col items-center gap-1 px-4 py-2 transition-all duration-300"
+                >
+                    <Search className={`h-6 w-6 ${activeTab === "search" ? "icon-glow-active" : "icon-glow-inactive"}`} />
+                    <span className={`text-xs font-medium ${activeTab === "search" ? "text-cyan-300" : "text-cyan-200/50"}`}>
+                        Search
+                    </span>
+                </button>
+
+                <button
                     onClick={() => onTabChange("profile")}
-                    className="flex flex-col items-center gap-1 px-6 py-2 transition-all duration-300"
+                    className="flex flex-col items-center gap-1 px-4 py-2 transition-all duration-300"
                 >
                     <User className={`h-6 w-6 ${activeTab === "profile" ? "icon-glow-active" : "icon-glow-inactive"}`} />
                     <span className={`text-xs font-medium ${activeTab === "profile" ? "text-cyan-300" : "text-cyan-200/50"}`}>

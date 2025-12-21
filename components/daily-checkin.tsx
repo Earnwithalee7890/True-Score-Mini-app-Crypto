@@ -5,8 +5,38 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CalendarCheck, Loader2, Check, ExternalLink, Zap } from "lucide-react"
-import { useAccount, useConnect, useSendTransaction, useSwitchChain, useChainId } from "wagmi"
+import { useAccount, useConnect, useSendTransaction, useSwitchChain, useChainId, useWriteContract } from "wagmi"
 import { base, celo, mainnet } from "wagmi/chains"
+
+// Base Check-In Contract Configuration
+const BASE_CHECKIN_CONTRACT = {
+  address: "0x25797Cd733ef592f4c0Bf44b01Ef9f4882A30D2E" as `0x${string}`,
+  abi: [
+    {
+      inputs: [],
+      name: "checkIn",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [{ internalType: "address", name: "user", type: "address" }],
+      name: "getCheckInCount",
+      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        { indexed: true, internalType: "address", name: "user", type: "address" },
+        { indexed: false, internalType: "uint256", name: "timestamp", type: "uint256" },
+      ],
+      name: "CheckedIn",
+      type: "event",
+    },
+  ],
+} as const
 
 const NETWORKS = [
   {
@@ -44,6 +74,7 @@ export function DailyCheckin() {
   const { address, isConnected } = useAccount()
   const { connect, connectors } = useConnect()
   const { sendTransactionAsync, reset: resetTransaction } = useSendTransaction()
+  const { writeContractAsync } = useWriteContract()
   const { switchChainAsync } = useSwitchChain()
   const currentChainId = useChainId()
 
@@ -58,13 +89,25 @@ export function DailyCheckin() {
       // Reset any previous transaction state
       resetTransaction()
 
-      // Send self-transaction as check-in proof (0 value to self)
-      const result = await sendTransactionAsync({
-        to: address,
-        value: BigInt(0),
-        data: "0x436865636b496e" as `0x${string}`, // "CheckIn" in hex
-        chainId: selectedNetwork.chainId, // Explicitly pass chainId
-      })
+      let result: `0x${string}` | undefined
+
+      // For Base network, call the smart contract
+      if (selectedNetwork.id === "base") {
+        result = await writeContractAsync({
+          address: BASE_CHECKIN_CONTRACT.address,
+          abi: BASE_CHECKIN_CONTRACT.abi,
+          functionName: "checkIn",
+          chainId: selectedNetwork.chainId,
+        })
+      } else {
+        // For other networks, send self-transaction as check-in proof (0 value to self)
+        result = await sendTransactionAsync({
+          to: address,
+          value: BigInt(0),
+          data: "0x436865636b496e" as `0x${string}`, // "CheckIn" in hex
+          chainId: selectedNetwork.chainId,
+        })
+      }
 
       if (result) {
         setTxHash(result)

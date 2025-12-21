@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { HomePage } from "./home-page"
 import { ProfilePage } from "./profile-page"
+import { UserSearchPage } from "./user-search-page"
 import { Navigation } from "./navigation"
 import { ThemeToggle } from "./theme-toggle"
 import { AppFooter } from "./app-footer"
@@ -40,7 +41,7 @@ export function TrueScoreApp() {
   const [context, setContext] = useState<any | null>(null)
   const [theme, setTheme] = useState<"light" | "dark">("dark")
   const [showAddPrompt, setShowAddPrompt] = useState(false)
-  const [activeTab, setActiveTab] = useState<"home" | "profile">("home")
+  const [activeTab, setActiveTab] = useState<"home" | "profile" | "search">("home")
   const [showOnboarding, setShowOnboarding] = useState(false)
 
   useEffect(() => {
@@ -257,6 +258,8 @@ export function TrueScoreApp() {
               onAddToMiniApp={addToMiniApp}
               onShare={shareApp}
             />
+          ) : activeTab === "search" ? (
+            <UserSearchPage />
           ) : (
             <ProfilePage userData={userData} />
           )}

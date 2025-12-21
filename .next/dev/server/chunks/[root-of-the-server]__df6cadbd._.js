@@ -107,7 +107,7 @@ async function GET(request) {
         let totalCasts = 0;
         let totalReplies = 0;
         try {
-            const castsResponse = await fetch(`https://api.neynar.com/v2/farcaster/feed/user/${fid}?limit=150`, {
+            const castsResponse = await fetch(`https://api.neynar.com/v2/farcaster/feed/user/${fid}?limit=50`, {
                 headers: {
                     accept: "application/json",
                     "x-api-key": apiKey
@@ -129,6 +129,17 @@ async function GET(request) {
             console.error("Error fetching casts:", err);
         // Continue with 0 counts if casts fetch fails
         }
+        // Fetch Talent Protocol data
+        const eth_addresses = user.verified_addresses?.eth_addresses ?? [];
+        let talentData = null;
+        try {
+            const { getTalentProtocolData } = await __turbopack_context__.A("[project]/lib/talent.ts [app-route] (ecmascript, async loader)");
+            talentData = await getTalentProtocolData(Number.parseInt(fid), eth_addresses, user.username);
+            console.log(`[TALENT_DEBUG] FID ${fid} (@${user.username}):`, JSON.stringify(talentData));
+        } catch (err) {
+            console.error("Error fetching Talent Protocol data:", err);
+        }
+        console.log('[DEBUG] Returned Talent Data:', JSON.stringify(talentData));
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             fid: user.fid,
             username: user.username,
@@ -140,7 +151,13 @@ async function GET(request) {
             following: user.following_count ?? 0,
             casts: totalCasts,
             replies: totalReplies,
-            verifiedAddresses: user.verified_addresses?.eth_addresses ?? []
+            verifiedAddresses: user.verified_addresses?.eth_addresses ?? [],
+            builderScore: talentData?.builder_score ?? 0,
+            creatorScore: talentData?.creator_score ?? 0,
+            farcasterRevenue: talentData?.farcaster_revenue ?? 0,
+            isHuman: talentData?.human_checkmark,
+            isVerified: talentData?.verified,
+            talentHandle: talentData?.handle
         });
     } catch (error) {
         console.error("Neynar API error:", error);
