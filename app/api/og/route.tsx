@@ -12,8 +12,7 @@ export async function GET(req: NextRequest) {
         let username = 'user';
         let displayName = 'TrueScore User';
         let score = 0;
-        let reputation = 'Unknown';
-        let pfpUrl = '';
+        let reputation = 'NEUTRAL';
 
         try {
             const response = await fetch(
@@ -35,7 +34,6 @@ export async function GET(req: NextRequest) {
                     score = Math.round(rawScore * 100);
                     username = user.username || 'user';
                     displayName = user.display_name || username;
-                    pfpUrl = user.pfp_url || '';
 
                     // Calculate reputation
                     if (score >= 80) reputation = 'SAFE';
@@ -48,236 +46,177 @@ export async function GET(req: NextRequest) {
             console.error('Error fetching user data:', error);
         }
 
-        // Reputation color mapping
-        const reputationColors = {
-            SAFE: { bg: 'rgb(34, 197, 94)', text: 'rgb(240, 253, 244)' },    // green
-            NEUTRAL: { bg: 'rgb(234, 179, 8)', text: 'rgb(254, 252, 232)' }, // yellow
-            RISKY: { bg: 'rgb(249, 115, 22)', text: 'rgb(255, 247, 237)' },  // orange
-            SPAMMY: { bg: 'rgb(239, 68, 68)', text: 'rgb(254, 242, 242)' },  // red
+        // Reputation colors
+        const repColors: Record<string, { bg: string; text: string }> = {
+            SAFE: { bg: '#22c55e', text: '#f0fdf4' },
+            NEUTRAL: { bg: '#eab308', text: '#fefce8' },
+            RISKY: { bg: '#f97316', text: '#fff7ed' },
+            SPAMMY: { bg: '#ef4444', text: '#fef2f2' },
         };
 
-        const repColor = reputationColors[reputation as keyof typeof reputationColors] || reputationColors.NEUTRAL;
+        const repColor = repColors[reputation];
 
         return new ImageResponse(
-            (
+            <div
+                style={{
+                    height: '100%',
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'linear-gradient(135deg, #0a0e27, #1a2040)',
+                }}
+            >
                 <div
                     style={{
-                        height: '100%',
-                        width: '100%',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        background: 'linear-gradient(135deg, #0a0e27 0%, #0f1429 50%, #1a2040 100%)',
-                        fontFamily: 'system-ui, -apple-system, sans-serif',
-                        position: 'relative',
+                        padding: '60px',
+                        borderRadius: '32px',
+                        background: 'rgba(15, 20, 41, 0.9)',
+                        border: '2px solid rgba(0, 217, 255, 0.3)',
                     }}
                 >
-                    {/* Glow effects */}
+                    {/* Logo */}
                     <div
                         style={{
-                            position: 'absolute',
-                            top: '10%',
-                            left: '10%',
-                            width: '400px',
-                            height: '400px',
-                            background: 'radial-gradient(circle, rgba(0, 217, 255, 0.2) 0%, transparent 70%)',
-                            borderRadius: '50%',
-                            filter: 'blur(60px)',
+                            display: 'flex',
+                            fontSize: '48px',
+                            fontWeight: 900,
+                            background: 'linear-gradient(135deg, #00d9ff, #00ffcc)',
+                            backgroundClip: 'text',
+                            color: 'transparent',
+                            marginBottom: '40px',
                         }}
-                    />
-                    <div
-                        style={{
-                            position: 'absolute',
-                            bottom: '10%',
-                            right: '10%',
-                            width: '350px',
-                            height: '350px',
-                            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%)',
-                            borderRadius: '50%',
-                            filter: 'blur(60px)',
-                        }}
-                    />
+                    >
+                        TRUESCORE
+                    </div>
 
-                    {/* Main card */}
+                    {/* Avatar with Initials */}
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '30px',
+                            marginBottom: '40px',
+                        }}
+                    >
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '100px',
+                                height: '100px',
+                                borderRadius: '50%',
+                                background: 'linear-gradient(135deg, #00d9ff, #00ffcc)',
+                                fontSize: '40px',
+                                fontWeight: 900,
+                                color: '#0a0e27',
+                            }}
+                        >
+                            {displayName.substring(0, 2).toUpperCase()}
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    fontSize: '32px',
+                                    fontWeight: 700,
+                                    color: '#e0f4ff',
+                                }}
+                            >
+                                {displayName}
+                            </div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    fontSize: '20px',
+                                    color: '#7fa8c7',
+                                }}
+                            >
+                                @{username}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Score */}
                     <div
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            padding: '60px',
-                            borderRadius: '32px',
-                            background: 'rgba(15, 20, 41, 0.85)',
-                            backdropFilter: 'blur(20px)',
-                            border: '2px solid rgba(0, 217, 255, 0.3)',
-                            boxShadow: '0 0 40px rgba(0, 217, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4)',
-                            width: '900px',
+                            marginBottom: '30px',
                         }}
                     >
-                        {/* Logo/Title */}
                         <div
                             style={{
-                                fontSize: '48px',
+                                display: 'flex',
+                                fontSize: '20px',
+                                color: '#7fa8c7',
+                                marginBottom: '10px',
+                            }}
+                        >
+                            NEYNAR SCORE
+                        </div>
+                        <div
+                            style={{
+                                display: 'flex',
+                                fontSize: '100px',
                                 fontWeight: 900,
-                                background: 'linear-gradient(135deg, #00d9ff 0%, #00ffcc 100%)',
+                                background: 'linear-gradient(135deg, #00d9ff, #00ffcc)',
                                 backgroundClip: 'text',
                                 color: 'transparent',
-                                letterSpacing: '0.15em',
-                                marginBottom: '40px',
-                                textShadow: '0 0 30px rgba(0, 217, 255, 0.5)',
                             }}
                         >
-                            TRUESCORE
-                        </div>
-
-                        {/* User info */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '30px',
-                                marginBottom: '50px',
-                            }}
-                        >
-                            {/* Avatar - Use initials instead of external image for reliability */}
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: '128px',
-                                    height: '128px',
-                                    borderRadius: '50%',
-                                    background: 'linear-gradient(135deg, #00d9ff 0%, #00ffcc 100%)',
-                                    border: '4px solid rgba(0, 217, 255, 0.6)',
-                                    boxShadow: '0 0 30px rgba(0, 217, 255, 0.5)',
-                                    fontSize: '48px',
-                                    fontWeight: 900,
-                                    color: '#0a0e27',
-                                }}
-                            >
-                                {displayName.substring(0, 2).toUpperCase()}
-                            </div>
-
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <div
-                                    style={{
-                                        fontSize: '36px',
-                                        fontWeight: 700,
-                                        color: '#e0f4ff',
-                                        marginBottom: '8px',
-                                    }}
-                                >
-                                    {displayName}
-                                </div>
-                                <div
-                                    style={{
-                                        fontSize: '24px',
-                                        color: '#7fa8c7',
-                                    }}
-                                >
-                                    @{username}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Score display */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                marginBottom: '40px',
-                            }}
-                        >
-                            <div
-                                style={{
-                                    fontSize: '24px',
-                                    color: '#7fa8c7',
-                                    marginBottom: '16px',
-                                    letterSpacing: '0.1em',
-                                    textTransform: 'uppercase',
-                                }}
-                            >
-                                Neynar Score
-                            </div>
-                            <div
-                                style={{
-                                    fontSize: '120px',
-                                    fontWeight: 900,
-                                    background: 'linear-gradient(135deg, #00d9ff 0%, #00ffcc 100%)',
-                                    backgroundClip: 'text',
-                                    color: 'transparent',
-                                    lineHeight: 1,
-                                    textShadow: '0 0 40px rgba(0, 217, 255, 0.6)',
-                                }}
-                            >
-                                {score}
-                            </div>
-                        </div>
-
-                        {/* Reputation badge */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                padding: '16px 40px',
-                                borderRadius: '999px',
-                                background: repColor.bg,
-                                fontSize: '28px',
-                                fontWeight: 700,
-                                color: repColor.text,
-                                letterSpacing: '0.1em',
-                                boxShadow: `0 0 20px ${repColor.bg}40`,
-                            }}
-                        >
-                            {reputation}
+                            {score}
                         </div>
                     </div>
 
-                    {/* Tagline */}
+                    {/* Reputation Badge */}
                     <div
                         style={{
-                            marginTop: '40px',
-                            fontSize: '20px',
-                            color: '#7fa8c7',
-                            letterSpacing: '0.05em',
+                            display: 'flex',
+                            padding: '12px 32px',
+                            borderRadius: '999px',
+                            background: repColor.bg,
+                            fontSize: '24px',
+                            fontWeight: 700,
+                            color: repColor.text,
                         }}
                     >
-                        Your Farcaster Reputation Score
+                        {reputation}
                     </div>
                 </div>
-            ),
+            </div>,
             {
                 width: 1200,
                 height: 630,
             }
         );
     } catch (error) {
-        console.error('OG Image generation error:', error);
+        console.error('OG Image error:', error);
 
-        // Fallback error image
+        // Simple fallback
         return new ImageResponse(
-            (
-                <div
-                    style={{
-                        height: '100%',
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        background: 'linear-gradient(135deg, #0a0e27 0%, #1a2040 100%)',
-                        color: '#e0f4ff',
-                        fontSize: '40px',
-                        fontWeight: 700,
-                    }}
-                >
-                    <div>TrueScore</div>
-                    <div style={{ fontSize: '24px', marginTop: '20px', color: '#7fa8c7' }}>
-                        Your Farcaster Reputation
-                    </div>
-                </div>
-            ),
+            <div
+                style={{
+                    height: '100%',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#0a0e27',
+                    color: '#00d9ff',
+                    fontSize: '48px',
+                    fontWeight: 700,
+                }}
+            >
+                TrueScore
+            </div>,
             {
                 width: 1200,
                 height: 630,
