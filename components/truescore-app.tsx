@@ -25,12 +25,6 @@ export interface UserData {
   casts?: number
   replies?: number
   verifiedAddresses: string[]
-  builderScore?: number
-  creatorScore?: number
-  farcasterRevenue?: number
-  isHuman?: boolean
-  isVerified?: boolean
-  talentHandle?: string
 }
 
 export function TrueScoreApp() {
@@ -174,9 +168,13 @@ export function TrueScoreApp() {
     return (
       <AnimatedBackground theme={theme}>
         <main className="min-h-screen flex items-center justify-center px-4">
-          <div className="relative text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto" />
-            <p className="mt-4 text-sm text-white/80 text-shadow-md">Loading...</p>
+          <div className="relative">
+            {/* Elegant pulsing gradient circle - no logo/text */}
+            <div className="relative w-20 h-20 mx-auto">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 animate-pulse-glow opacity-60" />
+              <div className="absolute inset-2 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-spin-slow opacity-80" style={{ animationDuration: '3s' }} />
+              <div className="absolute inset-4 rounded-full bg-background" />
+            </div>
           </div>
         </main>
       </AnimatedBackground>

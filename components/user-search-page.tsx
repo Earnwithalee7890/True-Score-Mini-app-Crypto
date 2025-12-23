@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Search, Loader2, User as UserIcon, AlertCircle } from "lucide-react"
 import { ScoreDisplay } from "./score-display"
 import { ReputationBadge } from "./reputation-badge"
-import { TalentScoreCard } from "./talent-score-card"
+
 import { ProfileStatsRow } from "./profile-stats-row"
 import type { UserData } from "./truescore-app"
 
@@ -134,19 +134,7 @@ export function UserSearchPage() {
                         <ReputationBadge reputation={searchedUser.reputation} />
                     </div>
 
-                    {/* Talent Protocol Scores */}
-                    {(searchedUser.builderScore !== undefined || searchedUser.creatorScore !== undefined) && (
-                        <div className="opacity-0 animate-slide-up stagger-5">
-                            <TalentScoreCard
-                                builderScore={searchedUser.builderScore}
-                                creatorScore={searchedUser.creatorScore}
-                                farcasterRevenue={searchedUser.farcasterRevenue}
-                                isHuman={searchedUser.isHuman}
-                                isVerified={searchedUser.isVerified}
-                                handle={searchedUser.talentHandle}
-                            />
-                        </div>
-                    )}
+
                 </div>
             )}
 

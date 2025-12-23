@@ -709,3 +709,143 @@
     0 0 30px rgba(168, 85, 247, 0.3),
     0 0 45px rgba(168, 85, 247, 0.2);
 }
+
+/* ============================================
+   PREMIUM ANIMATIONS
+   ============================================ */
+
+/* Flowing gradient animation for cards */
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-flow {
+  background-size: 200% 200%;
+  animation: gradient-flow 8s ease infinite;
+}
+
+/* Enhanced glow pulse */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 20px rgba(0, 217, 255, 0.3),
+      0 0 40px rgba(0, 217, 255, 0.2),
+      0 0 60px rgba(0, 217, 255, 0.1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 30px rgba(0, 217, 255, 0.6),
+      0 0 60px rgba(0, 217, 255, 0.4),
+      0 0 90px rgba(0, 217, 255, 0.2);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Shimmer sweep effect */
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent);
+  animation: shimmer-sweep 3s infinite;
+}
+
+/* Micro bounce on hover */
+@keyframes scale-bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+.hover-bounce:hover {
+  animation: scale-bounce 0.3s ease-out forwards;
+}
+
+/* Smooth slow spin */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Fade slide up entrance */
+@keyframes fade-slide-up-smooth {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-slide-up {
+  animation: fade-slide-up-smooth 0.6s ease-out forwards;
+}
+
+/* Card hover lift */
+.card-hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(0, 217, 255, 0.2);
+}

@@ -24,16 +24,10 @@ const steps = [
         color: "from-cyan-500/20 to-blue-500/20",
         accent: "border-cyan-500/50"
     },
-    {
-        title: "Talent Protocol",
-        description: "Measures builder reputation using verified data like wallets, GitHub, and credentials. It verifies you're a real human builder.",
-        icon: <Users className="h-8 w-8 text-purple-400" />,
-        color: "from-purple-500/20 to-pink-500/20",
-        accent: "border-purple-500/50"
-    },
+
     {
         title: "Improve Your Score",
-        description: "Be active on Farcaster, connect verified accounts in Talent Protocol, and earn credentials to boost your overall reputation.",
+        description: "Be active on Farcaster, engage authentically with the community, and build your trust score over time through consistent positive interactions.",
         icon: <Info className="h-8 w-8 text-green-400" />,
         color: "from-green-500/20 to-emerald-500/20",
         accent: "border-green-500/50"

@@ -74,6 +74,33 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/api/cron/check-scores/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cron/check-scores">> = Specific
+  const handler = {} as typeof import("../../app/api/cron/check-scores/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/generate-post/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/generate-post">> = Specific
+  const handler = {} as typeof import("../../app/api/generate-post/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/neynar/search/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/neynar/search">> = Specific
+  const handler = {} as typeof import("../../app/api/neynar/search/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/api/neynar/user/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/neynar/user">> = Specific
@@ -87,6 +114,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/og">> = Specific
   const handler = {} as typeof import("../../app/api/og/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/quotient/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/quotient">> = Specific
+  const handler = {} as typeof import("../../app/api/quotient/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

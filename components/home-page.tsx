@@ -11,7 +11,7 @@ import { BadgesList } from "./badges-list"
 import { ShareCard } from "./share-card"
 import { AIInsightsModal } from "./ai-insights-modal"
 import { AIPostMaker } from "./ai-post-maker"
-import { TalentScoreCard } from "./talent-score-card"
+
 import { Plus, Share2, User } from "lucide-react"
 import sdk from "@farcaster/frame-sdk"
 import type { UserData } from "./truescore-app"
@@ -23,11 +23,6 @@ interface HomePageProps {
 }
 
 export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
-    console.log('[DEBUG] HomePage UserData:', {
-        builderScore: userData.builderScore,
-        creatorScore: userData.creatorScore,
-        handle: userData.talentHandle
-    })
     const [showAIInsights, setShowAIInsights] = useState(false)
 
     const handleAIInsights = () => {
@@ -55,19 +50,7 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
                     <ScoreDisplay score={userData.score} />
                 </div>
 
-                {/* Verified Reputation (Talent Protocol) */}
-                {(userData.builderScore !== undefined || userData.creatorScore !== undefined) && (
-                    <div className="w-full opacity-0 animate-slide-up stagger-2">
-                        <TalentScoreCard
-                            builderScore={userData.builderScore}
-                            creatorScore={userData.creatorScore}
-                            farcasterRevenue={userData.farcasterRevenue}
-                            isHuman={userData.isHuman}
-                            isVerified={userData.isVerified}
-                            handle={userData.talentHandle}
-                        />
-                    </div>
-                )}
+
 
 
                 {/* Reputation Badge */}

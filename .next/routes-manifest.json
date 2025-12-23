@@ -46,6 +46,24 @@
       "namedRegex": "^/\\.well\\-known/farcaster\\.json(?:/)?$"
     },
     {
+      "page": "/api/cron/check-scores",
+      "regex": "^/api/cron/check\\-scores(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cron/check\\-scores(?:/)?$"
+    },
+    {
+      "page": "/api/generate-post",
+      "regex": "^/api/generate\\-post(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/generate\\-post(?:/)?$"
+    },
+    {
+      "page": "/api/neynar/search",
+      "regex": "^/api/neynar/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/neynar/search(?:/)?$"
+    },
+    {
       "page": "/api/neynar/user",
       "regex": "^/api/neynar/user(?:/)?$",
       "routeKeys": {},
@@ -56,6 +74,12 @@
       "regex": "^/api/og(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/og(?:/)?$"
+    },
+    {
+      "page": "/api/quotient",
+      "regex": "^/api/quotient(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/quotient(?:/)?$"
     },
     {
       "page": "/api/send-notification",

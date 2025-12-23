@@ -78,15 +78,6 @@ export async function GET(request: NextRequest) {
         else if (scorePercent >= 25) reputation = "risky"
         else reputation = "spammy"
 
-        // Fetch Talent Protocol data
-        const eth_addresses = userData.verified_addresses?.eth_addresses ?? []
-        let talentData = null
-        try {
-            const { getTalentProtocolData } = await import("@/lib/talent")
-            talentData = await getTalentProtocolData(userData.fid, eth_addresses, userData.username)
-        } catch (err) {
-            console.error("Error fetching Talent Protocol data:", err)
-        }
 
         return NextResponse.json({
             fid: userData.fid,
@@ -98,12 +89,6 @@ export async function GET(request: NextRequest) {
             followers: userData.follower_count ?? 0,
             following: userData.following_count ?? 0,
             verifiedAddresses: userData.verified_addresses?.eth_addresses ?? [],
-            builderScore: talentData?.builder_score ?? 0,
-            creatorScore: talentData?.creator_score ?? 0,
-            farcasterRevenue: talentData?.farcaster_revenue ?? 0,
-            isHuman: talentData?.human_checkmark,
-            isVerified: talentData?.verified,
-            talentHandle: talentData?.handle,
         })
     } catch (error) {
         console.error("Search API error:", error)

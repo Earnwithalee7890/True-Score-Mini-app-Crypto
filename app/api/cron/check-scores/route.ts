@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getTalentProtocolData } from "@/lib/talent"
 import { notifyScoreChange } from "@/lib/notifications"
 
 /**
@@ -46,16 +45,11 @@ export async function GET(request: NextRequest) {
             if (currentNeynarScore !== user.lastNeynarScore) {
                 console.log(`Score changed for FID ${user.fid}: ${user.lastNeynarScore} -> ${currentNeynarScore}`)
 
-                // Fetch latest Talent scores for richer notification
-                const talentData = await getTalentProtocolData(user.fid, eth_addresses)
-
                 // 5. Send Notification
                 await notifyScoreChange(
                     user.fid,
                     user.lastNeynarScore,
-                    currentNeynarScore,
-                    talentData?.builder_score,
-                    talentData?.creator_score
+                    currentNeynarScore
                 )
 
                 results.push({ fid: user.fid, status: "notified", old: user.lastNeynarScore, new: currentNeynarScore })
