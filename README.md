@@ -49,7 +49,7 @@ A beautiful, futuristic Farcaster Mini App that displays your real Neynar score,
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/Earnwithalee7890/v0-task-to-cash.git
+git clone https://github.com/Earnwithalee7890/True-Score-Mini-app-Crypto.git
 cd v0-task-to-cash
 ```
 
@@ -230,7 +230,7 @@ Created with ❤️ by [@aleekhoso](https://warpcast.com/aleekhoso)
 ## 🔗 Links
 
 - **Live App:** [v0-task-to-cash-seven.vercel.app](https://v0-task-to-cash-seven.vercel.app)
-- **GitHub:** [Earnwithalee7890/v0-task-to-cash](https://github.com/Earnwithalee7890/v0-task-to-cash)
+- **GitHub:** [Earnwithalee7890/True-Score-Mini-app-Crypto](https://github.com/Earnwithalee7890/True-Score-Mini-app-Crypto)
 - **Farcaster:** [@aleekhoso](https://warpcast.com/aleekhoso)
 
 ---

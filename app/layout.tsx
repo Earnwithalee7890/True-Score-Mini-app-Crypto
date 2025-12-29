@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TrueScore",
     description: "Your Real Neynar Reputation Score",
-    images: [`${appUrl}/api/og?fid=338060`],
+    images: [`${appUrl}/og-image.png`],
   },
   twitter: {
     card: "summary_large_image",
