@@ -31,12 +31,14 @@ A beautiful, futuristic Farcaster Mini App that displays your real Neynar score,
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
+- **Smart Contracts:** Solidity 0.8.20 (Base Mainnet)
 - **APIs:**
   - Neynar API - User data & scores
   - Farcaster SDK - Mini App integration
   - OpenAI API (optional) - AI post generation
 - **Deployment:** Vercel
 - **OG Images:** @vercel/og with Satori
+- **Blockchain:** Base (Chain ID: 8453)
 
 ## 📦 Installation
 
@@ -139,6 +141,9 @@ v0-task-to-cash/
 │   ├── ai-post-maker.tsx    # AI post generator
 │   ├── score-display.tsx    # Neynar score display
 │   └── ...                  # Other components
+├── contracts/
+│   ├── CheckIn.sol          # Base mainnet check-in contract
+│   └── README.md            # Contract documentation
 ├── lib/
 │   └── neynar.ts            # Neynar API client
 └── public/
@@ -226,6 +231,37 @@ Contributions are welcome! Feel free to:
 ## 👨‍💻 Author
 
 Created with ❤️ by [@aleekhoso](https://warpcast.com/aleekhoso)
+
+## 🏆 Talent Protocol - Base Builder Event
+
+This project is participating in the **Top Base Builders: December** event on Talent Protocol.
+
+### Tracking Metrics
+
+#### ✅ Mini App Developer Rewards
+- Farcaster Mini App manifest: `/.well-known/farcaster.json`
+- Base App ID: `69459eacd19763ca26ddc592`
+- Transactions generate fee-based rewards
+
+#### ✅ On-Chain Progress
+- **CheckIn Contract**: `0xBD3aDb162D1C5c211075C75DFe3dCD14b549433A` (Base Mainnet)
+- Contract generates fees from daily check-ins (0.000001 ETH per check-in)
+- Full source code in `/contracts` folder
+
+#### ✅ GitHub Contributions
+- Public repository with verified commits
+- Author email: `earnwithalee@gmail.com`
+- Regular contributions tracked Dec 1-31
+
+### Smart Contracts
+
+See [`/contracts/README.md`](contracts/README.md) for detailed contract documentation.
+
+**CheckIn Contract Features:**
+- Daily check-in system with streak tracking
+- Reputation building mechanism
+- Anti-spam protection via minimal fee
+- Fully verified on BaseScan
 
 ## 🔗 Links
 

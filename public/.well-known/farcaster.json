@@ -1,33 +1,29 @@
 {
-    "frame": {
-        "version": "1",
-        "name": "TrueScore",
-        "iconUrl": "https://v0-task-to-cash-seven.vercel.app/icon.png",
-        "homeUrl": "https://v0-task-to-cash-seven.vercel.app",
-        "imageUrl": "https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060",
-        "buttonTitle": "Check Neynar Score",
-        "splashImageUrl": "https://v0-task-to-cash-seven.vercel.app/splash.png",
-        "splashBackgroundColor": "#1a1a2e",
-        "webhookUrl": "https://api.neynar.com/f/app/77bacf7e-7358-40ce-963f-446751b5f386/event",
-        "subtitle": "Your Real Neynar Reputation",
-        "description": "View your real Neynar score, engagement analytics, and account reputation on Farcaster",
-        "screenshotUrls": [
-            "https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060"
-        ],
-        "primaryCategory": "social",
-        "tags": [
-            "trustscore",
-            "neynarscore",
-            "neynar"
-        ],
-        "heroImageUrl": "https://v0-task-to-cash-seven.vercel.app/api/og?fid=338060",
-        "tagline": "Track Farcaster reputation",
-        "ogTitle": "TrueScore - Neynar Scores",
-        "ogDescription": "View your real Neynar score, engagement analytics, and account reputation on Farcaster"
-    },
-    "accountAssociation": {
-        "header": "eyJmaWQiOjMzODA2MCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweEJDNzRlQTExNWY0ZjMwQ2U3MzdGMzk0YTkzNzAxQWJkMTY0MmQ3RDEifQ",
-        "payload": "eyJkb21haW4iOiJ2MC10YXNrLXRvLWNhc2gtc2V2ZW4udmVyY2VsLmFwcCJ9",
-        "signature": "XtjTSm1mIbMtK34XLcJ/G4AnGzPrfgnH4aS/lVZHxAsxJwzF10BG8XnCTppCqz96NN289eEAwx+sXmiFxPgndhw="
-    }
+    "version": "1",
+    "name": "TrueScore",
+    "iconUrl": "https://v0-task-to-cash-seven.vercel.app/icon.png",
+    "homeUrl": "https://v0-task-to-cash-seven.vercel.app",
+    "splashImageUrl": "https://v0-task-to-cash-seven.vercel.app/splash.png",
+    "splashBackgroundColor": "#1a1a2e",
+    "webhookUrl": "https://v0-task-to-cash-seven.vercel.app/api/webhook",
+    "subtitle": "Your Real Neynar Reputation",
+    "description": "View your real Neynar score, engagement analytics, and account reputation on Farcaster. Includes daily check-in and tip features.",
+    "primaryCategory": "social",
+    "tags": [
+        "reputation",
+        "analytics",
+        "neynar",
+        "score"
+    ],
+    "imageUrl": "https://v0-task-to-cash-seven.vercel.app/og-image.png",
+    "buttonTitle": "View My Score",
+    "ogTitle": "TrueScore - Your Real Neynar Reputation",
+    "ogDescription": "View your real Neynar score, engagement analytics, and account reputation on Farcaster",
+    "ogImageUrl": "https://v0-task-to-cash-seven.vercel.app/og-image.png",
+    "castShareUrl": "https://v0-task-to-cash-seven.vercel.app",
+    "heroImageUrl": "https://v0-task-to-cash-seven.vercel.app/og-image.png",
+    "tagline": "Track your Farcaster reputation",
+    "screenshotUrls": [
+        "https://v0-task-to-cash-seven.vercel.app/og-image.png"
+    ]
 }
