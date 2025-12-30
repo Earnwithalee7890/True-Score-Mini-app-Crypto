@@ -7,10 +7,11 @@ interface ShareCardProps {
     score: number
     reputation: string
     onShareFarcaster?: () => void
+    onShareBase?: () => void
     onShareX?: () => void
 }
 
-export function ShareCard({ score, reputation, onShareFarcaster, onShareX }: ShareCardProps) {
+export function ShareCard({ score, reputation, onShareFarcaster, onShareBase, onShareX }: ShareCardProps) {
     const handleShareX = () => {
         const text = `My TrueScore: ${score} | Reputation: ${reputation.toUpperCase()} 🎯\n\nCheck yours on Farcaster!`
         const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`
@@ -43,6 +44,14 @@ export function ShareCard({ score, reputation, onShareFarcaster, onShareX }: Sha
                 >
                     <Share2 className="w-5 h-5" />
                     <span>Share on Farcaster</span>
+                </button>
+
+                <button
+                    onClick={onShareBase}
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 shadow-lg"
+                >
+                    <Share2 className="w-5 h-5" />
+                    <span>Share on Base App</span>
                 </button>
 
                 <button

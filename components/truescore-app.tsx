@@ -114,6 +114,12 @@ export function TrueScoreApp() {
     sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`)
   }, [userData])
 
+  const shareOnBase = useCallback(() => {
+    const text = `Just checked in on Base! 🔵\n\nEarning rewards daily with TrueScore Mini App 🎯\n\nJoin me:`
+    const baseUrl = "https://v0-task-to-cash-seven.vercel.app"
+    sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(baseUrl)}`)
+  }, [])
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -256,6 +262,7 @@ export function TrueScoreApp() {
               userData={userData}
               onAddToMiniApp={addToMiniApp}
               onShare={shareApp}
+              onShareBase={shareOnBase}
             />
           ) : activeTab === "search" ? (
             <UserSearchPage />
