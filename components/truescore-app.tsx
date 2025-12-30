@@ -105,7 +105,7 @@ export function TrueScoreApp() {
     if (!userData) return
     console.log('Share button clicked. UserData:', userData)
     console.log('Sharing with FID:', userData.fid)
-    const text = `Check out my TrueScore! 🎯\n\nNeynar Score: ${userData.score}\nReputation: ${userData.reputation.toUpperCase()}\n\nGet your score 👇`
+    const text = `Track your Farcaster reputation with TrueScore! 🎯\n\nNeynar Score: ${userData.score}\nReputation: ${userData.reputation.toUpperCase()}\n\nCheck your score 👇`
     const baseUrl = "https://v0-task-to-cash-seven.vercel.app"
     // Add timestamp to force Farcaster to bypass cache and fetch fresh image
     const timestamp = Date.now()
@@ -115,7 +115,7 @@ export function TrueScoreApp() {
   }, [userData])
 
   const shareOnBase = useCallback(() => {
-    const text = `Just checked in on Base! 🔵\n\nEarning rewards daily with TrueScore Mini App 🎯\n\nJoin me:`
+    const text = `Track your Farcaster reputation with TrueScore! 🎯\n\nReal-time Neynar scores & analytics 📊\n\nJoin me on Base:`
     const baseAppUrl = "https://base.app/app/v0-task-to-cash-seven.vercel.app"
     // Share Base app link so it opens directly in Base app
     sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(baseAppUrl)}`)
