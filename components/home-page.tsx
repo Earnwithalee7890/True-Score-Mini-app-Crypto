@@ -9,6 +9,7 @@ import { StatsGrid } from "./stats-grid"
 import { DailyCheckin } from "./daily-checkin"
 import { BadgesList } from "./badges-list"
 import { ShareCard } from "./share-card"
+import { BaseShareCard } from "./base-share-card"
 
 import { Plus, Share2, User } from "lucide-react"
 import sdk from "@farcaster/frame-sdk"
@@ -45,6 +46,11 @@ export function HomePage({ userData, onAddToMiniApp, onShare }: HomePageProps) {
             {/* Daily Check-in */}
             <div className="opacity-0 animate-slide-up stagger-3">
                 <DailyCheckin />
+            </div>
+
+            {/* Base Share Card */}
+            <div className="opacity-0 animate-slide-up stagger-4">
+                <BaseShareCard onShareFarcaster={onShare} />
             </div>
 
 
