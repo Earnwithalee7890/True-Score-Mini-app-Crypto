@@ -3,6 +3,7 @@
 import { UserStats } from "./user-stats"
 import { DailyCheckin } from "./daily-checkin"
 import { CreatorTip } from "./creator-tip"
+import { ScoreHistory } from "./score-history"
 import type { UserData } from "./truescore-app"
 
 interface ProfilePageProps {
@@ -46,6 +47,11 @@ export function ProfilePage({ userData }: ProfilePageProps) {
             {/* Tip the Creator */}
             <div className="opacity-0 animate-slide-up stagger-4">
                 <CreatorTip />
+            </div>
+
+            {/* Feature 6: Score History */}
+            <div className="opacity-0 animate-slide-up stagger-5">
+                <ScoreHistory currentScore={userData.score} />
             </div>
         </div>
     )
