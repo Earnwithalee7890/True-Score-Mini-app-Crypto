@@ -114,6 +114,42 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
             accent: "border-green-500/50"
         },
         {
+            title: "Prime Time",
+            description: "When are you most active?",
+            content: (
+                <div className="flex flex-col items-center gap-6 mt-4 w-full">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-blue-500/20 rounded-full border border-blue-500/30">
+                            <Clock className="h-8 w-8 text-blue-300" />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-xs text-blue-200/60 uppercase tracking-widest">Peak Hour</span>
+                            <span className="text-2xl font-bold text-white">
+                                {data.peakHour !== undefined ? `${data.peakHour}:00 UTC` : "Unknown"}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="w-full h-px bg-white/10" />
+
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-yellow-500/20 rounded-full border border-yellow-500/30">
+                            <Calendar className="h-8 w-8 text-yellow-300" />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-xs text-yellow-200/60 uppercase tracking-widest">Favorite Day</span>
+                            <span className="text-2xl font-bold text-white">
+                                {data.peakDay || "Everyday"}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            ),
+            icon: <Clock className="h-10 w-10 text-blue-400" />,
+            color: "from-blue-600/20 to-indigo-600/20",
+            accent: "border-blue-500/50"
+        },
+        {
             title: "Community Impact",
             description: "Your voice resonated across the network.",
             content: (
