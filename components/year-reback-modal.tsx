@@ -4,25 +4,8 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Users, Mic, Sparkles, Compass, Zap, Clock, Link as LinkIcon, Check } from "lucide-react"
 
-interface YearRebackData {
-    username: string
-    displayName: string
-    pfpUrl: string
-    score: number
-    rank: string
-    activeDays: number
-    totalLikes: number
-    followers: number
-    castsCount: number
-    peakHour?: number
-    peakDay?: string
-    topCast: {
-        text: string
-        likes: number
-        replies: number
-        date: string
-    } | null
-}
+import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Users, Mic, Sparkles, Compass, Zap, Clock, Link as LinkIcon, Check } from "lucide-react"
+import type { YearRebackData } from "@/lib/types"
 
 interface YearRebackModalProps {
     isOpen: boolean
