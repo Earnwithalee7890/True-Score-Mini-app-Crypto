@@ -13,6 +13,7 @@ const appUrl = "https://v0-task-to-cash-seven.vercel.app"
 export const metadata: Metadata = {
   title: "TrueScore - Your Real Neynar Reputation",
   description: "View your real Neynar score, engagement analytics, and account reputation on Farcaster",
+  keywords: ["Farcaster", "Neynar", "Reputation", "Crypto", "Base", "Social Identity", "Year Reback"],
   generator: "v0.app",
   robots: {
     index: true,
