@@ -261,6 +261,7 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
                         <button
                             onClick={onClose}
                             className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors mt-2"
+                            aria-label="Close modal"
                         >
                             <X className="h-6 w-6" />
                         </button>
