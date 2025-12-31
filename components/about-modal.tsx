@@ -55,10 +55,10 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
                             <div className="bg-white/5 p-3 rounded-xl border border-white/10 mt-2">
                                 <h4 className="text-xs font-bold text-cyan-300 uppercase mb-2">Reputation Tiers</h4>
                                 <ul className="space-y-1 text-xs">
-                                    <li className="flex justify-between"><span className="text-green-400">Safe (>80)</span> <span>High Trust</span></li>
+                                    <li className="flex justify-between"><span className="text-green-400">Safe (&gt;80)</span> <span>High Trust</span></li>
                                     <li className="flex justify-between"><span className="text-yellow-400">Neutral (50-79)</span> <span>Average</span></li>
                                     <li className="flex justify-between"><span className="text-orange-400">Risky (25-49)</span> <span>Low Activity</span></li>
-                                    <li className="flex justify-between"><span className="text-red-400">Spammy (<25)</span> <span>Filtered</span></li>
+                                    <li className="flex justify-between"><span className="text-red-400">Spammy (&lt;25)</span> <span>Filtered</span></li>
                                 </ul>
                             </div>
                         </div>
