@@ -15,6 +15,9 @@ interface ActivityFeedProps {
     activities?: ActivityItem[]
 }
 
+/**
+ * Component to display recent user activity (check-ins, streaks, achievements).
+ */
 export function ActivityFeed({ activities = [] }: ActivityFeedProps) {
     const defaultActivities: ActivityItem[] = [
         {
