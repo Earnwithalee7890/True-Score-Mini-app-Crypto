@@ -297,7 +297,35 @@ export function TrueScoreApp() {
                   className="relative h-10 w-10 rounded-full border-2 border-cyan-400/60 ring-2 ring-cyan-400/30 object-cover transition-transform group-hover:scale-110"
                 />
               </div>
-              <ThemeToggle theme={theme} onToggle={toggleTheme} />
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    if (userData) fetchUserData(userData.fid)
+                  }}
+                  disabled={loading}
+                  className="p-2 rounded-full bg-secondary/20 hover:bg-secondary/40 text-cyan-400 transition-colors disabled:opacity-50"
+                  title="Refresh Data"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={loading ? "animate-spin" : ""}
+                  >
+                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                    <path d="M16 16h5v5" />
+                  </svg>
+                </button>
+                <ThemeToggle theme={theme} onToggle={toggleTheme} />
+              </div>
             </div>
           </header>
 

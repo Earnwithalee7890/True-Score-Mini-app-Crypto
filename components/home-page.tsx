@@ -26,9 +26,18 @@ export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onSho
 
     return (
         <div className="space-y-6 pb-2">
-            {/* DEBUG: Show FID being used */}
+            {/* DEBUG: Show FID being used (Click to Copy) */}
             <div className="opacity-0 animate-slide-up stagger-0 text-center">
-                <p className="text-xs text-muted-foreground">FID: {userData.fid}</p>
+                <button
+                    onClick={() => {
+                        navigator.clipboard.writeText(userData.fid.toString())
+                        // Could add a toast here, but for now simple visual feedback via active state is fine
+                    }}
+                    className="text-xs text-muted-foreground/60 hover:text-cyan-400 transition-colors cursor-pointer active:scale-95"
+                    title="Click to copy FID"
+                >
+                    FID: {userData.fid} 📋
+                </button>
             </div>
 
             {/* Neynar Score Display */}
