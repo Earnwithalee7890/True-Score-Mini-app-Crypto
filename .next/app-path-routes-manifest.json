@@ -2,6 +2,7 @@
   "/.well-known/farcaster.json/route": "/.well-known/farcaster.json",
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
+  "/api/.well-known/farcaster/route": "/api/.well-known/farcaster",
   "/api/cron/check-scores/route": "/api/cron/check-scores",
   "/api/generate-post/route": "/api/generate-post",
   "/api/neynar/search/route": "/api/neynar/search",

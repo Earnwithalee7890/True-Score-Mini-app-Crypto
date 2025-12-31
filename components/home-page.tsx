@@ -19,9 +19,10 @@ interface HomePageProps {
     onAddToMiniApp: () => void
     onShare: () => void
     onShareBase: () => void
+    onShowYearReback: () => void
 }
 
-export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase }: HomePageProps) {
+export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onShowYearReback }: HomePageProps) {
 
     return (
         <div className="space-y-6 pb-2">
@@ -46,6 +47,22 @@ export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase }: Hom
             {/* Daily Check-in */}
             <div className="opacity-0 animate-slide-up stagger-3">
                 <DailyCheckin />
+            </div>
+
+            {/* Year Reback Banner */}
+            <div className="opacity-0 animate-slide-up stagger-4">
+                <button
+                    onClick={onShowYearReback}
+                    className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 border border-violet-500/30 flex items-center justify-between group"
+                >
+                    <div className="flex flex-col items-start">
+                        <span className="text-sm font-bold text-violet-200">2024 Year Reback</span>
+                        <span className="text-xs text-violet-300/60">Tap to replay your timeline</span>
+                    </div>
+                    <div className="h-8 w-8 rounded-full bg-violet-500/20 flex items-center justify-center group-hover:bg-violet-500/30 transition-colors">
+                        <Share2 className="h-4 w-4 text-violet-300" />
+                    </div>
+                </button>
             </div>
 
             {/* Share Card */}

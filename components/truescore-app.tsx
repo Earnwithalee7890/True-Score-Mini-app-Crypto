@@ -11,6 +11,7 @@ import { AppFooter } from "./app-footer"
 import { ClickSpark } from "./click-spark"
 import { AnimatedBackground } from "./animated-background"
 import { OnboardingModal } from "./onboarding-modal"
+import { YearRebackModal } from "./year-reback-modal"
 import { Skeleton } from "@/components/ui/skeleton"
 import sdk from "@farcaster/frame-sdk"
 
@@ -38,6 +39,8 @@ export function TrueScoreApp() {
   const [showAddPrompt, setShowAddPrompt] = useState(false)
   const [activeTab, setActiveTab] = useState<"home" | "profile" | "search" | "ai">("home")
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const [showYearReback, setShowYearReback] = useState(false)
+  const [yearRebackData, setYearRebackData] = useState<any | null>(null)
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem("truescore_onboarding_seen")
@@ -50,6 +53,28 @@ export function TrueScoreApp() {
     localStorage.setItem("truescore_onboarding_seen", "true")
     setShowOnboarding(false)
   }
+
+  const handleCloseYearReback = () => {
+    localStorage.setItem("truescore_year_reback_seen_2024", "true")
+    setShowYearReback(false)
+  }
+
+  // Fetch Year Reback Data
+  const fetchYearReback = useCallback(async (fid: number) => {
+    const hasSeenReback = localStorage.getItem("truescore_year_reback_seen_2024")
+    if (hasSeenReback) return
+
+    try {
+      const response = await fetch(`/api/neynar/year-review?fid=${fid}`)
+      if (response.ok) {
+        const data = await response.json()
+        setYearRebackData(data)
+        setShowYearReback(true)
+      }
+    } catch (e) {
+      console.error("Failed to fetch year reback", e)
+    }
+  }, [])
 
   const updateUserData = async (data: any, fid: number) => {
     // Explicitly ensure FID is in userData, even if API doesn't return it
@@ -174,6 +199,8 @@ export function TrueScoreApp() {
 
         console.log('[INIT] Final FID to use:', fid)
         await fetchUserData(fid)
+        // Check for Year Reback
+        fetchYearReback(fid)
         await sdk.actions.ready()
         setIsSDKLoaded(true)
       } catch (e) {
@@ -279,6 +306,7 @@ export function TrueScoreApp() {
               onAddToMiniApp={addToMiniApp}
               onShare={shareApp}
               onShareBase={shareOnBase}
+              onShowYearReback={() => setShowYearReback(true)}
             />
           ) : activeTab === "search" ? (
             <UserSearchPage />
@@ -298,6 +326,17 @@ export function TrueScoreApp() {
         <OnboardingModal
           isOpen={showOnboarding}
           onClose={handleCloseOnboarding}
+        />
+
+        <YearRebackModal
+          isOpen={showYearReback}
+          onClose={handleCloseYearReback}
+          data={yearRebackData}
+          onShare={() => {
+            const text = `Check out my 2024 Year in Reback on TrueScore! 🎯\n\nRank: ${yearRebackData?.rank}\nScore: ${yearRebackData?.score}\n\nSee yours 👇`
+            const shareUrl = "https://v0-task-to-cash-seven.vercel.app"
+            sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`)
+          }}
         />
       </main>
     </AnimatedBackground>

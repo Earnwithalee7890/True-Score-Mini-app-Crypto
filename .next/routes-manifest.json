@@ -46,6 +46,12 @@
       "namedRegex": "^/\\.well\\-known/farcaster\\.json(?:/)?$"
     },
     {
+      "page": "/api/.well-known/farcaster",
+      "regex": "^/api/\\.well\\-known/farcaster(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/\\.well\\-known/farcaster(?:/)?$"
+    },
+    {
       "page": "/api/cron/check-scores",
       "regex": "^/api/cron/check\\-scores(?:/)?$",
       "routeKeys": {},

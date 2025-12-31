@@ -1,5 +1,3 @@
 {
-  "/api/neynar/search/route": "app/api/neynar/search/route.js",
-  "/api/neynar/user/route": "app/api/neynar/user/route.js",
-  "/page": "app/page.js"
+  "/api/og/route": "app-edge-has-no-entrypoint"
 }
