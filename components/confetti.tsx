@@ -7,7 +7,7 @@ interface ConfettiProps {
     onComplete?: () => void
 }
 
-export function Confetti({ trigger, onComplete }: ConfettiProps) {
+export function Confetti({ trigger, onComplete }: ConfettiProps): React.JSX.Element | null {
     const [pieces, setPieces] = useState<Array<{ id: number; x: number; y: number; rotation: number; color: string }>>([])
 
     useEffect(() => {
