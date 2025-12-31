@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Users } from "lucide-react"
+import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Users, Mic, Sparkles, Compass, Zap } from "lucide-react"
 
 interface YearRebackData {
     username: string
@@ -13,6 +13,7 @@ interface YearRebackData {
     activeDays: number
     totalLikes: number
     followers: number
+    castsCount: number
     topCast: {
         text: string
         likes: number
@@ -32,6 +33,30 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
     const [currentStep, setCurrentStep] = useState(0)
 
     if (!isOpen || !data) return null
+
+    // Determine Persona
+    let persona = "The Lurker"
+    let personaDesc = "Observing from the shadows."
+    let personaIcon = <Users className="h-10 w-10 text-gray-400" />
+
+    // Sample based logic since we have limit=150
+    if (data.castsCount > 50) {
+        persona = "The Voice"
+        personaDesc = "You had a lot to say this year!"
+        personaIcon = <Mic className="h-10 w-10 text-pink-400" />
+    } else if (data.followers > 500 && data.score > 80) {
+        persona = "The Influencer"
+        personaDesc = "People listen when you speak."
+        personaIcon = <Sparkles className="h-10 w-10 text-yellow-400" />
+    } else if (data.totalLikes > 100) {
+        persona = "The Connector"
+        personaDesc = "Spreading good vibes everywhere."
+        personaIcon = <Heart className="h-10 w-10 text-red-400" />
+    } else if (data.castsCount > 10) {
+        persona = "The Explorer"
+        personaDesc = "Finding your footing in the new world."
+        personaIcon = <Compass className="h-10 w-10 text-blue-400" />
+    }
 
     const steps = [
         {
@@ -58,6 +83,33 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
             icon: <Trophy className="h-10 w-10 text-yellow-400" />,
             color: "from-cyan-500/20 to-blue-500/20",
             accent: "border-cyan-500/50"
+        },
+        {
+            title: "Your 2025 Vibe",
+            description: "Here's the energy you brought to the feed.",
+            content: (
+                <div className="flex flex-col items-center gap-4 mt-2 w-full">
+                    <div className="p-4 rounded-full bg-white/10 border border-white/20 shadow-xl animate-pulse-glow">
+                        {personaIcon}
+                    </div>
+                    <div className="text-3xl font-bold text-white tracking-wide">{persona}</div>
+                    <p className="text-sm text-center text-white/70 italic">"{personaDesc}"</p>
+
+                    <div className="mt-4 grid grid-cols-2 gap-3 w-full">
+                        <div className="bg-white/5 rounded-lg p-2 text-center border border-white/10">
+                            <span className="block text-xl font-bold text-green-400">{data.castsCount}</span>
+                            <span className="text-[10px] text-white/50 uppercase tracking-widest">Casts</span>
+                        </div>
+                        <div className="bg-white/5 rounded-lg p-2 text-center border border-white/10">
+                            <span className="block text-xl font-bold text-purple-400">{data.activeDays}</span>
+                            <span className="text-[10px] text-white/50 uppercase tracking-widest">Active Days</span>
+                        </div>
+                    </div>
+                </div>
+            ),
+            icon: <Zap className="h-10 w-10 text-green-400" />,
+            color: "from-green-500/20 to-emerald-500/20",
+            accent: "border-green-500/50"
         },
         {
             title: "Community Impact",
