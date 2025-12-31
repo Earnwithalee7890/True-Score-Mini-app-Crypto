@@ -56,7 +56,7 @@ export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onSho
                     className="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 border border-violet-500/30 flex items-center justify-between group"
                 >
                     <div className="flex flex-col items-start">
-                        <span className="text-sm font-bold text-violet-200">2024 Year Reback</span>
+                        <span className="text-sm font-bold text-violet-200">2025 Year Reback</span>
                         <span className="text-xs text-violet-300/60">Tap to replay your timeline</span>
                     </div>
                     <div className="h-8 w-8 rounded-full bg-violet-500/20 flex items-center justify-center group-hover:bg-violet-500/30 transition-colors">

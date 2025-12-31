@@ -55,13 +55,13 @@ export function TrueScoreApp() {
   }
 
   const handleCloseYearReback = () => {
-    localStorage.setItem("truescore_year_reback_seen_2024", "true")
+    localStorage.setItem("truescore_year_reback_seen_2025", "true")
     setShowYearReback(false)
   }
 
   // Fetch Year Reback Data
   const fetchYearReback = useCallback(async (fid: number) => {
-    const hasSeenReback = localStorage.getItem("truescore_year_reback_seen_2024")
+    const hasSeenReback = localStorage.getItem("truescore_year_reback_seen_2025")
     if (hasSeenReback) return
 
     try {
@@ -333,7 +333,7 @@ export function TrueScoreApp() {
           onClose={handleCloseYearReback}
           data={yearRebackData}
           onShare={() => {
-            const text = `Check out my 2024 Year in Reback on TrueScore! 🎯\n\nRank: ${yearRebackData?.rank}\nScore: ${yearRebackData?.score}\n\nSee yours 👇`
+            const text = `Check out my 2025 Year in Reback on TrueScore! 🎯\n\nRank: ${yearRebackData?.rank}\nScore: ${yearRebackData?.score}\nFollowers: ${yearRebackData?.followers}\n\nSee yours 👇`
             const shareUrl = "https://v0-task-to-cash-seven.vercel.app"
             sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`)
           }}

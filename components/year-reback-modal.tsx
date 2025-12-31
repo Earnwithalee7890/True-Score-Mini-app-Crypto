@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2 } from "lucide-react"
+import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Users } from "lucide-react"
 
 interface YearRebackData {
     username: string
@@ -12,6 +12,7 @@ interface YearRebackData {
     rank: string
     activeDays: number
     totalLikes: number
+    followers: number
     topCast: {
         text: string
         likes: number
@@ -34,7 +35,7 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
 
     const steps = [
         {
-            title: "Your 2024 Reback",
+            title: "Your 2025 Reback",
             description: `Welcome back, ${data.displayName}! Let's take a look at your year on Farcaster.`,
             icon: <Calendar className="h-12 w-12 text-purple-400" />,
             color: "from-purple-500/20 to-indigo-500/20",
@@ -59,19 +60,19 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
             accent: "border-cyan-500/50"
         },
         {
-            title: "Engagement",
+            title: "Community Impact",
             description: "Your voice resonated across the network.",
             content: (
                 <div className="grid grid-cols-2 gap-4 w-full mt-4">
                     <div className="flex flex-col items-center p-3 rounded-xl bg-pink-500/10 border border-pink-500/20">
-                        <Heart className="h-6 w-6 text-pink-400 mb-2" />
-                        <span className="text-2xl font-bold text-white">{data.totalLikes}</span>
-                        <span className="text-xs text-pink-200/70">Est. Likes</span>
+                        <Users className="h-6 w-6 text-pink-400 mb-2" />
+                        <span className="text-2xl font-bold text-white">{data.followers}</span>
+                        <span className="text-xs text-pink-200/70">Total Followers</span>
                     </div>
                     <div className="flex flex-col items-center p-3 rounded-xl bg-orange-500/10 border border-orange-500/20">
-                        <Star className="h-6 w-6 text-orange-400 mb-2" />
-                        <span className="text-2xl font-bold text-white">{data.activeDays}</span>
-                        <span className="text-xs text-orange-200/70">Active Days</span>
+                        <Heart className="h-6 w-6 text-orange-400 mb-2" />
+                        <span className="text-2xl font-bold text-white">{data.totalLikes}</span>
+                        <span className="text-xs text-orange-200/70">Recent Likes</span>
                     </div>
                 </div>
             ),
@@ -80,7 +81,7 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
             accent: "border-pink-500/50"
         },
         {
-            title: "Ready for 2025?",
+            title: "Ready for 2026?",
             description: "Keep building your reputation and connecting with the community!",
             content: (
                 <div className="flex flex-col items-center gap-4 mt-2">
