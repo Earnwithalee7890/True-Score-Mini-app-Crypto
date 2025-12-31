@@ -248,6 +248,33 @@ export function UserSearchPage({ currentUser }: UserSearchPageProps) {
                             Try searching: 338060, dwr, vitalik.eth
                         </p>
                     </Card>
+
+                    {/* Feature 7: Quick Rivals */}
+                    {currentUser && (
+                        <div className="mt-6">
+                            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Quick Rivals</h4>
+                            <div className="grid grid-cols-3 gap-2">
+                                {[
+                                    { name: "dwr", label: "Dan Romero", fid: 3 },
+                                    { name: "vitalik.eth", label: "Vitalik", fid: 5650 },
+                                    { name: "v", label: "Varun", fid: 2 }
+                                ].map((rival) => (
+                                    <button
+                                        key={rival.name}
+                                        onClick={() => {
+                                            setSearchQuery(rival.name)
+                                            // We can't auto-fetch easily without refactoring handleSearch to accept an arg, 
+                                            // so we just populate the field for now.
+                                        }}
+                                        className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 text-xs text-center transition-colors hover:border-cyan-500/30"
+                                    >
+                                        <div className="font-bold text-cyan-300">VS {rival.label}</div>
+                                        <div className="text-[10px] text-muted-foreground/50">@{rival.name}</div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
