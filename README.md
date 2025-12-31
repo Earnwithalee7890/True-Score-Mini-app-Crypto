@@ -113,7 +113,14 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - 200-320 character posts optimized for Farcaster
 - Optional OpenAI integration for truly unique posts
 
-### 3. Dynamic OG Images
+### 3. Year Reback 2025 (New! 🎆)
+- **Interactive Multi-Slide Recap** of your year
+- **Persona Generation** - Are you "The Voice", "The Lurker", or "The Influencer"?
+- **Prime Time Analysis** - Discover your peak activity hours and favorite days
+- **Community Impact** - Visualize your total followers and likes impact
+- **Shareable Card** - Ready-to-post summary for Warpcast
+
+### 4. Dynamic OG Images
 - Auto-generated based on user's FID
 - Shows actual Neynar score
 - Clean, professional design
