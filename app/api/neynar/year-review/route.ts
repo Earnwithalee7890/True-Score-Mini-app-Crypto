@@ -1,5 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
 
+/**
+ * GET handler for Year In Review.
+ * Fetches user profile, stats, and analyzes activity to determine 'Prime Time' and 'Persona'.
+ */
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const fid = searchParams.get("fid")
