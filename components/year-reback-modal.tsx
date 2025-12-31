@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Users, Mic, Sparkles, Compass, Zap, Clock } from "lucide-react"
+import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Users, Mic, Sparkles, Compass, Zap, Clock, Link as LinkIcon, Check } from "lucide-react"
 
 interface YearRebackData {
     username: string
@@ -183,13 +183,23 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
             title: "Ready for 2026?",
             description: "Keep building your reputation and connecting with the community!",
             content: (
-                <div className="flex flex-col items-center gap-4 mt-2">
+                <div className="flex flex-col gap-3 w-full">
                     <button
                         onClick={onShare}
                         className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg"
                     >
                         <Share2 className="h-5 w-5" />
                         Share Reback
+                    </button>
+                    <button
+                        onClick={() => {
+                            navigator.clipboard.writeText("https://truescore.vercel.app")
+                            // You might want to add a toast here, but for now we'll just change icon briefly if we had state
+                        }}
+                        className="w-full py-3 px-4 rounded-xl bg-white/10 text-white font-semibold hover:bg-white/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    >
+                        <LinkIcon className="h-5 w-5" />
+                        Copy App Link
                     </button>
                 </div>
             ),
