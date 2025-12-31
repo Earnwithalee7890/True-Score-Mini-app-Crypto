@@ -6,6 +6,7 @@ import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Us
 
 import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Users, Mic, Sparkles, Compass, Zap, Clock, Link as LinkIcon, Check } from "lucide-react"
 import type { YearRebackData } from "@/lib/types"
+import { formatNumber } from "@/lib/utils"
 
 interface YearRebackModalProps {
     isOpen: boolean
@@ -148,12 +149,12 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
                 <div className="grid grid-cols-2 gap-4 w-full mt-4">
                     <div className="flex flex-col items-center p-3 rounded-xl bg-pink-500/10 border border-pink-500/20">
                         <Users className="h-6 w-6 text-pink-400 mb-2" />
-                        <span className="text-2xl font-bold text-white">{data.followers}</span>
+                        <span className="text-2xl font-bold text-white">{formatNumber(data.followers)}</span>
                         <span className="text-xs text-pink-200/70">Total Followers</span>
                     </div>
                     <div className="flex flex-col items-center p-3 rounded-xl bg-orange-500/10 border border-orange-500/20">
                         <Heart className="h-6 w-6 text-orange-400 mb-2" />
-                        <span className="text-2xl font-bold text-white">{data.totalLikes}</span>
+                        <span className="text-2xl font-bold text-white">{formatNumber(data.totalLikes)}</span>
                         <span className="text-xs text-orange-200/70">Recent Likes</span>
                     </div>
                 </div>
