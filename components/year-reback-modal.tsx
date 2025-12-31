@@ -8,11 +8,11 @@ import { X, ChevronRight, ChevronLeft, Calendar, Trophy, Heart, Star, Share2, Us
 import type { YearRebackData } from "@/lib/types"
 import { formatNumber } from "@/lib/utils"
 
-interface YearRebackModalProps {
-    isOpen: boolean
-    onClose: () => void
+// Modal props definition
+isOpen: boolean
+onClose: () => void
     data: YearRebackData | null
-    onShare: () => void
+onShare: () => void
 }
 
 interface Step {
