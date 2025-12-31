@@ -102,6 +102,7 @@ export async function GET(request: NextRequest) {
       casts: totalCasts,
       replies: totalReplies,
       verifiedAddresses: user.verified_addresses?.eth_addresses ?? [],
+      bio: user.profile.bio.text,
     })
   } catch (error) {
     console.error("Neynar API error:", error)

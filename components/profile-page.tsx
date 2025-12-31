@@ -22,9 +22,14 @@ export function ProfilePage({ userData }: ProfilePageProps) {
                         className="relative h-20 w-20 rounded-full border-2 border-primary/50 ring-2 ring-primary/20 ring-offset-2 ring-offset-background transition-transform hover:scale-105"
                     />
                 </div>
-                <div>
+                <div className="flex flex-col items-center">
                     <p className="font-semibold text-xl text-foreground">{userData.displayName}</p>
-                    <p className="text-sm text-muted-foreground">@{userData.username}</p>
+                    <p className="text-sm text-muted-foreground mb-2">@{userData.username}</p>
+                    {userData.bio && (
+                        <p className="text-xs text-center text-muted-foreground/80 max-w-[250px] leading-relaxed line-clamp-3">
+                            {userData.bio}
+                        </p>
+                    )}
                 </div>
             </div>
 

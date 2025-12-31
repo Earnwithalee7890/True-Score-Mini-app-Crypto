@@ -27,6 +27,7 @@ export interface UserData {
   casts?: number
   replies?: number
   verifiedAddresses: string[]
+  bio?: string
 }
 
 export function TrueScoreApp() {
