@@ -309,7 +309,7 @@ export function TrueScoreApp() {
               onShowYearReback={() => setShowYearReback(true)}
             />
           ) : activeTab === "search" ? (
-            <UserSearchPage />
+            <UserSearchPage currentUser={userData} />
           ) : activeTab === "ai" ? (
             <AIPage userData={userData} />
           ) : (

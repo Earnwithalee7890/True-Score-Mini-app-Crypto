@@ -10,11 +10,16 @@ import { ReputationBadge } from "./reputation-badge"
 import { ProfileStatsRow } from "./profile-stats-row"
 import type { UserData } from "./truescore-app"
 
-export function UserSearchPage() {
+interface UserSearchPageProps {
+    currentUser: UserData | null
+}
+
+export function UserSearchPage({ currentUser }: UserSearchPageProps) {
     const [searchQuery, setSearchQuery] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [searchedUser, setSearchedUser] = useState<UserData | null>(null)
+    const [isComparing, setIsComparing] = useState(false)
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -27,6 +32,7 @@ export function UserSearchPage() {
         setLoading(true)
         setError(null)
         setSearchedUser(null)
+        setIsComparing(false)
 
         try {
             const response = await fetch(`/api/neynar/search?q=${encodeURIComponent(searchQuery.trim())}`)
@@ -44,6 +50,17 @@ export function UserSearchPage() {
         } finally {
             setLoading(false)
         }
+    }
+
+    // Comparison Logic
+    const getWinner = (stat: keyof UserData) => {
+        if (!currentUser || !searchedUser) return null
+        // Handle potentially undefined values safely
+        const currentVal = (currentUser[stat] as number) || 0
+        const searchedVal = (searchedUser[stat] as number) || 0
+        if (currentVal > searchedVal) return "current"
+        if (searchedVal > currentVal) return "searched"
+        return "draw"
     }
 
     return (
@@ -99,42 +116,123 @@ export function UserSearchPage() {
             {/* Search Results */}
             {searchedUser && (
                 <div className="space-y-4">
-                    {/* User Profile Card */}
-                    <div className="opacity-0 animate-slide-up stagger-2">
-                        <Card className="glass-card-strong p-5 border-2 border-cyan-400/40">
-                            <div className="flex items-center gap-4 mb-4">
-                                <img
-                                    src={searchedUser.pfpUrl || "/placeholder-user.jpg"}
-                                    alt={searchedUser.displayName}
-                                    className="h-16 w-16 rounded-full border-2 border-cyan-400/60 ring-2 ring-cyan-400/30 object-cover"
-                                />
-                                <div>
-                                    <h3 className="font-bold text-foreground text-xl">{searchedUser.displayName}</h3>
-                                    <p className="text-sm text-muted-foreground">@{searchedUser.username}</p>
-                                    <p className="text-xs text-cyan-300 mt-1">FID: {searchedUser.fid}</p>
+                    {/* Mode Toggle: View Profile vs Duel Mode */}
+                    {currentUser && searchedUser.fid !== currentUser.fid && (
+                        <div className="flex justify-center opacity-0 animate-slide-up stagger-2">
+                            <button
+                                onClick={() => setIsComparing(!isComparing)}
+                                className={`
+                                    px-6 py-2 rounded-full font-bold text-sm transition-all duration-300 flex items-center gap-2
+                                    ${isComparing
+                                        ? "bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.5)] scale-105"
+                                        : "bg-white/10 text-white/70 hover:bg-white/20"}
+                                `}
+                            >
+                                {isComparing ? (
+                                    <>⚔️ End Duel</>
+                                ) : (
+                                    <>⚔️ Compare with Me</>
+                                )}
+                            </button>
+                        </div>
+                    )}
+
+                    {!isComparing ? (
+                        // Standard Profile View
+                        <div className="space-y-4 animate-fade-in">
+                            <div className="opacity-0 animate-slide-up stagger-2">
+                                <Card className="glass-card-strong p-5 border-2 border-cyan-400/40">
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <img
+                                            src={searchedUser.pfpUrl || "/placeholder-user.jpg"}
+                                            alt={searchedUser.displayName}
+                                            className="h-16 w-16 rounded-full border-2 border-cyan-400/60 ring-2 ring-cyan-400/30 object-cover"
+                                        />
+                                        <div>
+                                            <h3 className="font-bold text-foreground text-xl">{searchedUser.displayName}</h3>
+                                            <p className="text-sm text-muted-foreground">@{searchedUser.username}</p>
+                                            <p className="text-xs text-cyan-300 mt-1">FID: {searchedUser.fid}</p>
+                                        </div>
+                                    </div>
+
+                                    <ProfileStatsRow
+                                        followers={searchedUser.followers}
+                                        following={searchedUser.following}
+                                        casts={searchedUser.casts || 0}
+                                        replies={searchedUser.replies || 0}
+                                    />
+                                </Card>
+                            </div>
+
+                            <div className="opacity-0 animate-slide-up stagger-3">
+                                <ScoreDisplay score={searchedUser.score} />
+                            </div>
+
+                            <div className="flex justify-center opacity-0 animate-slide-up stagger-4">
+                                <ReputationBadge reputation={searchedUser.reputation} />
+                            </div>
+                        </div>
+                    ) : (
+                        // DUEL MODE ARENA
+                        <div className="space-y-6 animate-fade-in">
+                            {/* Head-to-Head Header */}
+                            <div className="flex items-center justify-center gap-4 py-4">
+                                <div className="text-center">
+                                    <img src={currentUser?.pfpUrl} className="h-12 w-12 rounded-full border-2 border-green-400 mx-auto mb-1" />
+                                    <span className="text-xs font-bold text-green-400">YOU</span>
+                                </div>
+                                <div className="text-2xl font-black italic text-red-500 animate-pulse">VS</div>
+                                <div className="text-center">
+                                    <img src={searchedUser.pfpUrl} className="h-12 w-12 rounded-full border-2 border-red-400 mx-auto mb-1" />
+                                    <span className="text-xs font-bold text-red-400">RIVAL</span>
                                 </div>
                             </div>
 
-                            <ProfileStatsRow
-                                followers={searchedUser.followers}
-                                following={searchedUser.following}
-                                casts={searchedUser.casts || 0}
-                                replies={searchedUser.replies || 0}
-                            />
-                        </Card>
-                    </div>
+                            {/* Score Duel */}
+                            <Card className={`glass-card-strong p-4 border-2 ${getWinner('score') === 'current' ? 'border-green-500/50 bg-green-500/5' : 'border-red-500/50 bg-red-500/5'}`}>
+                                <h4 className="text-center text-sm uppercase tracking-widest text-muted-foreground mb-3">Neynar Score</h4>
+                                <div className="flex items-center justify-between">
+                                    <div className={`text-2xl font-black ${getWinner('score') === 'current' ? 'text-green-400' : 'text-white/50'}`}>
+                                        {currentUser?.score}
+                                    </div>
+                                    <div className={`text-2xl font-black ${getWinner('score') === 'searched' ? 'text-red-400' : 'text-white/50'}`}>
+                                        {searchedUser.score}
+                                    </div>
+                                </div>
+                                {/* Progress Bar Visualization */}
+                                <div className="mt-2 h-2 bg-white/10 rounded-full overflow-hidden flex">
+                                    <div className="h-full bg-green-500" style={{ width: `${(currentUser!.score / (currentUser!.score + searchedUser.score)) * 100}%` }} />
+                                    <div className="h-full bg-red-500" style={{ width: `${(searchedUser.score / (currentUser!.score + searchedUser.score)) * 100}%` }} />
+                                </div>
+                            </Card>
 
-                    {/* Neynar Score */}
-                    <div className="opacity-0 animate-slide-up stagger-3">
-                        <ScoreDisplay score={searchedUser.score} />
-                    </div>
+                            {/* Followers Duel */}
+                            <Card className="glass-card-strong p-4 border border-white/10">
+                                <h4 className="text-center text-xs uppercase tracking-widest text-muted-foreground mb-3">Followers</h4>
+                                <div className="flex items-center justify-between">
+                                    <div className={`text-lg font-bold ${getWinner('followers') === 'current' ? 'text-green-400' : 'text-white/60'}`}>
+                                        {currentUser?.followers}
+                                    </div>
+                                    <div className={`text-lg font-bold ${getWinner('followers') === 'searched' ? 'text-red-400' : 'text-white/60'}`}>
+                                        {searchedUser.followers}
+                                    </div>
+                                </div>
+                            </Card>
 
-                    {/* Reputation Badge */}
-                    <div className="flex justify-center opacity-0 animate-slide-up stagger-4">
-                        <ReputationBadge reputation={searchedUser.reputation} />
-                    </div>
-
-
+                            {/* Casts Duel */}
+                            <Card className="glass-card-strong p-4 border border-white/10">
+                                <h4 className="text-center text-xs uppercase tracking-widest text-muted-foreground mb-3">Total Casts</h4>
+                                <div className="flex items-center justify-between">
+                                    <div className={`text-lg font-bold ${getWinner('casts') === 'current' ? 'text-green-400' : 'text-white/60'}`}>
+                                        {currentUser?.casts || 0}
+                                    </div>
+                                    <div className={`text-lg font-bold ${getWinner('casts') === 'searched' ? 'text-red-400' : 'text-white/60'}`}>
+                                        {searchedUser.casts || 0}
+                                    </div>
+                                </div>
+                            </Card>
+                        </div>
+                    )}
                 </div>
             )}
 
