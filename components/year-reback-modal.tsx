@@ -69,7 +69,7 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
         personaIcon = <Compass className="h-10 w-10 text-blue-400" />
     }
 
-    const steps = [
+    const steps: Step[] = [
         {
             title: "Your 2025 Reback",
             description: `Welcome back, ${data.displayName}! Let's take a look at your year on Farcaster.`,
