@@ -14,27 +14,22 @@ export function AppFooter() {
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <a
             href="https://neynar.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 hover:text-primary transition-colors"
-          >
-            Powered by Neynar
-            <ExternalLink className="h-3 w-3" />
-          </a>
-          <span className="text-border">|</span>
-          <a
-            href="https://farcaster.xyz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 hover:text-primary transition-colors"
-          >
-            Farcaster
-            <ExternalLink className="h-3 w-3" />
-          </a>
-        </div>
-
-        <p className="text-xs text-muted-foreground/60">Built for the Farcaster community</p>
-      </div>
-    </footer>
-  )
+    <>
+            <footer className="py-6 text-center space-y-4">
+              <div className="text-xs text-muted-foreground/60 space-x-4">
+                <button onClick={() => setShowAbout(true)} className="hover:text-cyan-400 transition-colors">
+                  About TrueScore
+                </button>
+                <span>•</span>
+                <a href="https://warpcast.com/aleekhoso" className="hover:text-cyan-400 transition-colors">
+                  Developer
+                </a>
+              </div>
+              <p className="text-[10px] text-muted-foreground/40 font-light">
+                Built with Neynar & Farcaster Frames
+              </p>
+            </footer>
+            <AboutModal isOpen={showAbout} onClose={() => setShowAbout(false)} />
+          </>
+          )
 }
