@@ -162,7 +162,7 @@ export function YearRebackModal({ isOpen, onClose, data, onShare }: YearRebackMo
                     <div className="flex flex-col items-center p-3 rounded-xl bg-orange-500/10 border border-orange-500/20">
                         <Heart className="h-6 w-6 text-orange-400 mb-2" />
                         <span className="text-2xl font-bold text-white">{formatNumber(data.totalLikes)}</span>
-                        <span className="text-xs text-orange-200/70">Recent Likes</span>
+                        <span className="text-xs text-orange-200/70">Total 2025 Likes</span>
                     </div>
                 </div>
             ),
