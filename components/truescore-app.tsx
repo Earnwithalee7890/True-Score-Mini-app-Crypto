@@ -7,11 +7,14 @@ import { UserSearchPage } from "./user-search-page"
 import { AIPage } from "./ai-page"
 import { Navigation } from "./navigation"
 import { ThemeToggle } from "./theme-toggle"
+import { ActivityTicker } from "./activity-ticker"
 import { AppFooter } from "./app-footer"
+import { Eye, EyeOff } from "lucide-react"
 import { ClickSpark } from "./click-spark"
 import { AnimatedBackground } from "./animated-background"
 import { OnboardingModal } from "./onboarding-modal"
 import { YearRebackModal } from "./year-reback-modal"
+import { MatrixRain } from "./matrix-rain"
 import { Skeleton } from "@/components/ui/skeleton"
 import sdk from "@farcaster/frame-sdk"
 
@@ -36,12 +39,15 @@ export function TrueScoreApp() {
   const [error, setError] = useState<string | null>(null)
   const [isSDKLoaded, setIsSDKLoaded] = useState(false)
   const [context, setContext] = useState<any | null>(null)
-  const [theme, setTheme] = useState<"light" | "dark">("dark")
+  const [theme, setTheme] = useState<"light" | "dark" | "cyberpunk">("dark")
   const [showAddPrompt, setShowAddPrompt] = useState(false)
   const [activeTab, setActiveTab] = useState<"home" | "profile" | "search" | "ai">("home")
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [showYearReback, setShowYearReback] = useState(false)
   const [yearRebackData, setYearRebackData] = useState<any | null>(null)
+  const [isZenMode, setIsZenMode] = useState(false)
+  const [matrixClicks, setMatrixClicks] = useState(0)
+  const [showMatrix, setShowMatrix] = useState(false)
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem("truescore_onboarding_seen")
@@ -100,8 +106,10 @@ export function TrueScoreApp() {
 
   const toggleTheme = useCallback(() => {
     setTheme((prev) => {
-      const newTheme = prev === "light" ? "dark" : "light"
-      document.documentElement.classList.toggle("dark", newTheme === "dark")
+      const newTheme = prev === "light" ? "dark" : prev === "dark" ? "cyberpunk" : "light"
+      // Handle DOM class changes
+      document.documentElement.classList.remove("light", "dark", "cyberpunk")
+      document.documentElement.classList.add(newTheme)
       return newTheme
     })
   }, [])
@@ -278,11 +286,27 @@ export function TrueScoreApp() {
 
 
         <div className="relative mx-auto max-w-md space-y-6">
+          <ActivityTicker />
+          {showMatrix && <MatrixRain />}
+
           <header className="opacity-0 animate-fade-in text-center">
             <ClickSpark />
 
             {/* TrueScore Title with Neon Glow */}
-            <h1 className="text-4xl font-bold mb-2 neon-glow-aqua letter-space-wide">
+            <h1
+              onClick={() => {
+                const newCount = matrixClicks + 1
+                setMatrixClicks(newCount)
+                if (newCount === 5) {
+                  setShowMatrix(true)
+                  setTimeout(() => {
+                    setShowMatrix(false)
+                    setMatrixClicks(0)
+                  }, 5000)
+                }
+              }}
+              className="text-4xl font-bold mb-2 neon-glow-aqua letter-space-wide select-none cursor-pointer active:scale-95 transition-transform"
+            >
               TRUESCORE
             </h1>
             <p className="text-sm text-cyan-200/80 mb-6">Your Farcaster Reputation</p>
@@ -324,19 +348,35 @@ export function TrueScoreApp() {
                     <path d="M16 16h5v5" />
                   </svg>
                 </button>
+                <button
+                  onClick={() => setIsZenMode(!isZenMode)}
+                  className={`p-2 rounded-full transition-colors ${isZenMode ? "bg-cyan-500/20 text-cyan-400" : "bg-secondary/20 hover:bg-secondary/40 text-muted-foreground"}`}
+                  title={isZenMode ? "Exit Zen Mode" : "Enter Zen Mode"}
+                >
+                  {isZenMode ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
                 <ThemeToggle theme={theme} onToggle={toggleTheme} />
               </div>
             </div>
           </header>
 
           {activeTab === "home" ? (
-            <HomePage
-              userData={userData}
-              onAddToMiniApp={addToMiniApp}
-              onShare={shareApp}
-              onShareBase={shareOnBase}
-              onShowYearReback={() => setShowYearReback(true)}
-            />
+            isZenMode ? (
+              <div className="flex flex-col items-center justify-center min-h-[50vh] animate-fade-in">
+                <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-4">
+                  {userData.score}
+                </div>
+                <div className="text-xl text-muted-foreground tracking-widest uppercase">Neynar Score</div>
+              </div>
+            ) : (
+              <HomePage
+                userData={userData}
+                onAddToMiniApp={addToMiniApp}
+                onShare={shareApp}
+                onShareBase={shareOnBase}
+                onShowYearReback={() => setShowYearReback(true)}
+              />
+            )
           ) : activeTab === "search" ? (
             <UserSearchPage currentUser={userData} />
           ) : activeTab === "ai" ? (
