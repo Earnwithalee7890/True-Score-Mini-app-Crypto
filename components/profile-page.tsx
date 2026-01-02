@@ -8,6 +8,7 @@ import { ScoreHistory } from "./score-history"
 import { RivalComparisonModal } from "./rival-comparison-modal"
 import { BioGenerator } from "./bio-generator"
 import { PowerCard } from "./power-card"
+import { BuilderResources } from "./builder-resources"
 import { Swords, Copy, Check, Download } from "lucide-react"
 import { toast } from "sonner"
 import type { UserData } from "./truescore-app"
@@ -158,6 +159,11 @@ export function ProfilePage({ userData }: ProfilePageProps) {
             {/* Feature 8: Power Card */}
             <div className="opacity-0 animate-slide-up stagger-5">
                 <PowerCard userData={userData} />
+            </div>
+
+            {/* Feature 13: Build on Base Resources */}
+            <div className="opacity-0 animate-slide-up stagger-6">
+                <BuilderResources />
             </div>
         </div>
     )
