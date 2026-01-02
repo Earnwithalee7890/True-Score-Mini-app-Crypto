@@ -84,104 +84,108 @@ export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onSho
                     )}
                 </div>
 
-                {/* Neynar Score Display */}
-                <div className="opacity-0 animate-slide-up stagger-1">
-                    <LevelProgress score={userData.score} />
-                    <div className="mt-4">
-                        <ScoreDisplay score={userData.score} />
+                {/* Feature 11: Base Gas Tracker */}
+                <BaseGasTracker />
+            </div>
+
+            {/* Neynar Score Display */}
+            <div className="opacity-0 animate-slide-up stagger-1">
+                <LevelProgress score={userData.score} />
+                <div className="mt-4">
+                    <ScoreDisplay score={userData.score} />
+                </div>
+            </div>
+
+
+
+
+            {/* Reputation Badge */}
+            <div className="flex justify-center opacity-0 animate-slide-up stagger-2">
+                <ReputationBadge reputation={userData.reputation} />
+            </div>
+
+            {/* Daily Check-in */}
+            <div className="opacity-0 animate-slide-up stagger-3 space-y-4">
+                <LuckySpin />
+                <DailyCheckin />
+            </div>
+
+            {/* Year Reback Banner */}
+            <div className="opacity-0 animate-slide-up stagger-4">
+                <button
+                    onClick={onShowYearReback}
+                    className="w-full py-5 px-5 rounded-2xl bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 border border-violet-500/30 flex items-center justify-between group hover:border-violet-500/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300"
+                >
+                    <div className="flex flex-col items-start gap-1">
+                        <span className="text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-200 to-fuchsia-200">2025 Year Reback</span>
+                        <span className="text-xs text-violet-300/60 group-hover:text-violet-200 transition-colors">Tap to replay your timeline ↺</span>
                     </div>
-                </div>
+                    <div className="h-8 w-8 rounded-full bg-violet-500/20 flex items-center justify-center group-hover:bg-violet-500/30 transition-colors">
+                        <Share2 className="h-4 w-4 text-violet-300" />
+                    </div>
+                </button>
+            </div>
 
+            {/* Share Card */}
+            <div className="opacity-0 animate-slide-up stagger-5">
+                <ShareCard
+                    score={userData.score}
+                    reputation={userData.reputation}
+                    onShareFarcaster={onShare}
+                    onShareBase={onShareBase}
+                />
+            </div>
 
-
-
-                {/* Reputation Badge */}
-                <div className="flex justify-center opacity-0 animate-slide-up stagger-2">
-                    <ReputationBadge reputation={userData.reputation} />
-                </div>
-
-                {/* Daily Check-in */}
-                <div className="opacity-0 animate-slide-up stagger-3 space-y-4">
-                    <LuckySpin />
-                    <DailyCheckin />
-                </div>
-
-                {/* Year Reback Banner */}
-                <div className="opacity-0 animate-slide-up stagger-4">
+            {/* Action Buttons - Contained in Box */}
+            <div className="opacity-0 animate-slide-up stagger-5">
+                <div className="glass-card-strong p-5 rounded-2xl space-y-4 neon-border">
+                    {/* Add App Button */}
                     <button
-                        onClick={onShowYearReback}
-                        className="w-full py-5 px-5 rounded-2xl bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 border border-violet-500/30 flex items-center justify-between group hover:border-violet-500/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300"
+                        onClick={onAddToMiniApp}
+                        className="glass-neon-button glossy-overlay w-full flex items-center justify-center gap-2 h-14 rounded-2xl font-semibold text-white"
                     >
-                        <div className="flex flex-col items-start gap-1">
-                            <span className="text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-200 to-fuchsia-200">2025 Year Reback</span>
-                            <span className="text-xs text-violet-300/60 group-hover:text-violet-200 transition-colors">Tap to replay your timeline ↺</span>
-                        </div>
-                        <div className="h-8 w-8 rounded-full bg-violet-500/20 flex items-center justify-center group-hover:bg-violet-500/30 transition-colors">
-                            <Share2 className="h-4 w-4 text-violet-300" />
-                        </div>
+                        <Plus className="h-5 w-5" />
+                        Add App
                     </button>
-                </div>
 
-                {/* Share Card */}
-                <div className="opacity-0 animate-slide-up stagger-5">
-                    <ShareCard
-                        score={userData.score}
-                        reputation={userData.reputation}
-                        onShareFarcaster={onShare}
-                        onShareBase={onShareBase}
-                    />
-                </div>
-
-                {/* Action Buttons - Contained in Box */}
-                <div className="opacity-0 animate-slide-up stagger-5">
-                    <div className="glass-card-strong p-5 rounded-2xl space-y-4 neon-border">
-                        {/* Add App Button */}
-                        <button
-                            onClick={onAddToMiniApp}
-                            className="glass-neon-button glossy-overlay w-full flex items-center justify-center gap-2 h-14 rounded-2xl font-semibold text-white"
-                        >
-                            <Plus className="h-5 w-5" />
-                            Add App
-                        </button>
-
-                        {/* Follow Owner Button */}
-                        <button
-                            onClick={() => sdk.actions.openUrl("https://warpcast.com/aleekhoso")}
-                            className="group relative w-full flex items-center justify-center gap-3 h-14 rounded-full neon-border bg-secondary/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-cyan-500/10" />
-                            <User className="h-6 w-6 text-cyan-300 relative" />
-                            <div className="relative flex flex-col items-start leading-tight">
-                                <span className="text-sm text-cyan-200">Follow Developer</span>
-                                <span className="text-[10px] text-cyan-300/60">@aleekhoso</span>
-                            </div>
-                            <div className="relative px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400 text-[10px] font-bold text-black letter-space-wide">PRO</div>
-                        </button>
-
-                        {/* Feature 5: Twitter Share */}
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => {
-                                    const text = `I just checked my Farcaster Reputation on TrueScore! 🎯\n\nMy Score: ${userData.score}\n\nCheck yours here: https://v0-task-to-cash-seven.vercel.app`
-                                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
-                                }}
-                                className="flex-1 flex items-center justify-center gap-2 h-10 rounded-xl bg-black/40 border border-white/10 hover:bg-black/60 transition-colors"
-                            >
-                                <span className="text-sm font-medium text-white/80">Share on X</span>
-                            </button>
-
-                            <button
-                                onClick={() => {
-                                    const text = `I just checked my Farcaster Reputation on TrueScore! 🎯\n\nMy Score: ${userData.score}\n\nCheck yours here: https://v0-task-to-cash-seven.vercel.app`
-                                    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
-                                }}
-                                className="flex-1 flex items-center justify-center gap-2 h-10 rounded-xl bg-green-500/20 border border-green-500/30 hover:bg-green-500/30 transition-colors"
-                            >
-                                <span className="text-sm font-medium text-green-300">WhatsApp</span>
-                            </button>
+                    {/* Follow Owner Button */}
+                    <button
+                        onClick={() => sdk.actions.openUrl("https://warpcast.com/aleekhoso")}
+                        className="group relative w-full flex items-center justify-center gap-3 h-14 rounded-full neon-border bg-secondary/20 backdrop-blur-sm font-bold transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-cyan-500/10" />
+                        <User className="h-6 w-6 text-cyan-300 relative" />
+                        <div className="relative flex flex-col items-start leading-tight">
+                            <span className="text-sm text-cyan-200">Follow Developer</span>
+                            <span className="text-[10px] text-cyan-300/60">@aleekhoso</span>
                         </div>
+                        <div className="relative px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400 text-[10px] font-bold text-black letter-space-wide">PRO</div>
+                    </button>
+
+                    {/* Feature 5: Twitter Share */}
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => {
+                                const text = `I just checked my Farcaster Reputation on TrueScore! 🎯\n\nMy Score: ${userData.score}\n\nCheck yours here: https://v0-task-to-cash-seven.vercel.app`
+                                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
+                            }}
+                            className="flex-1 flex items-center justify-center gap-2 h-10 rounded-xl bg-black/40 border border-white/10 hover:bg-black/60 transition-colors"
+                        >
+                            <span className="text-sm font-medium text-white/80">Share on X</span>
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                const text = `I just checked my Farcaster Reputation on TrueScore! 🎯\n\nMy Score: ${userData.score}\n\nCheck yours here: https://v0-task-to-cash-seven.vercel.app`
+                                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
+                            }}
+                            className="flex-1 flex items-center justify-center gap-2 h-10 rounded-xl bg-green-500/20 border border-green-500/30 hover:bg-green-500/30 transition-colors"
+                        >
+                            <span className="text-sm font-medium text-green-300">WhatsApp</span>
+                        </button>
                     </div>
                 </div>
             </div>
-            )
+        </div>
+    )
 }
