@@ -18,8 +18,10 @@ export function AppFooter() {
             Feedback
           </a>
         </div>
-        <p className="text-[10px] text-muted-foreground/40 font-light">
-          Built with Neynar & Farcaster Frames
+        <p className="text-[10px] text-muted-foreground/40 font-light flex items-center justify-center gap-2">
+          <span>Built with Neynar & Farcaster Frames</span>
+          <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
+          <span>v0.1.0</span>
         </p>
       </footer>
       <AboutModal isOpen={showAbout} onClose={() => setShowAbout(false)} />
