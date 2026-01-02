@@ -278,6 +278,7 @@ See [`/contracts/README.md`](contracts/README.md) for detailed contract document
 ## 🔗 Links
 
 - **Live App:** [v0-task-to-cash-seven.vercel.app](https://v0-task-to-cash-seven.vercel.app)
+- **Mini App:** [Install on Warpcast](https://warpcast.com/~/frames/launch?url=https%3A%2F%2Fv0-task-to-cash-seven.vercel.app)
 - **GitHub:** [Earnwithalee7890/True-Score-Mini-app-Crypto](https://github.com/Earnwithalee7890/True-Score-Mini-app-Crypto)
 - **Farcaster:** [@aleekhoso](https://warpcast.com/aleekhoso)
 
