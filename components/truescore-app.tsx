@@ -9,10 +9,11 @@ import { Navigation } from "./navigation"
 import { ThemeToggle } from "./theme-toggle"
 import { ActivityTicker } from "./activity-ticker"
 import { AppFooter } from "./app-footer"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, Info } from "lucide-react"
 import { ClickSpark } from "./click-spark"
 import { AnimatedBackground } from "./animated-background"
 import { OnboardingModal } from "./onboarding-modal"
+import { AboutModal } from "./about-modal"
 import { YearRebackModal } from "./year-reback-modal"
 import { MatrixRain } from "./matrix-rain"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -48,6 +49,7 @@ export function TrueScoreApp() {
   const [isZenMode, setIsZenMode] = useState(false)
   const [matrixClicks, setMatrixClicks] = useState(0)
   const [showMatrix, setShowMatrix] = useState(false)
+  const [showAboutModal, setShowAboutModal] = useState(false)
 
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem("truescore_onboarding_seen")
@@ -355,6 +357,13 @@ export function TrueScoreApp() {
                 >
                   {isZenMode ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
+                <button
+                  onClick={() => setShowAboutModal(true)}
+                  className="p-2 rounded-full bg-secondary/20 hover:bg-secondary/40 text-muted-foreground hover:text-cyan-400 transition-colors"
+                  title="About TrueScore"
+                >
+                  <Info className="h-5 w-5" />
+                </button>
                 <ThemeToggle theme={theme} onToggle={toggleTheme} />
               </div>
             </div>
@@ -396,6 +405,11 @@ export function TrueScoreApp() {
         <OnboardingModal
           isOpen={showOnboarding}
           onClose={handleCloseOnboarding}
+        />
+
+        <AboutModal
+          isOpen={showAboutModal}
+          onClose={() => setShowAboutModal(false)}
         />
 
         <YearRebackModal
