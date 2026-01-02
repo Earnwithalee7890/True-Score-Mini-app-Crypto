@@ -51,17 +51,19 @@ export async function GET(request: NextRequest) {
 
     let reputation: "safe" | "neutral" | "risky" | "spammy" = "neutral"
 
-    // Improved Logic: Check active status and power badge
+    // Improved Logic: Relaxed strictness on active status for high scores
     const isActive = user.active_status === "active"
     const isPowerUser = user.power_badge === true
 
-    if (scorePercent >= 80 && isActive) reputation = "safe"
-    else if (scorePercent >= 50 && isActive) reputation = "neutral"
-    else if (scorePercent >= 25) reputation = "risky"
+    // Trust the Score primarily
+    if (scorePercent >= 80) reputation = "safe"
+    else if (scorePercent >= 60) reputation = "safe" // Expanded safe range
+    else if (scorePercent >= 40) reputation = "neutral"
+    else if (scorePercent >= 20) reputation = "risky"
     else reputation = "spammy"
 
-    // Force spammy if inactive and low score, or explicitly usually low
-    if (user.active_status === "inactive" && scorePercent < 50) reputation = "spammy"
+    // Only downgrade if explicitly inactive AND low score
+    if (user.active_status === "inactive" && scorePercent < 40) reputation = "spammy"
 
     // Fetch user's casts to count total casts and replies
     let totalCasts = 0
