@@ -1,6 +1,5 @@
 "use client"
 
-import { Progress } from "@/components/ui/progress"
 import { Trophy, Star, ChevronRight } from "lucide-react"
 
 interface LevelProgressProps {
