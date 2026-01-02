@@ -115,7 +115,8 @@ export function UserSearchPage({ currentUser }: UserSearchPageProps) {
             )}
 
             {/* Feature 10: Search Skeletons */}
-            <SearchSkeleton />
+            {loading && !searchedUser && (
+                <SearchSkeleton />
             )}
 
             {/* Search Results */}
