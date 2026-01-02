@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Search, Loader2, User as UserIcon, AlertCircle } from "lucide-react"
 import { ScoreDisplay } from "./score-display"
 import { ReputationBadge } from "./reputation-badge"
+import { SearchSkeleton } from "./search-skeleton"
 
 import { ProfileStatsRow } from "./profile-stats-row"
 import type { UserData } from "./truescore-app"
@@ -114,24 +115,7 @@ export function UserSearchPage({ currentUser }: UserSearchPageProps) {
             )}
 
             {/* Feature 10: Search Skeletons */}
-            {loading && !searchedUser && (
-                <div className="space-y-4 opacity-0 animate-slide-up stagger-2">
-                    <Card className="glass-card-strong p-5 border-2 border-white/5">
-                        <div className="flex items-center gap-4 mb-4">
-                            <div className="h-16 w-16 rounded-full bg-white/10 animate-pulse" />
-                            <div className="space-y-2">
-                                <div className="h-5 w-32 bg-white/10 rounded animate-pulse" />
-                                <div className="h-3 w-20 bg-white/10 rounded animate-pulse" />
-                            </div>
-                        </div>
-                        <div className="flex justify-between gap-4">
-                            {[1, 2, 3, 4].map(i => (
-                                <div key={i} className="h-8 w-12 bg-white/10 rounded animate-pulse" />
-                            ))}
-                        </div>
-                    </Card>
-                    <div className="h-32 rounded-full bg-white/5 animate-pulse mx-auto opacity-50" />
-                </div>
+            <SearchSkeleton />
             )}
 
             {/* Search Results */}
