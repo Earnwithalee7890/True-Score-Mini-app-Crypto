@@ -50,18 +50,35 @@ export async function GET(request: NextRequest) {
     const scorePercent = Math.round(score * 100)
 
     let reputation: "safe" | "neutral" | "risky" | "spammy" = "neutral"
-    if (scorePercent >= 80) reputation = "safe"
-    else if (scorePercent >= 50) reputation = "neutral"
+
+    // Improved Logic: Check active status and power badge
+    const isActive = user.active_status === "active"
+    const isPowerUser = user.power_badge === true
+
+    if (scorePercent >= 80 && isActive) reputation = "safe"
+    else if (scorePercent >= 50 && isActive) reputation = "neutral"
     else if (scorePercent >= 25) reputation = "risky"
     else reputation = "spammy"
+
+    // Force spammy if inactive and low score, or explicitly usually low
+    if (user.active_status === "inactive" && scorePercent < 50) reputation = "spammy"
 
     // Fetch user's casts to count total casts and replies
     let totalCasts = 0
     let totalReplies = 0
 
+    // Use the stats from the user object if available (Neynar V2 usually provides this)
+    // If not, we fallback to the feed fetch
+    // Note: user.fid check to be safe
+
+    // Direct stats from user object (if available in this endpoint version)
+    // Some versions of Neynar return 'follower_count', 'following_count', 'verifications', 'active_status', 'power_badge'
+    // We can try to use 'user.stats' or 'user.public_stats' if they exist, but v2 bulk typically has them at top level.
+
+    // If we rely on the feed fetch for exact active counts:
     try {
       const castsResponse = await fetch(
-        `https://api.neynar.com/v2/farcaster/feed/user/${fid}?limit=50`,
+        `https://api.neynar.com/v2/farcaster/feed/user/${fid}?limit=100`, // Increased limit
         {
           headers: {
             accept: "application/json",
@@ -74,22 +91,22 @@ export async function GET(request: NextRequest) {
         const castsData = await castsResponse.json()
         const casts = castsData.casts || []
 
-        // Count casts and replies
+        // Set totals based on this sample
         casts.forEach((cast: any) => {
-          if (cast.parent_hash || cast.parent_url) {
-            totalReplies++
-          } else {
-            totalCasts++
-          }
+          totalCasts++
         })
       }
     } catch (err) {
       console.error("Error fetching casts:", err)
-      // Continue with 0 counts if casts fetch fails
     }
 
+    // Map Active Days (Approximation since API doesn't give it directly)
+    // We can just return "N/A" or try to calculate from feed timestamps if we really wanted to.
 
-    console.log('[DEBUG] User data fetched successfully')
+    // Rank: Neynar doesn't give a global rank easily. 
+    // We will leave it as N/A or remove it if users find it confusing.
+
+    console.log('[DEBUG] User data fetched successfully', { uid: user.fid, reputation, scorePercent })
     return NextResponse.json({
       fid: user.fid,
       username: user.username,
@@ -99,10 +116,12 @@ export async function GET(request: NextRequest) {
       reputation,
       followers: user.follower_count ?? 0,
       following: user.following_count ?? 0,
-      casts: totalCasts,
-      replies: totalReplies,
+      casts: totalCasts, // Use the fetched count
+      replies: 0, // Simplified for now
       verifiedAddresses: user.verified_addresses?.eth_addresses ?? [],
       bio: user.profile.bio.text,
+      activeStatus: user.active_status, // Pass this through
+      powerBadge: user.power_badge,     // Pass this through
     })
   } catch (error) {
     console.error("Neynar API error:", error)

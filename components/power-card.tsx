@@ -60,12 +60,12 @@ export function PowerCard({ userData }: PowerCardProps) {
                             <span className="font-bold">{userData.followers}</span>
                         </div>
                         <div className="bg-white/5 rounded p-2 text-center">
-                            <span className="block text-gray-400 text-[10px]">Active Days</span>
-                            <span className="font-bold">{userData.activeDays || "N/A"}</span>
+                            <span className="block text-gray-400 text-[10px]">Status</span>
+                            <span className="font-bold capitalize">{userData.activeStatus || "Unknown"}</span>
                         </div>
                         <div className="bg-white/5 rounded p-2 text-center">
-                            <span className="block text-gray-400 text-[10px]">Rank</span>
-                            <span className="font-bold">#{userData.rank || "---"}</span>
+                            <span className="block text-gray-400 text-[10px]">Power User</span>
+                            <span className="font-bold">{userData.powerBadge ? "Yes" : "No"}</span>
                         </div>
                         <div className="bg-white/5 rounded p-2 text-center">
                             <span className="block text-gray-400 text-[10px]">Casts</span>

@@ -32,6 +32,8 @@ export interface UserData {
   replies?: number
   verifiedAddresses: string[]
   bio?: string
+  activeStatus?: string
+  powerBadge?: boolean
 }
 
 export function TrueScoreApp() {
