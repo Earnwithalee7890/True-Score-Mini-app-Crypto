@@ -8,13 +8,14 @@ export function AppFooter() {
   return (
     <>
       <footer className="py-6 text-center space-y-4">
-        <div className="text-xs text-muted-foreground/60 space-x-4">
-          <button onClick={() => setShowAbout(true)} className="hover:text-cyan-400 transition-colors">
-            About TrueScore
-          </button>
-          <span>•</span>
-          <a href="https://warpcast.com/aleekhoso" className="hover:text-cyan-400 transition-colors">
-            Developer
+        <div className="flex gap-4 text-xs text-muted-foreground/60">
+          <a href="/privacy" className="hover:text-cyan-400 transition-colors">Privacy</a>
+          <a href="/terms" className="hover:text-cyan-400 transition-colors">Terms</a>
+          <a
+            href="mailto:support@truescore.xyz?subject=TrueScore%20Feedback"
+            className="hover:text-cyan-400 transition-colors"
+          >
+            Feedback
           </a>
         </div>
         <p className="text-[10px] text-muted-foreground/40 font-light">
