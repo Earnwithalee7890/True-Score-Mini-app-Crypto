@@ -70,6 +70,16 @@ export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onSho
                     <RefreshCw className={`h-3 w-3 ${isRefreshing ? "animate-spin" : ""}`} />
                     Refresh
                 </button>
+
+                {/* Feature 4: Manual Confetti Trigger */}
+                {userData.score >= 80 && (
+                    <button
+                        onClick={() => setShowConfetti(true)}
+                        className="text-xs text-muted-foreground/60 hover:text-pink-400 transition-colors flex items-center gap-1 active:scale-95"
+                    >
+                        🎉 Celebrate
+                    </button>
+                )}
             </div>
 
             {/* Neynar Score Display */}
