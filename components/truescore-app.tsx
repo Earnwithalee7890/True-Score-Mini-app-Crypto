@@ -18,6 +18,7 @@ import { YearRebackModal } from "./year-reback-modal"
 import { MatrixRain } from "./matrix-rain"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PowerCardSkeleton } from "@/components/power-card-skeleton"
+import { ScrollToTop } from "@/components/scroll-to-top"
 import sdk from "@farcaster/frame-sdk"
 
 export interface UserData {
@@ -431,6 +432,8 @@ export function TrueScoreApp() {
             sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`)
           }}
         />
+
+        <ScrollToTop />
       </main>
     </AnimatedBackground>
   )
