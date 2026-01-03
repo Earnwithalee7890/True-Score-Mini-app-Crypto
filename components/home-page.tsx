@@ -25,11 +25,12 @@ interface HomePageProps {
     onAddToMiniApp: () => void
     onShare: () => void
     onShareBase: () => void
+    onShareLinkedIn?: () => void
     onShowYearReback: () => void
     onRefresh: () => void
 }
 
-export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onShowYearReback, onRefresh }: HomePageProps) {
+export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onShareLinkedIn, onShowYearReback, onRefresh }: HomePageProps) {
     const [showConfetti, setShowConfetti] = useState(false)
     const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -169,16 +170,16 @@ export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onSho
                         <div className="relative px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400 text-[10px] font-bold text-black letter-space-wide">PRO</div>
                     </button>
 
-                    {/* Feature 5: Twitter Share */}
-                    <div className="flex gap-3">
+                    {/* Feature 5: Twitter, WhatsApp & LinkedIn Share */}
+                    <div className="grid grid-cols-3 gap-2">
                         <button
                             onClick={() => {
                                 const text = `I just checked my Farcaster Reputation on TrueScore! 🎯\n\nMy Score: ${userData.score}\n\nCheck yours here: https://v0-task-to-cash-seven.vercel.app`
                                 window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
                             }}
-                            className="flex-1 flex items-center justify-center gap-2 h-10 rounded-xl bg-black/40 border border-white/10 hover:bg-black/60 transition-colors"
+                            className="flex items-center justify-center gap-1.5 h-10 rounded-xl bg-black/40 border border-white/10 hover:bg-black/60 transition-colors"
                         >
-                            <span className="text-sm font-medium text-white/80">Share on X</span>
+                            <span className="text-xs font-medium text-white/80">Share on X</span>
                         </button>
 
                         <button
@@ -186,10 +187,19 @@ export function HomePage({ userData, onAddToMiniApp, onShare, onShareBase, onSho
                                 const text = `I just checked my Farcaster Reputation on TrueScore! 🎯\n\nMy Score: ${userData.score}\n\nCheck yours here: https://v0-task-to-cash-seven.vercel.app`
                                 window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
                             }}
-                            className="flex-1 flex items-center justify-center gap-2 h-10 rounded-xl bg-green-500/20 border border-green-500/30 hover:bg-green-500/30 transition-colors"
+                            className="flex items-center justify-center gap-1.5 h-10 rounded-xl bg-green-500/20 border border-green-500/30 hover:bg-green-500/30 transition-colors"
                         >
-                            <span className="text-sm font-medium text-green-300">WhatsApp</span>
+                            <span className="text-xs font-medium text-green-300">WhatsApp</span>
                         </button>
+
+                        {onShareLinkedIn && (
+                            <button
+                                onClick={onShareLinkedIn}
+                                className="flex items-center justify-center gap-1.5 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 hover:bg-blue-600/30 transition-colors"
+                            >
+                                <span className="text-xs font-medium text-blue-300">LinkedIn</span>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
