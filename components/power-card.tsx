@@ -13,25 +13,53 @@ export function PowerCard({ userData }: PowerCardProps) {
     let color = "from-gray-500 to-slate-600"
     let border = "border-gray-400"
 
-    if (userData.score > 90) {
+    const score = userData.score || 0 // Default to 0 safely
+
+    if (score > 90) {
         rarity = "Legendary"
         color = "from-yellow-400 via-orange-500 to-red-500"
         border = "border-yellow-400"
-    } else if (userData.score > 75) {
+    } else if (score > 75) {
         rarity = "Epic"
         color = "from-purple-500 to-pink-500"
         border = "border-purple-400"
-    } else if (userData.score > 50) {
+    } else if (score > 50) {
         rarity = "Rare"
         color = "from-blue-500 to-cyan-500"
         border = "border-blue-400"
+    }
+
+    const [isDownloading, setIsDownloading] = useState(false)
+
+    const handleDownload = async () => {
+        setIsDownloading(true)
+        try {
+            // Fetch the generated image from our API
+            const response = await fetch(`/api/og?fid=${userData.fid}&type=powercard`)
+            if (!response.ok) throw new Error("Failed to generate card")
+
+            const blob = await response.blob()
+            const url = window.URL.createObjectURL(blob)
+
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `truescore-${userData.username}.png`
+            document.body.appendChild(a)
+            a.click()
+            document.body.removeChild(a)
+            window.URL.revokeObjectURL(url)
+        } catch (error) {
+            console.error("Download failed:", error)
+        } finally {
+            setIsDownloading(false)
+        }
     }
 
     return (
         <div className="mt-8">
             <h3 className="text-center text-sm uppercase tracking-widest text-muted-foreground mb-4">Your Power Card</h3>
 
-            <div className={`relative aspect-[3/4] max-w-[280px] mx-auto rounded-3xl p-1 bg-gradient-to-br ${color} shadow-2xl`}>
+            <div className={`relative aspect-[3/4] max-w-[280px] mx-auto rounded-3xl p-1 bg-gradient-to-br ${color} shadow-2xl transition-all hover:scale-[1.02]`}>
                 {/* Holographic overlay effect */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-50 rounded-3xl pointer-events-none" />
 
@@ -41,7 +69,7 @@ export function PowerCard({ userData }: PowerCardProps) {
                         <span className={`text-xs font-bold px-2 py-0.5 rounded bg-white/10 ${border.replace('border', 'text')}`}>{rarity}</span>
                         <div className="flex items-center gap-1 text-yellow-400">
                             <Zap className="h-3 w-3 fill-current" />
-                            <span className="font-mono font-bold">{userData.score}</span>
+                            <span className="font-mono font-bold">{score}</span>
                         </div>
                     </div>
 
@@ -57,11 +85,13 @@ export function PowerCard({ userData }: PowerCardProps) {
                     <div className="grid grid-cols-2 gap-2 text-xs mb-auto">
                         <div className="bg-white/5 rounded p-2 text-center">
                             <span className="block text-gray-400 text-[10px]">Followers</span>
-                            <span className="font-bold">{userData.followers}</span>
+                            <span className="font-bold">{userData.followers.toLocaleString()}</span>
                         </div>
                         <div className="bg-white/5 rounded p-2 text-center">
                             <span className="block text-gray-400 text-[10px]">Status</span>
-                            <span className="font-bold capitalize">{userData.activeStatus || "Unknown"}</span>
+                            <span className="font-bold capitalize">
+                                {userData.activeStatus ? userData.activeStatus : "Unknown"}
+                            </span>
                         </div>
                         <div className="bg-white/5 rounded p-2 text-center">
                             <span className="block text-gray-400 text-[10px]">Power User</span>
@@ -69,7 +99,7 @@ export function PowerCard({ userData }: PowerCardProps) {
                         </div>
                         <div className="bg-white/5 rounded p-2 text-center">
                             <span className="block text-gray-400 text-[10px]">Casts</span>
-                            <span className="font-bold">{userData.casts || 0}</span>
+                            <span className="font-bold">{userData.casts !== undefined ? userData.casts.toLocaleString() : 0}</span>
                         </div>
                     </div>
 
@@ -84,8 +114,19 @@ export function PowerCard({ userData }: PowerCardProps) {
                 </div>
             </div>
 
-            <Button className="w-full max-w-[280px] mx-auto block mt-4 bg-white/10 hover:bg-white/20 text-white border border-white/10">
-                Download Card
+            <Button
+                onClick={handleDownload}
+                disabled={isDownloading}
+                className="w-full max-w-[280px] mx-auto block mt-4 bg-white/10 hover:bg-white/20 text-white border border-white/10"
+            >
+                {isDownloading ? (
+                    <span className="flex items-center justify-center gap-2">
+                        <span className="animate-spin h-4 w-4 border-2 border-white/50 border-t-white rounded-full" />
+                        Generating...
+                    </span>
+                ) : (
+                    "Download Card"
+                )}
             </Button>
         </div>
     )
