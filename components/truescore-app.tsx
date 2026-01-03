@@ -17,6 +17,7 @@ import { AboutModal } from "./about-modal"
 import { YearRebackModal } from "./year-reback-modal"
 import { MatrixRain } from "./matrix-rain"
 import { Skeleton } from "@/components/ui/skeleton"
+import { PowerCardSkeleton } from "@/components/power-card-skeleton"
 import sdk from "@farcaster/frame-sdk"
 
 export interface UserData {
@@ -230,13 +231,19 @@ export function TrueScoreApp() {
   if (loading) {
     return (
       <AnimatedBackground theme={theme}>
-        <main className="min-h-screen flex items-center justify-center px-4">
-          <div className="relative">
-            {/* Elegant pulsing gradient circle - no logo/text */}
-            <div className="relative w-20 h-20 mx-auto">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 animate-pulse-glow opacity-60" />
-              <div className="absolute inset-2 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-spin-slow opacity-80" style={{ animationDuration: '3s' }} />
-              <div className="absolute inset-4 rounded-full bg-background" />
+        <main className="min-h-screen px-4 py-8">
+          <div className="relative mx-auto max-w-md space-y-6">
+            {/* Fake header to match layout during load */}
+            <div className="flex justify-center mb-6">
+              <Skeleton className="h-8 w-48 rounded" />
+            </div>
+
+            {/* Power Card Skeleton */}
+            <PowerCardSkeleton />
+
+            <div className="space-y-4 mt-8">
+              <Skeleton className="h-24 w-full rounded-2xl" />
+              <Skeleton className="h-16 w-full rounded-2xl" />
             </div>
           </div>
         </main>
