@@ -9,66 +9,68 @@ export async function GET(request: NextRequest) {
     }
 
     const apiKey = process.env.NEYNAR_API_KEY
-
+    // Handle case where API key is missing (Dev mode) check
     if (!apiKey) {
+        // Mock response if query matches demo users
+        if (query.toLowerCase() === 'demo' || query === '1') {
+            return NextResponse.json({
+                fid: 1,
+                username: "demo_user",
+                displayName: "Demo User",
+                pfpUrl: "/profile-avatar-crypto-user.jpg",
+                score: 85,
+                reputation: "safe",
+                followers: 1337,
+                following: 42,
+                casts: 500,
+                replies: 100,
+                verifiedAddresses: [],
+                activeStatus: "active",
+                powerBadge: true
+            })
+        }
         return NextResponse.json({ error: "API key not configured" }, { status: 500 })
     }
 
     try {
         // Check if query is a number (FID) or string (username)
-        const isFID = /^\d+$/.test(query)
+        // Trim whitespace and remove '@' prefix if user typed it
+        const cleanQuery = query.trim().replace(/^@/, '')
+        const isFID = /^\d+$/.test(cleanQuery)
 
         let userData
 
         if (isFID) {
-            // Search by FID - use existing bulk user endpoint
-            const fid = query
-            const userResponse = await fetch(`https://api.neynar.com/v2/farcaster/user/bulk?fids=${fid}`, {
-                headers: {
-                    accept: "application/json",
-                    "x-api-key": apiKey,
-                },
+            // Search by FID
+            const userResponse = await fetch(`https://api.neynar.com/v2/farcaster/user/bulk?fids=${cleanQuery}`, {
+                headers: { accept: "application/json", "x-api-key": apiKey }
             })
 
-            if (!userResponse.ok) {
-                throw new Error("Failed to fetch user from Neynar")
-            }
+            if (!userResponse.ok) throw new Error("Failed to fetch user from Neynar")
 
             const data = await userResponse.json()
-            const user = data.users?.[0]
-
-            if (!user) {
-                return NextResponse.json({ error: "User not found" }, { status: 404 })
-            }
-
-            userData = user
+            userData = data.users?.[0]
         } else {
-            // Search by username - use search endpoint
+            // Search by username
             const searchResponse = await fetch(
-                `https://api.neynar.com/v2/farcaster/user/search?q=${encodeURIComponent(query)}&limit=1`,
+                `https://api.neynar.com/v2/farcaster/user/search?q=${encodeURIComponent(cleanQuery)}&limit=1`,
                 {
-                    headers: {
-                        accept: "application/json",
-                        "x-api-key": apiKey,
-                    },
+                    headers: { accept: "application/json", "x-api-key": apiKey }
                 }
             )
 
-            if (!searchResponse.ok) {
-                throw new Error("Failed to search users")
-            }
+            if (!searchResponse.ok) throw new Error("Failed to search users")
 
             const searchData = await searchResponse.json()
-            const user = searchData.result?.users?.[0]
-
-            if (!user) {
-                return NextResponse.json({ error: "User not found" }, { status: 404 })
-            }
-
-            userData = user
+            // Robust check for response structure
+            userData = searchData.result?.users?.[0] || searchData.users?.[0]
         }
 
-        // Calculate score and reputation
+        if (!userData) {
+            return NextResponse.json({ error: "User not found" }, { status: 404 })
+        }
+
+        // Calculate score and reputation (standardized logic)
         const score = userData.experimental?.neynar_user_score ?? 0
         const scorePercent = Math.round(score * 100)
 
@@ -78,6 +80,7 @@ export async function GET(request: NextRequest) {
         else if (scorePercent >= 25) reputation = "risky"
         else reputation = "spammy"
 
+        if (userData.active_status === "inactive" && scorePercent < 30) reputation = "spammy"
 
         return NextResponse.json({
             fid: userData.fid,
@@ -88,7 +91,10 @@ export async function GET(request: NextRequest) {
             reputation,
             followers: userData.follower_count ?? 0,
             following: userData.following_count ?? 0,
+            casts: userData.power_badge ? 100 : 0, // Fallback if regular search doesn't give stats
             verifiedAddresses: userData.verified_addresses?.eth_addresses ?? [],
+            activeStatus: userData.active_status,
+            powerBadge: userData.power_badge
         })
     } catch (error) {
         console.error("Search API error:", error)
