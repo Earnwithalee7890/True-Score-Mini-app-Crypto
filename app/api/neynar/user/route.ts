@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   const apiKey = process.env.NEYNAR_API_KEY
 
   if (!apiKey) {
-    // Return mock data if no API key
+    // Mock data for development without API key
     return NextResponse.json({
       fid: Number.parseInt(fid),
       username: "demo_user",
@@ -21,9 +21,12 @@ export async function GET(request: NextRequest) {
       reputation: "neutral" as const,
       followers: 1234,
       following: 567,
-      casts: 0,
+      casts: 42,
       replies: 0,
       verifiedAddresses: [],
+      activeStatus: "active",
+      powerBadge: true,
+      bio: "Demo user bio"
     })
   }
 
@@ -33,6 +36,7 @@ export async function GET(request: NextRequest) {
         accept: "application/json",
         "x-api-key": apiKey,
       },
+      next: { revalidate: 300 } // Cache for 5 mins
     })
 
     if (!userResponse.ok) {
@@ -46,69 +50,56 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
+    // --- SCORE & REPUTATION LOGIC ---
     const score = user.experimental?.neynar_user_score ?? 0
     const scorePercent = Math.round(score * 100)
 
     let reputation: "safe" | "neutral" | "risky" | "spammy" = "neutral"
 
-    // Improved Logic: Relaxed strictness on active status for high scores
-    const isActive = user.active_status === "active"
-    const isPowerUser = user.power_badge === true
-
-    // Trust the Score primarily
+    // Improved Reputation Logic
     if (scorePercent >= 80) reputation = "safe"
-    else if (scorePercent >= 60) reputation = "safe" // Expanded safe range
+    else if (scorePercent >= 60) reputation = "safe"
     else if (scorePercent >= 40) reputation = "neutral"
     else if (scorePercent >= 20) reputation = "risky"
     else reputation = "spammy"
 
-    // Only downgrade if explicitly inactive AND low score
-    if (user.active_status === "inactive" && scorePercent < 40) reputation = "spammy"
+    if (user.active_status === "inactive" && scorePercent < 30) reputation = "spammy"
 
-    // Fetch user's casts to count total casts and replies
+
+    // --- CASTS COUNT LOGIC ---
     let totalCasts = 0
-    let totalReplies = 0
 
-    // Use the stats from the user object if available (Neynar V2 usually provides this)
-    // If not, we fallback to the feed fetch
-    // Note: user.fid check to be safe
+    // Try to get total casts from user object first (if available in this API plan)
+    // Neynar V2 user object sometimes has 'verifications', 'active_status', 'power_badge'
+    // but strict cast counts usually come from 'user.stats' object if it exists.
 
-    // Direct stats from user object (if available in this endpoint version)
-    // Some versions of Neynar return 'follower_count', 'following_count', 'verifications', 'active_status', 'power_badge'
-    // We can try to use 'user.stats' or 'user.public_stats' if they exist, but v2 bulk typically has them at top level.
-
-    // If we rely on the feed fetch for exact active counts:
+    // Attempt fallback to recent feed count if no stats
     try {
       const castsResponse = await fetch(
-        `https://api.neynar.com/v2/farcaster/feed/user/${fid}?limit=100`, // Increased limit
+        `https://api.neynar.com/v2/farcaster/feed/user/${fid}?limit=100&include_replies=false`,
         {
           headers: {
             accept: "application/json",
             "x-api-key": apiKey,
           },
+          next: { revalidate: 300 }
         }
       )
 
       if (castsResponse.ok) {
         const castsData = await castsResponse.json()
-        const casts = castsData.casts || []
+        const fetchedCasts = castsData.casts || []
+        // If the feed returns 100, the user likely has >= 100 casts.
+        // We can display "100+" or just the number we found.
+        totalCasts = fetchedCasts.length
 
-        // Set totals based on this sample
-        casts.forEach((cast: any) => {
-          totalCasts++
-        })
+        // If we hit the limit, let's just say 100+ in the UI (handled in component)
+        // or just return 100.
       }
     } catch (err) {
-      console.error("Error fetching casts:", err)
+      console.error("Error fetching casts feed:", err)
     }
 
-    // Map Active Days (Approximation since API doesn't give it directly)
-    // We can just return "N/A" or try to calculate from feed timestamps if we really wanted to.
-
-    // Rank: Neynar doesn't give a global rank easily. 
-    // We will leave it as N/A or remove it if users find it confusing.
-
-    console.log('[DEBUG] User data fetched successfully', { uid: user.fid, reputation, scorePercent })
     return NextResponse.json({
       fid: user.fid,
       username: user.username,
@@ -118,12 +109,12 @@ export async function GET(request: NextRequest) {
       reputation,
       followers: user.follower_count ?? 0,
       following: user.following_count ?? 0,
-      casts: totalCasts, // Use the fetched count
-      replies: 0, // Simplified for now
+      casts: totalCasts,
+      replies: 0,
       verifiedAddresses: user.verified_addresses?.eth_addresses ?? [],
-      bio: user.profile.bio.text,
-      activeStatus: user.active_status, // Pass this through
-      powerBadge: user.power_badge,     // Pass this through
+      bio: user.profile?.bio?.text ?? "",
+      activeStatus: user.active_status ?? "inactive", // Explicit fallback
+      powerBadge: user.power_badge ?? false,          // Explicit fallback
     })
   } catch (error) {
     console.error("Neynar API error:", error)
