@@ -849,3 +849,8 @@
     0 20px 40px rgba(0, 0, 0, 0.3),
     0 0 20px rgba(0, 217, 255, 0.2);
 }
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+::-webkit-scrollbar-thumb { background: rgba(167, 139, 250, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(167, 139, 250, 0.5); }
