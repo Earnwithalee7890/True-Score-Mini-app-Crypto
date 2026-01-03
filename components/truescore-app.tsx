@@ -330,6 +330,7 @@ export function TrueScoreApp() {
                 <img
                   src={userData.pfpUrl || "/placeholder-user.jpg"}
                   alt={userData.displayName}
+                  loading="eager"
                   className="relative h-10 w-10 rounded-full border-2 border-cyan-400/60 ring-2 ring-cyan-400/30 object-cover transition-transform group-hover:scale-110"
                 />
               </div>
